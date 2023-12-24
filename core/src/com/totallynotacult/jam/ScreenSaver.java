@@ -11,8 +11,8 @@ import java.awt.*;
 public class ScreenSaver implements Screen {
     OrthographicCamera camera;
     MyGdxGame game;
-    int xVelocity = 150;
-    int yVelocity = 150;
+    int xVelocity = 100;
+    int yVelocity = 100;
     Rectangle logo;
     Texture mcpt_img;
 
@@ -43,14 +43,18 @@ public class ScreenSaver implements Screen {
     }
 
     public void updateLogoPosition(float delta) {
+        if (delta > 0.3f) {
+            return;
+        }
         logo.x += xVelocity * delta;
         logo.y += yVelocity * delta;
         if (logo.x > 800 - mcpt_img.getWidth() || logo.x < 0) {
-            xVelocity *= -1;
+            xVelocity = Math.abs(xVelocity) * (logo.x > 800 - mcpt_img.getWidth() ? -1 : 1);
         }
         if (logo.y > 480 - mcpt_img.getHeight() || logo.y < 0) {
-            yVelocity *= -1;
+            yVelocity = Math.abs(yVelocity) * (logo.y > 480 - mcpt_img.getHeight() ? -1 : 1);
         }
+
     }
 
     @Override
@@ -65,7 +69,7 @@ public class ScreenSaver implements Screen {
 
     @Override
     public void pause() {
-
+        System.out.println("hi");
     }
 
     @Override
