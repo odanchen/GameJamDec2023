@@ -17,7 +17,7 @@ public class EntityManager {
 
     public void updateEntities(List<Tile> room, float deltaTime) {
         entities.forEach(e -> e.update(room, deltaTime));
-        entities.removeIf(e -> e.getX() > 1000 || e.getX() < -100 || e.getY() > 1000 || e.getY() < -100);
+        entities.removeIf(e -> e.getX() > 1000 || e.getX() < -100 || e.getY() > 1000 || e.getY() < -100 || e.collidesWithWall(room));
     }
 
     public void drawEntities() {
