@@ -22,31 +22,19 @@ public class DungeonScreen implements Screen {
     private final PlayerCharacter character;
     private final SpriteBatch batch;
     EntityManager entityManager;
-    Tile[][] tiles = new Tile[10][10];
+
+    Texture wall = new Texture(Gdx.files.internal("wall.png"));
+    Room room = new Room(1);
+    Tile[][] tiles = room.generateRoomMatrix(new Texture(Gdx.files.internal("room1.png")));
 
 
     public DungeonScreen() {
-        var tilePic = new Texture(Gdx.files.internal("greyTile.jpeg"));
-        var wallPic = new Texture(Gdx.files.internal("wall.png"));
-        for (int row = 0; row < tiles.length; row++) {
-            for (int col = 0; col < tiles[row].length; col++) tiles[row][col] = new Tile(tilePic, row, col);
-        }
-
-        for (int row = 0; row < tiles.length; row++) {
-            tiles[row][0] = new Wall(wallPic, row, 0);
-            tiles[row][tiles[row].length - 1] = new Wall(wallPic, row, tiles[row].length - 1);
-        }
-        tiles[5][5] = new Wall(wallPic, 5, 5);
-        tiles[3][5] = new Wall(wallPic, 3, 5);
-        tiles[4][4] = new Wall(wallPic, 4, 4);
-        tiles[0][0] = new Wall(wallPic, 0, 0);
-
         batch = new SpriteBatch();
         entityManager = new EntityManager(batch);
         camera = new OrthographicCamera();
         character = new PlayerCharacter(entityManager, camera);
 
-        camera.setToOrtho(false, 464, 261);
+        camera.setToOrtho(false, 512, 512);
     }
 
     @Override
@@ -59,9 +47,7 @@ public class DungeonScreen implements Screen {
     }
 
 
-    Texture wall = new Texture(Gdx.files.internal("wall.png"));
-    Room room = new Room(1);
-    int[][] mat = room.generateRoomMatrix(new Texture(Gdx.files.internal("room1.png")));
+
     @Override
     public void render(float delta) {
         camera.update();

@@ -11,7 +11,7 @@ public class Room {
     public Room(int type) {
 
         Texture texture = new Texture(Gdx.files.internal("room1.png"));
-        int[][] mat = generateRoomMatrix(texture);
+        Tile[][] mat = generateRoomMatrix(texture);
         for (int i = 0; i < 16; i++) {
             for (int k = 0; k < 16; k++)
                 System.out.print(mat[i][k]);
@@ -25,14 +25,15 @@ public class Room {
         Pixmap pixmap = texture.getTextureData().consumePixmap();
         return new Color(pixmap.getPixel(x, y));
     }
-    public int[][] generateRoomMatrix(Texture texture) {
-        int[][] mat = new int[16][16];
+    public Tile[][] generateRoomMatrix(Texture texture) {
+        Tile[][] mat = new Tile[16][16];
 
         for (int i = 0; i < 16; i++)
             for (int k = 0; k < 16; k++) {
-                if (getPixelID(k, i, texture).equals(Color.BLACK))
-                    mat[i][k] = 1;
-                else mat[i][k] = 0;
+                if (getPixelID(k, i, texture).equals(Color.BLACK)) {
+                    mat[i][k] = new Wall(new Texture(Gdx.files.internal("wall.png")), i, k);
+                }
+                else mat[i][k] = new Tile(new Texture(Gdx.files.internal("greyTile.jpeg")), i, k);
             }
         return mat;
     }
