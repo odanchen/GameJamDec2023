@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.totallynotacult.jam.map.Room;
 import com.totallynotacult.jam.map.RoomGen;
 
 public class MyGdxGame extends Game {
@@ -16,7 +17,11 @@ public class MyGdxGame extends Game {
 		font = new BitmapFont();
 		this.setScreen(new DungeonScreen());
 
-		RoomGen r = new RoomGen(5);
+		//RoomGen r = new RoomGen(5);
+
+		Room r = new Room(1);
+
+
 	}
 
 	public void render () {

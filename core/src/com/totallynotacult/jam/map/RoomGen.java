@@ -1,5 +1,4 @@
 package com.totallynotacult.jam.map;
-
 import java.util.ArrayList;
 
 public class RoomGen {
@@ -8,14 +7,10 @@ public class RoomGen {
 
         public RoomGen(int roomCount) {
 
-//            int start = 1; //Value of a start room
-//            sceneGrid[2][1] = start; // make them random in center
-
             int[] currentRoom = new int[2]; //Current room being generated
             currentRoom[0] = 2; currentRoom[1] = 2; //Current room is center
 
             //Generate possible adjacent rooms
-           // var adjList = new ArrayList<int[]>();
 
             for (int i = 0; i < roomCount; i++) {
                 var list = adjRooms(currentRoom);
@@ -32,9 +27,10 @@ public class RoomGen {
             }
 
         }
-
+        public int[][] getLevelMatrix() {
+            return sceneGrid;
+        }
         private boolean isRoomSpaceValid(int x,int y) {
-
             if (x < 0 || x >= sceneGrid.length || y < 0 || y >= sceneGrid[0].length) return false;
             return (sceneGrid[x][y] == 0);
         }
@@ -55,5 +51,4 @@ public class RoomGen {
 
             return list;
         }
-
 }
