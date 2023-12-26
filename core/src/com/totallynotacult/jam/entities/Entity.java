@@ -1,21 +1,20 @@
 package com.totallynotacult.jam.entities;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.totallynotacult.jam.map.Tile;
 
-public abstract class Entity {
-    protected float xPos;
-    protected float yPos;
-    protected float deltaTime;
+import java.util.List;
 
-    public Entity(float xPos, float yPos) {
-        this.xPos = xPos;
-        this.yPos = yPos;
+public abstract class Entity extends Sprite {
+    public Entity(Texture texture) {
+        super(texture);
     }
 
-    public abstract void act(float deltaTime);
-
-    public void render(SpriteBatch batch, float deltaTime) {
-        this.deltaTime = deltaTime;
-        act(deltaTime);
+    public Entity(Texture texture, float xPos, float yPos) {
+        super(texture);
+        setPosition(xPos, yPos);
     }
+
+    public abstract void update(List<Tile> room, float deltaTime);
 }

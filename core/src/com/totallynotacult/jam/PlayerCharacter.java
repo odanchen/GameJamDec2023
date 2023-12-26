@@ -2,76 +2,86 @@ package com.totallynotacult.jam;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.totallynotacult.jam.entities.Bullet;
 import com.totallynotacult.jam.entities.Entity;
 import com.totallynotacult.jam.entities.EntityManager;
+import com.totallynotacult.jam.map.Tile;
+import com.totallynotacult.jam.map.Wall;
 
-public class PlayerCharacter {
-    private float xCor;
-    private float yCor;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+public class PlayerCharacter extends Entity {
     private int health;
     private int maxHealth;
-    private double speed;
-    private Texture playerTexture;
+    private float speed;
     private EntityManager entityManager;
 
     private Camera camera;
 
     public PlayerCharacter(EntityManager entityManager, Camera camera) {
-        xCor = 200;
-        yCor = 200;
+        super(new Texture(Gdx.files.internal("police.jpeg")));
+        setBounds(100, 200, 48, 42);
+
         health = 6;
         maxHealth = 6;
         speed = 100;
         this.camera = camera;
-        playerTexture = new Texture(Gdx.files.internal("tempPlayer.png"));
         this.entityManager = entityManager;
     }
 
-    public void move(float deltaTime) {
+    public void update(List<Tile> room, float deltaTime) {
+        performMovement(deltaTime, room);
+        performShooting();
+    }
 
-        int horDir = getDir(Gdx.input.isKeyPressed(Input.Keys.D), Gdx.input.isKeyPressed(Input.Keys.A));
-        int vertDir = getDir(Gdx.input.isKeyPressed(Input.Keys.W), Gdx.input.isKeyPressed(Input.Keys.S));
+    public void performMovement(float deltaTime, List<Tile> room) {
+        float horDir = getDir(Gdx.input.isKeyPressed(Input.Keys.D), Gdx.input.isKeyPressed(Input.Keys.A));
+        float vertDir = getDir(Gdx.input.isKeyPressed(Input.Keys.W), Gdx.input.isKeyPressed(Input.Keys.S));
 
-        if (horDir != 0 && vertDir != 0) {
-            xCor += speed / Math.sqrt(2) * horDir * deltaTime;
-            yCor += speed / Math.sqrt(2) * vertDir * deltaTime;
-        } else {
-            xCor += speed * horDir * deltaTime;
-            yCor += speed * vertDir * deltaTime;
+        var localSpeed = speed * deltaTime / ((horDir != 0 && vertDir != 0) ? (float) Math.sqrt(2) : 1);
+
+        moveWithCollision(localSpeed, room, horDir, true);
+        moveWithCollision(localSpeed, room, vertDir, false);
+    }
+
+    private void moveWithCollision(float localSpeed, List<Tile> room, float dir, boolean isHorizontal) {
+        if (dir == 0) return;
+        for (int i = 0; i < localSpeed; i++) {
+            if (isHorizontal) translateX(dir);
+            else translateY(dir);
+
+            var rect = getBoundingRectangle();
+            if (room.stream().anyMatch(tile -> tile instanceof Wall && tile.getBoundingRectangle().overlaps(rect))) {
+                if (isHorizontal) translateX(-dir);
+                else translateY(-dir);
+                return;
+            }
         }
     }
 
-
-
-    int getDir(boolean forward, boolean backward) {
+    private int getDir(boolean forward, boolean backward) {
         if (forward == backward) return 0;
         if (forward) return 1;
         return -1;
     }
 
-    public void render(SpriteBatch batch, float deltaTime) {
-        move(deltaTime);
-
-
+    private void performShooting() {
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 
             Vector3 click = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(click);
 
-            float angle = (float) Math.atan2(click.y - yCor, click.x - xCor);
+            float angle = (float) Math.atan2(click.y - getY(), click.x - getX());
 
 
-            entityManager.addEntity(new Bullet(xCor, yCor, angle));
+            entityManager.addEntity(new Bullet(getX(), getY(), angle));
         }
-        batch.draw(playerTexture, xCor, yCor);
     }
-
-    public float xCor() {return xCor;}
-    public float yCor() {return yCor;}
 }

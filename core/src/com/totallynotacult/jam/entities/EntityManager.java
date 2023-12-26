@@ -1,22 +1,27 @@
 package com.totallynotacult.jam.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.totallynotacult.jam.entities.Entity;
+import com.totallynotacult.jam.map.Tile;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class EntityManager {
 
     private ArrayList<Entity> entities = new ArrayList<Entity>();
-    private SpriteBatch batch;
+    private final SpriteBatch batch;
 
     public EntityManager(SpriteBatch batch) {
         this.batch = batch;
     }
 
-    public void render(float deltaTime) {
-        entities.forEach(e -> e.render(batch, deltaTime));
-        entities.removeIf(e -> e.xPos > 1000 || e.xPos < -100 || e.yPos > 1000 || e.yPos < -100);
+    public void updateEntities(List<Tile> room, float deltaTime) {
+        entities.forEach(e -> e.update(room, deltaTime));
+        entities.removeIf(e -> e.getX() > 1000 || e.getX() < -100 || e.getY() > 1000 || e.getY() < -100);
+    }
+
+    public void drawEntities() {
+        entities.forEach(e -> e.draw(batch));
     }
 
     public void addEntity(Entity entity) {
@@ -26,5 +31,4 @@ public class EntityManager {
     public void removeEntity(Entity entity) {
         entities.remove(entity);
     }
-
 }
