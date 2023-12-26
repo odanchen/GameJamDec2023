@@ -27,9 +27,9 @@ public class PlayerCharacter {
         yCor = 200;
         health = 6;
         maxHealth = 6;
-        speed = 400;
+        speed = 100;
         this.camera = camera;
-        playerTexture = new Texture(Gdx.files.internal("mcpt_logo.png"));
+        playerTexture = new Texture(Gdx.files.internal("tempPlayer.png"));
         this.entityManager = entityManager;
     }
 

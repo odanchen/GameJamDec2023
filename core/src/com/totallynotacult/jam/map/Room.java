@@ -18,7 +18,6 @@ public class Room {
             System.out.println();
         }
     }
-
     public Color getPixelID(int x, int y, Texture texture) {
         if (!texture.getTextureData().isPrepared()) {
             texture.getTextureData().prepare();
@@ -37,6 +36,4 @@ public class Room {
             }
         return mat;
     }
-
-
 }

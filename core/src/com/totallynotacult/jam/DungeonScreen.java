@@ -1,11 +1,14 @@
 package com.totallynotacult.jam;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.totallynotacult.jam.entities.EntityManager;
+import com.totallynotacult.jam.map.Room;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.map.Wall;
 
@@ -32,7 +35,8 @@ public class DungeonScreen implements Screen {
         entityManager = new EntityManager(batch);
         camera = new OrthographicCamera();
         character = new PlayerCharacter(entityManager, camera);
-        camera.setToOrtho(false, 800, 800);
+        
+        camera.setToOrtho(false, 464, 261);
     }
 
     @Override
@@ -41,7 +45,9 @@ public class DungeonScreen implements Screen {
     }
 
 
-
+    Texture wall = new Texture(Gdx.files.internal("wall.png"));
+    Room room = new Room(1);
+    int[][] mat = room.generateRoomMatrix(new Texture(Gdx.files.internal("room1.png")));
     @Override
     public void render(float delta) {
         camera.update();
@@ -55,6 +61,11 @@ public class DungeonScreen implements Screen {
         //camera.position.set(character.position.x, character.position.y, 0);
         character.render(batch, delta);
         entityManager.render(delta);
+        //Walls
+        for (int i = 0; i < 16; i++)
+            for (int k = 0; k < 16; k++)
+                if (mat[i][k] == 1) batch.draw(wall, k*16, i*16);
+
         batch.end();
 
 
