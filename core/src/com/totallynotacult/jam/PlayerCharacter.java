@@ -56,9 +56,7 @@ public class PlayerCharacter extends Entity {
         for (int i = 0; i < localSpeed; i++) {
             if (isHorizontal) translateX(dir);
             else translateY(dir);
-
-            var rect = getBoundingRectangle();
-            if (room.stream().anyMatch(tile -> tile instanceof Wall && tile.getBoundingRectangle().overlaps(rect))) {
+            if (collidesWithWall(room)) {
                 if (isHorizontal) translateX(-dir);
                 else translateY(-dir);
                 return;
