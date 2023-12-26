@@ -1,4 +1,4 @@
-package com.totallynotacult.jam;
+package com.totallynotacult.jam.map;
 
 import java.util.ArrayList;
 
