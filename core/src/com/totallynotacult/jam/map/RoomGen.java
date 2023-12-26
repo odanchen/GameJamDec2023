@@ -20,11 +20,6 @@ public class RoomGen {
                 currentRoom = room;
             }
 
-            for (int i = 0; i < 5; i++) {
-                for (int k = 0; k < 5; k++)
-                    System.out.print(sceneGrid[i][k]);
-                System.out.println("");
-            }
 
         }
         public int[][] getLevelMatrix() {

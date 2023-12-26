@@ -67,7 +67,7 @@ public class ScreenSaver implements Screen {
 
     @Override
     public void pause() {
-        System.out.println("hi");
+
     }
 
     @Override

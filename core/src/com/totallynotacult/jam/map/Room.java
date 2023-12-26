@@ -8,15 +8,10 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Room {
 
+
     public Room(int type) {
 
-        Texture texture = new Texture(Gdx.files.internal("room1.png"));
-        Tile[][] mat = generateRoomMatrix(texture);
-        for (int i = 0; i < 16; i++) {
-            for (int k = 0; k < 16; k++)
-                System.out.print(mat[i][k]);
-            System.out.println();
-        }
+
     }
     public Color getPixelID(int x, int y, Texture texture) {
         if (!texture.getTextureData().isPrepared()) {
@@ -27,7 +22,6 @@ public class Room {
     }
     public Tile[][] generateRoomMatrix(Texture texture) {
         Tile[][] mat = new Tile[16][16];
-
         for (int i = 0; i < 16; i++)
             for (int k = 0; k < 16; k++) {
                 if (getPixelID(k, i, texture).equals(Color.BLACK)) {
