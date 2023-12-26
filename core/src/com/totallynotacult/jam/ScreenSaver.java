@@ -25,8 +25,6 @@ public class ScreenSaver implements Screen {
         logo = new Rectangle();
         logo.x = 400;
         logo.y = 240;
-        logo.width = mcpt_img.getWidth();
-        logo.height = mcpt_img.getHeight();
     }
 
     @Override
