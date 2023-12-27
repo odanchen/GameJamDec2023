@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Tile extends Sprite {
     protected final int SIZE = 16;
+    public boolean weaponTile = false;
 
     public Tile(Texture texture, int row, int col) {
         super(texture);
