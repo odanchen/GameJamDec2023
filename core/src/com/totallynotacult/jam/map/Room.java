@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class Room {
@@ -91,6 +92,7 @@ public class Room {
 
     public Tile[][] generateRoomMatrix(TextureRegion texture) {
         Tile[][] mat = new Tile[16][16];
+        Random random = new Random();
         var tileImg = new Texture(Gdx.files.internal("greyTile.jpeg"));
         var wallImg = new Texture(Gdx.files.internal("wall.png"));
 
@@ -98,7 +100,11 @@ public class Room {
             for (int col = 0; col < 16; col++) {
                 if (getPixelID(col, row, texture).equals(Color.BLACK)) {
                     mat[row][col] = new Wall(wallImg, row, col);
-                } else mat[row][col] = new Tile(tileImg, row, col);
+                } else {
+                    mat[row][col] = new Tile(tileImg, row, col);
+                    if (random.nextInt(100) == 20)
+                        mat[row][col].weaponTile = true;
+                }
             }
         return mat;
     }
