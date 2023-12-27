@@ -22,13 +22,14 @@ public class PlayerCharacter extends Entity {
     private int maxHealth;
     private float speed;
     private EntityManager entityManager;
-
     private Camera camera;
+    private final DungeonScreen screen;
 
-    public PlayerCharacter(EntityManager entityManager, Camera camera) {
+    public PlayerCharacter(EntityManager entityManager, Camera camera, DungeonScreen screen) {
         super(new Texture(Gdx.files.internal("police.jpeg")));
         setBounds(100, 200, 48, 42);
 
+        this.screen = screen;
         health = 6;
         maxHealth = 6;
         speed = 100;
@@ -49,6 +50,26 @@ public class PlayerCharacter extends Entity {
 
         moveWithCollision(localSpeed, room, horDir, true);
         moveWithCollision(localSpeed, room, vertDir, false);
+
+        if (getX() < 0 && screen.roomExists(0, -1)) {
+            screen.changeRoom(0, -1);
+            setX(512 - 50);
+        } else if (getX() < 0) setX(0);
+
+        if (getY() < 0 && screen.roomExists(1, 0)) {
+            screen.changeRoom(1, 0);
+            setY(512 - 50);
+        } else if (getY() < 0) setY(0);
+
+        if (getX() > 512 - 42 && screen.roomExists(0, 1)) {
+            screen.changeRoom(0, 1);
+            setX(0);
+        } else if (getX() > 512 - 42) setX(512 - 42);
+
+        if (getY() > 512 - 42 && screen.roomExists(-1, 0)) {
+            screen.changeRoom(-1, 0);
+            setY(0);
+        } else if (getY() > 512 - 42) setY(512 - 42);
     }
 
     private void moveWithCollision(float localSpeed, List<Tile> room, float dir, boolean isHorizontal) {

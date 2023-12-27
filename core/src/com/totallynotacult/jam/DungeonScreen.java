@@ -21,32 +21,41 @@ public class DungeonScreen implements Screen {
     private final OrthographicCamera camera;
     private final PlayerCharacter character;
     private final SpriteBatch batch;
-    EntityManager entityManager;
-
-    Texture wall = new Texture(Gdx.files.internal("wall.png"));
-    Room room = new Room(1);
-    Tile[][] tiles = room.generateRoomMatrix(new Texture(Gdx.files.internal("room1.png")));
+    private final EntityManager entityManager;
+    private Room currentRoom;
+    Room[][] rooms = new Room[3][3];
+    int row = 0;
+    int col = 0;
 
 
     public DungeonScreen() {
         batch = new SpriteBatch();
         entityManager = new EntityManager(batch);
         camera = new OrthographicCamera();
-        character = new PlayerCharacter(entityManager, camera);
+        character = new PlayerCharacter(entityManager, camera, this);
+
+        rooms = new Room[3][3];
+        for (int row = 0; row < rooms.length; row++) {
+            for (int col = 0; col < rooms[row].length; col++) rooms[row][col] = new Room(1);
+        }
+        currentRoom = rooms[0][0];
 
         camera.setToOrtho(false, 512, 512);
+    }
+
+    boolean roomExists(int dRow, int dCol) {
+        return row + dRow >= 0 && row + dRow < rooms.length && col + dCol >= 0 &&
+                col + dCol < rooms[row].length && rooms[row + dRow][col + dCol] != null;
+    }
+
+    void changeRoom(int dRow, int dCol) {
+        currentRoom = rooms[row += dRow][col += dCol];
     }
 
     @Override
     public void show() {
 
     }
-
-    public List<Tile> getAllTiles() {
-        return Arrays.stream(tiles).flatMap(Arrays::stream).collect(Collectors.toList());
-    }
-
-
 
     @Override
     public void render(float delta) {
@@ -57,19 +66,13 @@ public class DungeonScreen implements Screen {
 
 
         batch.begin();
-        //camera.position.set(character.position.x, character.position.y, 0);
-        //Walls
-       // for (int i = 0; i < 16; i++)
-         //   for (int k = 0; k < 16; k++)
-           //     if (mat[i][k] == 1) batch.draw(wall, k*16, i*16);
-
 
         renderTiles(batch);
 
-        character.update(getAllTiles(), delta);
+        character.update(currentRoom.getAllTiles(), delta);
         character.draw(batch);
 
-        entityManager.updateEntities(getAllTiles(), delta);
+        entityManager.updateEntities(currentRoom.getAllTiles(), delta);
         entityManager.drawEntities();
         batch.end();
 
@@ -77,13 +80,7 @@ public class DungeonScreen implements Screen {
     }
 
     void renderTiles(SpriteBatch batch) {
-        for (int row = 0; row < tiles.length; row++) {
-            for (int col = 0; col < tiles[row].length; col++) {
-                if (tiles[row][col] instanceof Wall) {
-                    tiles[row][col].draw(batch);
-                }
-            }
-        }
+        currentRoom.getAllTiles().forEach(tile -> tile.draw(batch));
     }
 
     @Override

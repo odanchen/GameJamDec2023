@@ -4,15 +4,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Rectangle;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Room {
+    private Tile[][] tiles;
 
 
     public Room(int type) {
-
-
+        var texture = new Texture(Gdx.files.internal("room1.png"));
+        tiles = generateRoomMatrix(texture);
     }
+
     public Color getPixelID(int x, int y, Texture texture) {
         if (!texture.getTextureData().isPrepared()) {
             texture.getTextureData().prepare();
@@ -20,15 +25,22 @@ public class Room {
         Pixmap pixmap = texture.getTextureData().consumePixmap();
         return new Color(pixmap.getPixel(x, y));
     }
+
     public Tile[][] generateRoomMatrix(Texture texture) {
         Tile[][] mat = new Tile[16][16];
-        for (int i = 0; i < 16; i++)
-            for (int k = 0; k < 16; k++) {
-                if (getPixelID(k, i, texture).equals(Color.BLACK)) {
-                    mat[i][k] = new Wall(new Texture(Gdx.files.internal("wall.png")), i, k);
-                }
-                else mat[i][k] = new Tile(new Texture(Gdx.files.internal("greyTile.jpeg")), i, k);
+        var tileImg = new Texture(Gdx.files.internal("greyTile.jpeg"));
+        var wallImg = new Texture(Gdx.files.internal("wall.png"));
+
+        for (int row = 0; row < 16; row++)
+            for (int col = 0; col < 16; col++) {
+                if (getPixelID(col, row, texture).equals(Color.BLACK)) {
+                    mat[row][col] = new Wall(wallImg, row, col);
+                } else mat[row][col] = new Tile(tileImg, row, col);
             }
         return mat;
+    }
+
+    public List<Tile> getAllTiles() {
+        return Arrays.stream(tiles).flatMap(Arrays::stream).collect(Collectors.toList());
     }
 }
