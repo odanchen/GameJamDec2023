@@ -31,10 +31,11 @@ public class Room {
         switch (type) {
 
             case 1: {
-                roomTexture = new Texture(Gdx.files.internal("room_start_sheet.png"));
-                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth()/4, roomTexture.getHeight());
+                roomTexture = new Texture(Gdx.files.internal("room0.png"));
+                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth() / 4, roomTexture.getHeight());
                 roomVariation = ss[0][exitDirections[0]];
-            }break;
+                break;
+            }
             default: {
                 roomTexture = new Texture(Gdx.files.internal("room1.png"));
                 TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth(), roomTexture.getHeight());
@@ -44,18 +45,21 @@ public class Room {
         }
 
         if (type != 0) {
-           // var texture = new Texture(Gdx.files.internal("room1.png"));
+            // var texture = new Texture(Gdx.files.internal("room1.png"));
             tiles = generateRoomMatrix(roomVariation);
         }
     }
 
-    public int getRoomType() {return type;}
+    public int getRoomType() {
+        return type;
+    }
+
     public Color getPixelID(int x, int y, TextureRegion texture) {
         if (!texture.getTexture().getTextureData().isPrepared()) {
             texture.getTexture().getTextureData().prepare();
         }
         Pixmap pixmap = texture.getTexture().getTextureData().consumePixmap();
-        return new Color(pixmap.getPixel(texture.getRegionX()+x, texture.getRegionY()-y+texture.getRegionHeight()-1));
+        return new Color(pixmap.getPixel(texture.getRegionX() + x, texture.getRegionY() - y + texture.getRegionHeight() - 1));
 
     }
 
@@ -77,4 +81,15 @@ public class Room {
         return Arrays.stream(tiles).flatMap(Arrays::stream).collect(Collectors.toList());
     }
 
+    public void sealExit(int dRow, int dCol) {
+        var wallImg = new Texture(Gdx.files.internal("wall.png"));
+        if (dRow == 1) for (int col = 0; col < tiles[0].length; col++) tiles[0][col] = new Wall(wallImg, 0, col);
+        if (dRow == -1) for (int col = 0; col < tiles[0].length; col++)
+            tiles[tiles.length - 1][col] = new Wall(wallImg, tiles.length - 1, col);
+
+        if (dCol == 1) for (int row = 0; row < tiles.length; row++)
+            tiles[row][tiles[0].length - 1] = new Wall(wallImg, row, tiles[0].length - 1);
+        if (dCol == -1) for (int row = 0; row < tiles.length; row++)
+            tiles[row][0] = new Wall(wallImg, row, 0);
+    }
 }
