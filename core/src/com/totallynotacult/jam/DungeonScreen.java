@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.totallynotacult.jam.entities.Enemy;
 import com.totallynotacult.jam.entities.EntityManager;
+import com.totallynotacult.jam.map.EnemyTile;
 import com.totallynotacult.jam.map.Room;
 import com.totallynotacult.jam.map.RoomGen;
 
@@ -66,6 +67,13 @@ public class DungeonScreen implements Screen {
         currentRoom = rooms[row += dRow][col += dCol];
         cam = new Camera(character, 256, 256);
         fixRoom();
+        for (int row = 0; row < currentRoom.getTiles().length; row++) {
+            for (int col = 0; col < currentRoom.getTiles()[row].length; col++) {
+                if (currentRoom.getTiles()[row][col] instanceof EnemyTile) {
+                    entityManager.addEnemy(new Enemy(col * 32, row * 32));
+                }
+            }
+        }
     }
 
     @Override

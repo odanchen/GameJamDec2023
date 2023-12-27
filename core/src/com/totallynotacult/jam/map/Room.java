@@ -34,19 +34,19 @@ public class Room {
 
             case 1: {
                 roomTexture = new Texture(Gdx.files.internal("room_start_sheet.png"));
-                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth()/4, roomTexture.getHeight());
+                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth() / 4, roomTexture.getHeight());
                 roomVariation = ss[0][exitDirections[0]];
                 break;
             }
             case 3: {
                 roomTexture = new Texture(Gdx.files.internal("room_start_sheet.png"));
-                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth()/4, roomTexture.getHeight());
+                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth() / 4, roomTexture.getHeight());
                 roomVariation = ss[0][exitDirections[0]];
                 break;
             }
             case 2: {
                 roomTexture = new Texture(Gdx.files.internal("room_edge_sheet.png"));
-                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth()/6, roomTexture.getHeight());
+                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth() / 6, roomTexture.getHeight());
                 int index = 0;
                 if (exitDirections[0] == 0 || exitDirections[1] == 0) {
                     if (exitDirections[0] == 1 || exitDirections[1] == 1) index = 5;
@@ -57,7 +57,7 @@ public class Room {
                     if (exitDirections[0] == 2 || exitDirections[1] == 2) index = 4;
                     if (exitDirections[0] == 3 || exitDirections[1] == 3) index = 1;
                 }
-                if (exitDirections[0] == 2|| exitDirections[1] == 2) {
+                if (exitDirections[0] == 2 || exitDirections[1] == 2) {
                     if (exitDirections[0] == 3 || exitDirections[1] == 3) index = 2;
                 }
 
@@ -105,6 +105,8 @@ public class Room {
             for (int col = 0; col < 16; col++) {
                 if (getPixelID(col, row, texture).equals(Color.BLACK)) {
                     mat[row][col] = new Wall(wallImg, row, col);
+                } else if (getPixelID(col, row, texture).equals(Color.RED)) {
+                    mat[row][col] = new EnemyTile(tileImg, row, col);
                 } else {
                     mat[row][col] = new Tile(tileImg, row, col);
                     if (random.nextInt(100) == 20)
@@ -114,8 +116,13 @@ public class Room {
         return mat;
     }
 
+
     public List<Tile> getAllTiles() {
         return Arrays.stream(tiles).flatMap(Arrays::stream).collect(Collectors.toList());
+    }
+
+    public Tile[][] getTiles() {
+        return tiles;
     }
 
     public void sealExit(int dRow, int dCol) {
