@@ -32,8 +32,8 @@ public class Room {
 
             case 1: {
                 roomTexture = new Texture(Gdx.files.internal("room0.png"));
-                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth() / 4, roomTexture.getHeight());
-                roomVariation = ss[0][exitDirections[0]];
+                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth(), roomTexture.getHeight());
+                roomVariation = ss[0][0];
                 break;
             }
             default: {
