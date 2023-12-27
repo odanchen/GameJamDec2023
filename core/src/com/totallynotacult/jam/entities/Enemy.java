@@ -38,6 +38,8 @@ public class Enemy extends ShootingEntity {
 
     @Override
     public void update(List<Tile> room, float deltaTime) {
+        super.update(room, deltaTime);
+
         int xDir = getDir((float) (speed * deltaTime * Math.cos(angle)));
         int yDir = getDir((float) (speed * deltaTime * Math.sin(angle)));
 
@@ -62,12 +64,6 @@ public class Enemy extends ShootingEntity {
             }
         }
 
-        lastShot += Gdx.graphics.getDeltaTime();
-        if (lastShot >= 2) {
-            lastShot = Gdx.input.getCurrentEventTime();
-            System.out.printf("SHOOT to x: %f, y: %f%n", playerX, playerY);
-            performShooting(playerX, playerY, entityManager);
-            lastShot = 0;
-        }
+        performShooting(playerX, playerY, entityManager);
     }
 }

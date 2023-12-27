@@ -40,7 +40,7 @@ public class DungeonScreen implements Screen {
         currentRoom = rooms[row][col];
 
         fixRoom();
-        enemy = new Enemy(250, 250);
+        enemy = new Enemy(100, 100);
 
         camera.setToOrtho(false, 256, 256);
     }
@@ -96,12 +96,12 @@ public class DungeonScreen implements Screen {
     }
 
     void renderTiles(SpriteBatch batch) {
-        Texture weaponTileTexture = new Texture(Gdx.files.internal("tempPlayer.png"));
+        //Texture weaponTileTexture = new Texture(Gdx.files.internal("tempPlayer.png"));
         currentRoom.getAllTiles().forEach(tile -> {
             tile.draw(batch);
             if (tile.weaponTile) {
 
-                batch.draw(weaponTileTexture, tile.getX(), tile.getY(), tile.getWidth(), tile.getHeight());
+                //batch.draw(weaponTileTexture, tile.getX(), tile.getY(), tile.getWidth(), tile.getHeight());
             }
         });
     }
