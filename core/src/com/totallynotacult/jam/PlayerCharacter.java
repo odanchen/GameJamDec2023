@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.totallynotacult.jam.entities.Bullet;
 import com.totallynotacult.jam.entities.Entity;
 import com.totallynotacult.jam.entities.EntityManager;
+import com.totallynotacult.jam.entities.ShootingEntity;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.map.Wall;
 
@@ -17,7 +18,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class PlayerCharacter extends Entity {
+public class PlayerCharacter extends ShootingEntity {
     private int health;
     private int maxHealth;
     private float speed;
@@ -93,14 +94,10 @@ public class PlayerCharacter extends Entity {
 
     private void performShooting() {
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-
             Vector3 click = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(click);
-
-            float angle = (float) Math.atan2(click.y - getY(), click.x - getX());
-
-
-            entityManager.addEntity(new Bullet(getX(), getY(), angle));
+            System.out.printf("x: %f, y: %f%n", click.x, click.y);
+            performShooting(click.x, click.y, entityManager);
         }
     }
 }

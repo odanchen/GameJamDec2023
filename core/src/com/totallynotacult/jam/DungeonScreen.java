@@ -1,22 +1,14 @@
 package com.totallynotacult.jam;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.totallynotacult.jam.entities.Enemy;
 import com.totallynotacult.jam.entities.EntityManager;
 import com.totallynotacult.jam.map.Room;
 import com.totallynotacult.jam.map.RoomGen;
-import com.totallynotacult.jam.map.Tile;
-import com.totallynotacult.jam.map.Wall;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class DungeonScreen implements Screen {
     private final OrthographicCamera camera;
@@ -27,6 +19,7 @@ public class DungeonScreen implements Screen {
     Room[][] rooms;
     int row;
     int col;
+    Enemy enemy;
 
 
     public DungeonScreen() {
@@ -41,6 +34,7 @@ public class DungeonScreen implements Screen {
         currentRoom = rooms[row][col];
 
         fixRoom();
+        enemy = new Enemy(250, 250);
 
         camera.setToOrtho(false, 512, 512);
     }
@@ -82,11 +76,13 @@ public class DungeonScreen implements Screen {
         character.update(currentRoom.getAllTiles(), delta);
         character.draw(batch);
 
+        enemy.temp(character.getX(), character.getY(), entityManager);
+        enemy.update(currentRoom.getAllTiles(), delta);
+        enemy.draw(batch);
+
         entityManager.updateEntities(currentRoom.getAllTiles(), delta);
         entityManager.drawEntities();
         batch.end();
-
-
     }
 
     void renderTiles(SpriteBatch batch) {
