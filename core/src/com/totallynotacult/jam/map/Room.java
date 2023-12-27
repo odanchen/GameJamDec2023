@@ -18,6 +18,7 @@ public class Room {
         if (type != 0) {
             var texture = new Texture(Gdx.files.internal("room1.png"));
             tiles = generateRoomMatrix(texture);
+
         }
     }
 
