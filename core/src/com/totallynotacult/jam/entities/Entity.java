@@ -18,7 +18,7 @@ public abstract class Entity extends Sprite {
         setPosition(xPos, yPos);
     }
 
-    public abstract void update(List<Tile> room, float deltaTime);
+    public abstract void update(List<Tile> room, float deltaTime, EntityManager manager);
 
     protected boolean collidesWithWall(List<Tile> room) {
         var rect = getBoundingRectangle();

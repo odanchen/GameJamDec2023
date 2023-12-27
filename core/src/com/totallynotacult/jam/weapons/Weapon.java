@@ -28,9 +28,10 @@ public abstract class Weapon {
         return null;
     }
 
-    public void shoot(float xCor, float yCor, float angle, EntityManager manager) {
+    public void shoot(float xCor, float yCor, float angle, EntityManager manager, boolean isFriendly) {
         if (readyToShoot()) {
-            manager.addEntity(new Bullet(xCor, yCor, angle, bulletTexture, bulletSpeed));
+            if (isFriendly) manager.addFriendlyBullet(new Bullet(xCor, yCor, angle, bulletTexture, bulletSpeed, damage));
+            else manager.addEnemyBullet(new Bullet(xCor, yCor, angle, bulletTexture, bulletSpeed, damage));
             reset();
         }
     }

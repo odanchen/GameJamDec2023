@@ -9,19 +9,14 @@ import java.util.List;
 public class Enemy extends ShootingEntity {
     private float angle;
     private float speed;
-    private float lastShot;
-
-    private float playerX;
-    private float playerY;
-    private EntityManager entityManager;
+    private int health;
 
     public Enemy(int xCor, int yCor) {
         super(new Texture(Gdx.files.internal("enemy.png")));
         setBounds(xCor, yCor, 32, 32);
         speed = 100;
         angle = (float) (Math.random() * 2 * Math.PI);
-
-        lastShot = 0;
+        health = 10;
     }
 
     int getDir(float localSpeed) {
@@ -30,24 +25,17 @@ public class Enemy extends ShootingEntity {
         return -1;
     }
 
-    public void temp(float playerX, float playerY, EntityManager entityManager) {
-        this.playerX = playerX;
-        this.playerY = playerY;
-        this.entityManager = entityManager;
-    }
-
     @Override
-    public void update(List<Tile> room, float deltaTime) {
-        super.update(room, deltaTime);
+    public void update(List<Tile> room, float deltaTime, EntityManager manager) {
+        super.update(room, deltaTime, manager);
 
         int xDir = getDir((float) (speed * deltaTime * Math.cos(angle)));
         int yDir = getDir((float) (speed * deltaTime * Math.sin(angle)));
 
         for (int i = 0; i < Math.abs(speed * deltaTime * Math.cos(angle)); i++) {
-            if (getX() > 0 && getX() < 505 && !collidesWithWall(room)) translateX(xDir);
+            if (getX() > 0 && getX() < 216 && !collidesWithWall(room)) translateX(xDir);
             else {
                 angle = (float) (Math.PI - angle);
-                System.out.println("x flip");
                 translateX(-xDir);
                 break;
             }
@@ -55,15 +43,15 @@ public class Enemy extends ShootingEntity {
 
 
         for (int i = 0; i < Math.abs(speed * deltaTime * Math.sin(angle)); i++) {
-            if (getY() > 0 && getY() < 512 && !collidesWithWall(room)) translateY(yDir);
+            if (getY() > 0 && getY() < 216 && !collidesWithWall(room)) translateY(yDir);
             else {
                 angle *= -1;
-                System.out.println("y flip");
                 translateY(-yDir);
                 break;
             }
         }
 
-        performShooting(playerX, playerY, entityManager);
+        performShooting(manager.getCharacter().getX(), manager.getCharacter().getY(), manager, false);
+        checkBulletCollision(manager.getFriendlyBullets());
     }
 }

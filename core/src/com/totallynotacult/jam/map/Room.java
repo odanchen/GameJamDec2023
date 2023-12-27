@@ -16,6 +16,7 @@ public class Room {
     private Tile[][] tiles;
     private int type;
     private int[] exitDirections;
+    private boolean visited;
 
     public Room(int type, int[] exitDirections) {
         /*
@@ -75,6 +76,10 @@ public class Room {
             // var texture = new Texture(Gdx.files.internal("room1.png"));
             tiles = generateRoomMatrix(roomVariation);
         }
+    }
+
+    public boolean isVisited() {
+        return visited;
     }
 
     public int getRoomType() {

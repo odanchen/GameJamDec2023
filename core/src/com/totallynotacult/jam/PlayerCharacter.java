@@ -15,14 +15,10 @@ import com.totallynotacult.jam.weapons.Weapon;
 import java.util.List;
 
 public class PlayerCharacter extends ShootingEntity {
-    private int health;
-    private int maxHealth;
     private float speed;
     private EntityManager entityManager;
     private Camera camera;
     private final DungeonScreen screen;
-    private long timeSinceLastShot = System.currentTimeMillis();
-
     private float facing;
     Texture currentFrame;
 
@@ -32,19 +28,20 @@ public class PlayerCharacter extends ShootingEntity {
         setBounds(100, 200, 16, 16);
         setOrigin(getWidth()/2,0);
         this.screen = screen;
-        health = 6;
-        maxHealth = 6;
+        health = 15;
+        maxHealth = 15;
         speed = 200;
         this.camera = camera;
         this.entityManager = entityManager;
         this.currentWeapon = new Pistol();
     }
 
-    public void update(List<Tile> room, float deltaTime) {
-        super.update(room, deltaTime);
+    public void update(List<Tile> room, float deltaTime, EntityManager manager) {
+        super.update(room, deltaTime, manager);
         performMovement(deltaTime, room);
 
         performShooting();
+        checkBulletCollision(manager.getEnemyBullets());
     }
 
     public void performMovement(float deltaTime, List<Tile> room) {
@@ -117,8 +114,8 @@ public class PlayerCharacter extends ShootingEntity {
             Vector3 click = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(click);
             if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && currentWeapon instanceof QuickShooter) {
-                performQuickShooting(click.x, click.y, entityManager);
-            } else performShooting(click.x, click.y, entityManager);
+                performQuickShooting(click.x, click.y, entityManager, true);
+            } else performShooting(click.x, click.y, entityManager, true);
         }
     }
 }

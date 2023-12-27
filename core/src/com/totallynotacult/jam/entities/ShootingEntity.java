@@ -8,6 +8,9 @@ import com.totallynotacult.jam.weapons.Weapon;
 import java.util.List;
 
 public abstract class ShootingEntity extends Entity {
+
+    protected int health;
+    protected int maxHealth;
     protected Weapon currentWeapon;
     public ShootingEntity(Texture texture) {
         super(texture);
@@ -19,19 +22,30 @@ public abstract class ShootingEntity extends Entity {
         currentWeapon = Weapon.getRandomWeapon();
     }
 
-    protected void performShooting(float xTarget, float yTarget, EntityManager entityManager) {
+    protected void performShooting(float xTarget, float yTarget, EntityManager entityManager, boolean isFriendly) {
         float angle = (float) Math.atan2(yTarget - getY(), xTarget - getX());
-        currentWeapon.shoot(getX(), getY(), angle, entityManager);
+        currentWeapon.shoot(getX(), getY(), angle, entityManager, isFriendly);
     }
 
-    protected void performQuickShooting(float xTarget, float yTarget, EntityManager entityManager) {
+    protected void performQuickShooting(float xTarget, float yTarget, EntityManager entityManager, boolean isFriendly) {
         float angle = (float) Math.atan2(yTarget - getY(), xTarget - getX());
         if (currentWeapon instanceof QuickShooter) {
-            ((QuickShooter) currentWeapon).quickShoot(getX(), getY(), angle, entityManager);
+            ((QuickShooter) currentWeapon).quickShoot(getX(), getY(), angle, entityManager, isFriendly);
         }
     }
+
+    protected void checkBulletCollision(List<Bullet> enemyBullets) {
+        enemyBullets.forEach(bullet -> {
+            if (getBoundingRectangle().overlaps(bullet.getBoundingRectangle())) health -= bullet.getDamage();
+        });
+    }
+
     @Override
-    public void update(List<Tile> room, float deltaTime) {
+    public void update(List<Tile> room, float deltaTime, EntityManager manager) {
         currentWeapon.update();
+    }
+
+    public int getHealth() {
+        return health;
     }
 }
