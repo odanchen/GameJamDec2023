@@ -19,7 +19,7 @@ public class MyGdxGame extends Game {
 
 		//RoomGen r = new RoomGen(5);
 
-		Room r = new Room(1);
+
 
 
 	}
