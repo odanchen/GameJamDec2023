@@ -23,9 +23,12 @@ public class PlayerCharacter extends ShootingEntity {
     private final DungeonScreen screen;
     private long timeSinceLastShot = System.currentTimeMillis();
 
+    private int lastDir;
+    Texture currentFrame;
 
     public PlayerCharacter(EntityManager entityManager, Camera camera, DungeonScreen screen) {
         super(new Texture(Gdx.files.internal("police.png")));
+
         setBounds(100, 200, 16, 16);
 
         this.screen = screen;
@@ -40,12 +43,18 @@ public class PlayerCharacter extends ShootingEntity {
     public void update(List<Tile> room, float deltaTime) {
         super.update(room, deltaTime);
         performMovement(deltaTime, room);
+
         performShooting();
     }
 
     public void performMovement(float deltaTime, List<Tile> room) {
         float horDir = getDir(Gdx.input.isKeyPressed(Input.Keys.D), Gdx.input.isKeyPressed(Input.Keys.A));
         float vertDir = getDir(Gdx.input.isKeyPressed(Input.Keys.W), Gdx.input.isKeyPressed(Input.Keys.S));
+
+        if (horDir != 0) lastDir = (int) horDir;
+            if (lastDir > 0) setScale(1,1);
+            else setScale(-1,1);
+
 
         var localSpeed = speed * deltaTime / ((horDir != 0 && vertDir != 0) ? (float) Math.sqrt(2) : 1);
 

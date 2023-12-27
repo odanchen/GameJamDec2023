@@ -71,7 +71,7 @@ public class DungeonScreen implements Screen {
     @Override
     public void render(float delta) {
        // cam.camFollow();
-        ScreenUtils.clear(Color.GRAY);
+        ScreenUtils.clear(Color.BLACK);
 
 
         batch.begin();
