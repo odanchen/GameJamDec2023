@@ -32,7 +32,7 @@ public class PlayerCharacter extends Entity {
         this.screen = screen;
         health = 6;
         maxHealth = 6;
-        speed = 100;
+        speed = 1001;
         this.camera = camera;
         this.entityManager = entityManager;
     }

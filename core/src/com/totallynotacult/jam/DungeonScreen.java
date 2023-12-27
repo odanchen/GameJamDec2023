@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.totallynotacult.jam.entities.EntityManager;
 import com.totallynotacult.jam.map.Room;
+import com.totallynotacult.jam.map.RoomGen;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.map.Wall;
 
@@ -23,7 +24,7 @@ public class DungeonScreen implements Screen {
     private final SpriteBatch batch;
     private final EntityManager entityManager;
     private Room currentRoom;
-    Room[][] rooms = new Room[3][3];
+    Room[][] rooms;
     int row = 0;
     int col = 0;
 
@@ -33,21 +34,20 @@ public class DungeonScreen implements Screen {
         entityManager = new EntityManager(batch);
         camera = new OrthographicCamera();
         character = new PlayerCharacter(entityManager, camera, this);
+        RoomGen r = new RoomGen(5);
+        rooms = r.getLevelMatrix();
+        row = r.getStartRoom()[0];
+        col = r.getStartRoom()[1];
+        currentRoom = rooms[row][col];
 
-        rooms = new Room[3][3];
-        for (int row = 0; row < rooms.length; row++) {
-            for (int col = 0; col < rooms[row].length; col++) rooms[row][col] = new Room(1);
-        }
-        currentRoom = rooms[0][0];
 
         camera.setToOrtho(false, 512, 512);
     }
 
     boolean roomExists(int dRow, int dCol) {
         return row + dRow >= 0 && row + dRow < rooms.length && col + dCol >= 0 &&
-                col + dCol < rooms[row].length && rooms[row + dRow][col + dCol] != null;
+                col + dCol < rooms[row].length && rooms[row + dRow][col + dCol].getRoomType() != 0;
     }
-
     void changeRoom(int dRow, int dCol) {
         currentRoom = rooms[row += dRow][col += dCol];
     }

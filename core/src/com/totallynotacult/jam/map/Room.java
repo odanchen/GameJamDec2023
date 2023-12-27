@@ -11,13 +11,17 @@ import java.util.stream.Collectors;
 
 public class Room {
     private Tile[][] tiles;
-
+    private int type;
 
     public Room(int type) {
-        var texture = new Texture(Gdx.files.internal("room1.png"));
-        tiles = generateRoomMatrix(texture);
+        this.type = type;
+        if (type != 0) {
+            var texture = new Texture(Gdx.files.internal("room1.png"));
+            tiles = generateRoomMatrix(texture);
+        }
     }
 
+    public int getRoomType() {return type;}
     public Color getPixelID(int x, int y, Texture texture) {
         if (!texture.getTextureData().isPrepared()) {
             texture.getTextureData().prepare();
