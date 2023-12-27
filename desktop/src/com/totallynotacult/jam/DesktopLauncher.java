@@ -1,5 +1,6 @@
 package com.totallynotacult.jam;
 
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.totallynotacult.jam.MyGdxGame;
@@ -8,10 +9,12 @@ import com.totallynotacult.jam.MyGdxGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setWindowedMode(512, 512);
+		//config.setWindowedMode(512, 512);
 		config.setResizable(false);
 		config.setForegroundFPS(60);
 		config.setTitle("GameJamDec2023");
+		Graphics.DisplayMode dm = Lwjgl3ApplicationConfiguration.getDisplayMode();
+		config.setWindowedMode(dm.width / 2, dm.width / 2);
 		new Lwjgl3Application(new MyGdxGame(), config);
 	}
 }

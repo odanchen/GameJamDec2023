@@ -26,13 +26,13 @@ public class PlayerCharacter extends Entity {
     private final DungeonScreen screen;
 
     public PlayerCharacter(EntityManager entityManager, Camera camera, DungeonScreen screen) {
-        super(new Texture(Gdx.files.internal("police.jpeg")));
-        setBounds(100, 200, 48, 42);
+        super(new Texture(Gdx.files.internal("police.png")));
+        setBounds(100, 200, 16, 16);
 
         this.screen = screen;
         health = 6;
         maxHealth = 6;
-        speed = 1001;
+        speed = 200;
         this.camera = camera;
         this.entityManager = entityManager;
     }
@@ -53,23 +53,23 @@ public class PlayerCharacter extends Entity {
 
         if (getX() < 0 && screen.roomExists(0, -1)) {
             screen.changeRoom(0, -1);
-            setX(512 - 50);
+            setX(256);
         } else if (getX() < 0) setX(0);
 
         if (getY() < 0 && screen.roomExists(1, 0)) {
             screen.changeRoom(1, 0);
-            setY(512 - 50);
+            setY(256);
         } else if (getY() < 0) setY(0);
 
-        if (getX() > 512 - 42 && screen.roomExists(0, 1)) {
+        if (getX() > 256 && screen.roomExists(0, 1)) {
             screen.changeRoom(0, 1);
             setX(0);
-        } else if (getX() > 512 - 42) setX(512 - 42);
+        } else if (getX() > 256) setX(256);
 
-        if (getY() > 512 - 42 && screen.roomExists(-1, 0)) {
+        if (getY() > 256 && screen.roomExists(-1, 0)) {
             screen.changeRoom(-1, 0);
             setY(0);
-        } else if (getY() > 512 - 42) setY(512 - 42);
+        } else if (getY() > 256) setY(256);
     }
 
     private void moveWithCollision(float localSpeed, List<Tile> room, float dir, boolean isHorizontal) {
