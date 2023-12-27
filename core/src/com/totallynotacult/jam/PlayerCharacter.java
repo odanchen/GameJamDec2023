@@ -62,22 +62,22 @@ public class PlayerCharacter extends ShootingEntity {
         moveWithCollision(localSpeed, room, horDir, true);
         moveWithCollision(localSpeed, room, vertDir, false);
 
-        if (getX() < 0 && screen.roomExists(0, -1)) {
+        if (getX() < 0 && screen.canSwitchRoom()) {
             screen.changeRoom(0, -1);
             setX(256);
         } else if (getX() < 0) setX(0);
 
-        if (getY() < 0 && screen.roomExists(1, 0)) {
+        if (getY() < 0 && screen.canSwitchRoom()) {
             screen.changeRoom(1, 0);
             setY(256);
         } else if (getY() < 0) setY(0);
 
-        if (getX() > 256 && screen.roomExists(0, 1)) {
+        if (getX() > 256 && screen.canSwitchRoom()) {
             screen.changeRoom(0, 1);
             setX(0);
         } else if (getX() > 256) setX(256);
 
-        if (getY() > 256 && screen.roomExists(-1, 0)) {
+        if (getY() > 256 && screen.canSwitchRoom()) {
             screen.changeRoom(-1, 0);
             setY(0);
         } else if (getY() > 256) setY(256);

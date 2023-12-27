@@ -46,6 +46,10 @@ public class DungeonScreen implements Screen {
         camera.setToOrtho(false, 256, 256);
     }
 
+    public boolean canSwitchRoom() {
+        return entityManager.roomClear();
+    }
+
     void fixRoom() {
         if (!roomExists(1, 0)) currentRoom.sealExit(1, 0);
         if (!roomExists(-1, 0)) currentRoom.sealExit(-1, 0);
