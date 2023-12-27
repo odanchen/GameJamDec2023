@@ -15,11 +15,15 @@ public class DungeonScreen implements Screen {
     private final PlayerCharacter character;
     private final SpriteBatch batch;
     private final EntityManager entityManager;
+
+   // final ROOMWIDTH =
     private Room currentRoom;
     Room[][] rooms;
     int row;
     int col;
     Enemy enemy;
+
+    Camera cam;
 
 
     public DungeonScreen() {
@@ -27,7 +31,9 @@ public class DungeonScreen implements Screen {
         entityManager = new EntityManager(batch);
         camera = new OrthographicCamera();
         character = new PlayerCharacter(entityManager, camera, this);
-        RoomGen r = new RoomGen(5);
+        cam = new Camera(character,320,320);
+
+        RoomGen r = new RoomGen(7);
         rooms = r.getLevelMatrix();
         row = r.getStartRoom()[0];
         col = r.getStartRoom()[1];
@@ -36,7 +42,7 @@ public class DungeonScreen implements Screen {
         fixRoom();
         enemy = new Enemy(250, 250);
 
-        camera.setToOrtho(false, 512, 512);
+        camera.setToOrtho(false, 256, 256);
     }
 
     void fixRoom() {
@@ -53,6 +59,7 @@ public class DungeonScreen implements Screen {
 
     void changeRoom(int dRow, int dCol) {
         currentRoom = rooms[row += dRow][col += dCol];
+        cam = new Camera(character,256,256);
         fixRoom();
     }
 
@@ -63,9 +70,7 @@ public class DungeonScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        camera.update();
-
-        batch.setProjectionMatrix(camera.combined);
+       // cam.camFollow();
         ScreenUtils.clear(Color.GRAY);
 
 
@@ -83,11 +88,24 @@ public class DungeonScreen implements Screen {
         entityManager.updateEntities(currentRoom.getAllTiles(), delta);
         entityManager.drawEntities();
         batch.end();
+
+       // camera.position.set(cam.x, cam.y, 0);
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+
     }
 
     void renderTiles(SpriteBatch batch) {
-        currentRoom.getAllTiles().forEach(tile -> tile.draw(batch));
+        Texture weaponTileTexture = new Texture(Gdx.files.internal("tempPlayer.png"));
+        currentRoom.getAllTiles().forEach(tile -> {
+            tile.draw(batch);
+            if (tile.weaponTile) {
+
+                batch.draw(weaponTileTexture, tile.getX(), tile.getY(), tile.getWidth(), tile.getHeight());
+            }
+        });
     }
+
 
     @Override
     public void resize(int width, int height) {
