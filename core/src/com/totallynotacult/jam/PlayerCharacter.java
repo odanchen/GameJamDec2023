@@ -12,7 +12,12 @@ import com.totallynotacult.jam.entities.Entity;
 import com.totallynotacult.jam.entities.EntityManager;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.map.Wall;
+import com.totallynotacult.jam.weapons.MachineGun;
+import com.totallynotacult.jam.weapons.Pistol;
+import com.totallynotacult.jam.weapons.Shotgun;
+import com.totallynotacult.jam.weapons.Weapon;
 
+import javax.crypto.Mac;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -24,6 +29,9 @@ public class PlayerCharacter extends Entity {
     private EntityManager entityManager;
     private Camera camera;
     private final DungeonScreen screen;
+    private Weapon currentWeapon;
+    private long timeSinceLastShot = System.currentTimeMillis();
+
 
     public PlayerCharacter(EntityManager entityManager, Camera camera, DungeonScreen screen) {
         super(new Texture(Gdx.files.internal("police.png")));
@@ -35,6 +43,7 @@ public class PlayerCharacter extends Entity {
         speed = 200;
         this.camera = camera;
         this.entityManager = entityManager;
+        this.currentWeapon = new Pistol();
     }
 
     public void update(List<Tile> room, float deltaTime) {
@@ -82,8 +91,15 @@ public class PlayerCharacter extends Entity {
                 else translateY(-dir);
                 return;
             }
+            int weaponTile = collisionWithWeaponTile(room);
+            if (weaponTile != -1) {
+                room.get(weaponTile).weaponTile = false;
+                currentWeapon = Weapon.getRandomWeapon();
+            }
         }
     }
+
+
 
     private int getDir(boolean forward, boolean backward) {
         if (forward == backward) return 0;
@@ -92,15 +108,27 @@ public class PlayerCharacter extends Entity {
     }
 
     private void performShooting() {
+
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+
+            if ((System.currentTimeMillis() - timeSinceLastShot) / 1000f < 1/currentWeapon.fireRate) {
+                return;
+            }
+            timeSinceLastShot = System.currentTimeMillis();
 
             Vector3 click = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(click);
-
             float angle = (float) Math.atan2(click.y - getY(), click.x - getX());
 
+            if (currentWeapon instanceof Shotgun) {
+                for (int i = 0; i < ((Shotgun) currentWeapon).numBullets; i++) {
+                    float spread = (float) Math.random() * ((Shotgun) currentWeapon).spread - ((Shotgun) currentWeapon).spread / 2;
+                    entityManager.addEntity(new Bullet(getX(), getY(), angle + spread, currentWeapon));
+                }
+                return;
+            }
 
-            entityManager.addEntity(new Bullet(getX(), getY(), angle));
+            entityManager.addEntity(new Bullet(getX(), getY(), angle, currentWeapon));
         }
     }
 }

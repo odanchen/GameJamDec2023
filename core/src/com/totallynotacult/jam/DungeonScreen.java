@@ -98,8 +98,16 @@ public class DungeonScreen implements Screen {
     }
 
     void renderTiles(SpriteBatch batch) {
-        currentRoom.getAllTiles().forEach(tile -> tile.draw(batch));
+        Texture weaponTileTexture = new Texture(Gdx.files.internal("tempPlayer.png"));
+        currentRoom.getAllTiles().forEach(tile -> {
+            tile.draw(batch);
+            if (tile.weaponTile) {
+
+                batch.draw(weaponTileTexture, tile.getX(), tile.getY(), tile.getWidth(), tile.getHeight());
+            }
+        });
     }
+
 
     @Override
     public void resize(int width, int height) {

@@ -15,8 +15,6 @@ public class Room {
     private Tile[][] tiles;
     private int type;
     private int[] exitDirections;
-    Texture tileImg = new Texture(Gdx.files.internal("greyTile.jpeg"));
-    Texture wallImg = new Texture(Gdx.files.internal("wall.png"));
 
     public Room(int type, int[] exitDirections) {
         /*
@@ -33,45 +31,9 @@ public class Room {
         switch (type) {
 
             case 1: {
-                roomTexture = new Texture(Gdx.files.internal("room_start_sheet.png"));
-                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth()/4, roomTexture.getHeight());
-                roomVariation = ss[0][exitDirections[0]];
-                break;
-            }
-            case 3: {
-                roomTexture = new Texture(Gdx.files.internal("room_start_sheet.png"));
-                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth()/4, roomTexture.getHeight());
-                roomVariation = ss[0][exitDirections[0]];
-                break;
-            }
-            case 2: {
-                roomTexture = new Texture(Gdx.files.internal("room_edge_sheet.png"));
-                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth()/6, roomTexture.getHeight());
-
-                int index = 0;
-
-                if (exitDirections[0] == 0 || exitDirections[1] == 0) {
-                    if (exitDirections[0] == 1 || exitDirections[1] == 1)
-                        index = 5;
-                    if (exitDirections[0] == 2 || exitDirections[1] == 2)
-                        index = 0;
-                    if (exitDirections[0] == 3 || exitDirections[1] == 3)
-                        index = 3;
-                }
-
-                if (exitDirections[0] == 1 || exitDirections[1] == 1) {
-                    if (exitDirections[0] == 3 || exitDirections[1] == 3)
-                        index = 1;
-                    if (exitDirections[0] == 2 || exitDirections[1] == 2)
-                        index = 4;
-                }
-                if (exitDirections[0] == 2 || exitDirections[1] == 2) {
-                    if (exitDirections[0] == 3 || exitDirections[1] == 3)
-                        index = 2;
-                }
-
-
-                roomVariation = ss[0][index];
+                roomTexture = new Texture(Gdx.files.internal("room0.png"));
+                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth(), roomTexture.getHeight());
+                roomVariation = ss[0][0];
                 break;
             }
             default: {
@@ -103,7 +65,8 @@ public class Room {
 
     public Tile[][] generateRoomMatrix(TextureRegion texture) {
         Tile[][] mat = new Tile[16][16];
-
+        var tileImg = new Texture(Gdx.files.internal("greyTile.jpeg"));
+        var wallImg = new Texture(Gdx.files.internal("wall.png"));
 
         for (int row = 0; row < 16; row++)
             for (int col = 0; col < 16; col++) {
@@ -120,29 +83,13 @@ public class Room {
 
     public void sealExit(int dRow, int dCol) {
         var wallImg = new Texture(Gdx.files.internal("wall.png"));
-       // for (int col = 0; col < tiles[0].length; col++) tiles[0][col] = new Wall(wallImg, 0, col);
-        //for (int col = 0; col < tiles[0].length; col++) tiles[tiles.length - 1][col] = new Wall(wallImg, tiles.length - 1, col);
-        //for (int row = 0; row < tiles.length; row++) tiles[row][tiles.length - 1] = new Wall(wallImg, row, tiles.length - 1);
-        //for (int row = 0; row < tiles.length; row++) tiles[row][0] = new Wall(wallImg, row, 0);
+        if (dRow == 1) for (int col = 0; col < tiles[0].length; col++) tiles[0][col] = new Wall(wallImg, 0, col);
+        if (dRow == -1) for (int col = 0; col < tiles[0].length; col++)
+            tiles[tiles.length - 1][col] = new Wall(wallImg, tiles.length - 1, col);
 
-//        if (type == 2) {
-//
-//
-//        } else {
-//            if (exitDirections[0] == 0)
-//                for (int row = 0; row < tiles.length; row++)
-//                    tiles[row][tiles[0].length - 1] = new Tile(tileImg,row,tiles.length-1);
-//            if (exitDirections[0] == 3)
-//                for (int col = 0; col < tiles[0].length; col++)
-//                    tiles[0][col] = new Tile(tileImg, 0, col);
-//            if (exitDirections[0] == 2)
-//                for (int row = 0; row < tiles.length; row++)
-//                    tiles[row][0] = new Tile(tileImg,row,0);
-//            if (exitDirections[0] == 1)
-//                for (int col = 0; col < tiles[0].length; col++)
-//                    tiles[tiles.length - 1][col] = new Tile(tileImg, tiles.length - 1, col);
-//        }
-
-
+        if (dCol == 1) for (int row = 0; row < tiles.length; row++)
+            tiles[row][tiles[0].length - 1] = new Wall(wallImg, row, tiles[0].length - 1);
+        if (dCol == -1) for (int row = 0; row < tiles.length; row++)
+            tiles[row][0] = new Wall(wallImg, row, 0);
     }
 }
