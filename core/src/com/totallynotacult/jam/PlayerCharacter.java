@@ -13,6 +13,7 @@ import com.totallynotacult.jam.entities.EntityManager;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.map.Wall;
 import com.totallynotacult.jam.weapons.MachineGun;
+import com.totallynotacult.jam.weapons.Pistol;
 import com.totallynotacult.jam.weapons.Shotgun;
 import com.totallynotacult.jam.weapons.Weapon;
 
@@ -42,7 +43,7 @@ public class PlayerCharacter extends Entity {
         speed = 1001;
         this.camera = camera;
         this.entityManager = entityManager;
-        this.currentWeapon = new MachineGun();
+        this.currentWeapon = new Pistol();
     }
 
     public void update(List<Tile> room, float deltaTime) {
@@ -90,8 +91,15 @@ public class PlayerCharacter extends Entity {
                 else translateY(-dir);
                 return;
             }
+            int weaponTile = collisionWithWeaponTile(room);
+            if (weaponTile != -1) {
+                room.get(weaponTile).weaponTile = false;
+                currentWeapon = Weapon.getRandomWeapon();
+            }
         }
     }
+
+
 
     private int getDir(boolean forward, boolean backward) {
         if (forward == backward) return 0;
