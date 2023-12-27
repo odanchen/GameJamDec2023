@@ -1,22 +1,14 @@
 package com.totallynotacult.jam;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.totallynotacult.jam.entities.Enemy;
 import com.totallynotacult.jam.entities.EntityManager;
 import com.totallynotacult.jam.map.Room;
 import com.totallynotacult.jam.map.RoomGen;
-import com.totallynotacult.jam.map.Tile;
-import com.totallynotacult.jam.map.Wall;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class DungeonScreen implements Screen {
     private final OrthographicCamera camera;
@@ -29,6 +21,7 @@ public class DungeonScreen implements Screen {
     Room[][] rooms;
     int row;
     int col;
+    Enemy enemy;
 
     Camera cam;
 
@@ -47,6 +40,7 @@ public class DungeonScreen implements Screen {
         currentRoom = rooms[row][col];
 
         fixRoom();
+        enemy = new Enemy(100, 100);
 
         camera.setToOrtho(false, 256, 256);
     }
@@ -87,6 +81,10 @@ public class DungeonScreen implements Screen {
         character.update(currentRoom.getAllTiles(), delta);
         character.draw(batch);
 
+        enemy.temp(character.getX(), character.getY(), entityManager);
+        enemy.update(currentRoom.getAllTiles(), delta);
+        enemy.draw(batch);
+
         entityManager.updateEntities(currentRoom.getAllTiles(), delta);
         entityManager.drawEntities();
         batch.end();
@@ -98,12 +96,12 @@ public class DungeonScreen implements Screen {
     }
 
     void renderTiles(SpriteBatch batch) {
-        Texture weaponTileTexture = new Texture(Gdx.files.internal("tempPlayer.png"));
+        //Texture weaponTileTexture = new Texture(Gdx.files.internal("tempPlayer.png"));
         currentRoom.getAllTiles().forEach(tile -> {
             tile.draw(batch);
             if (tile.weaponTile) {
 
-                batch.draw(weaponTileTexture, tile.getX(), tile.getY(), tile.getWidth(), tile.getHeight());
+                //batch.draw(weaponTileTexture, tile.getX(), tile.getY(), tile.getWidth(), tile.getHeight());
             }
         });
     }

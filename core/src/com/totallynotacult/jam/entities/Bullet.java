@@ -12,10 +12,10 @@ public class Bullet extends Entity {
     private float speed;
     float angle;
 
-    public Bullet(float xCor, float yCor, float angle, Weapon weapon) {
-        super(weapon.bulletTexture, xCor, yCor);
+    public Bullet(float xCor, float yCor, float angle, Texture texture, float speed) {
+        super(texture, xCor, yCor);
         this.setRotation((float) Math.toDegrees(angle));
-        this.speed = weapon.bulletSpeed;
+        this.speed = speed;
         this.angle = angle;
     }
 
