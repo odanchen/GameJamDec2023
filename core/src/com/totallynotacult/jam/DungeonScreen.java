@@ -25,8 +25,8 @@ public class DungeonScreen implements Screen {
     private final EntityManager entityManager;
     private Room currentRoom;
     Room[][] rooms;
-    int row = 0;
-    int col = 0;
+    int row;
+    int col;
 
 
     public DungeonScreen() {
@@ -40,16 +40,26 @@ public class DungeonScreen implements Screen {
         col = r.getStartRoom()[1];
         currentRoom = rooms[row][col];
 
+        fixRoom();
 
         camera.setToOrtho(false, 512, 512);
+    }
+
+    void fixRoom() {
+        if (!roomExists(1, 0)) currentRoom.sealExit(1, 0);
+        if (!roomExists(-1, 0)) currentRoom.sealExit(-1, 0);
+        if (!roomExists(0, 1)) currentRoom.sealExit(0, 1);
+        if (!roomExists(0, -1)) currentRoom.sealExit(0, -1);
     }
 
     boolean roomExists(int dRow, int dCol) {
         return row + dRow >= 0 && row + dRow < rooms.length && col + dCol >= 0 &&
                 col + dCol < rooms[row].length && rooms[row + dRow][col + dCol].getRoomType() != 0;
     }
+
     void changeRoom(int dRow, int dCol) {
         currentRoom = rooms[row += dRow][col += dCol];
+        fixRoom();
     }
 
     @Override

@@ -8,17 +8,33 @@ public class RoomGen {
         public RoomGen(int roomCount) {
             for (int i = 0; i < 5; i++)
                 for (int k = 0; k < 5; k++)
-                    sceneGrid[i][k] = new Room(0);
-            int[] currentRoom = new int[2]; //Current room being generated
-            currentRoom[0] = 2; currentRoom[1] = 2;
+                    sceneGrid[i][k] = new Room(0,new int[]{});
+
+            int[] currentRoom = new int[]{2,2}; //Current room being generated
+
+            int previousRoomExit = 0;
+
             //Generate possible adjacent rooms
             for (int i = 0; i < roomCount; i++) {
+
                 var list = adjRooms(currentRoom);
-                int[] room = new int[2];
-                room = list.get( (int) (Math.random()*list.size()-1));
-                sceneGrid[room[0]][room[1]] = new Room(i+1);
-                currentRoom = room;
-                if (i == 0) startRoom = room;
+                if (list.isEmpty()) break;
+                int nextRoomRandom = (int) (Math.random()*list.size()-1);
+
+                System.out.print(list.get(nextRoomRandom)[1]+" ");
+                System.out.print(list.get(nextRoomRandom)[0]+" :");
+                System.out.println(list.get(nextRoomRandom)[2]);
+
+                if (i == 0) { //Starting room
+                    sceneGrid[currentRoom[0]][currentRoom[1]] = new Room(1, new int[]{ list.get(nextRoomRandom)[2] });
+                    startRoom = currentRoom;
+                } else if (i == roomCount-1) //Ending room
+                    sceneGrid[currentRoom[0]][currentRoom[1]] = new Room(3,new int[]{previousRoomExit});
+                else sceneGrid[currentRoom[0]][currentRoom[1]] = new Room(2,new int[]{ list.get(nextRoomRandom)[2],previousRoomExit}); //Everything else
+
+                currentRoom = new int[]{list.get(nextRoomRandom)[0],list.get(nextRoomRandom)[1]};
+                previousRoomExit = (list.get(nextRoomRandom)[2] + 2) % 4;
+
             }
             for (int i = 0; i < 5; i++) {
                 for (int k = 0; k < 5; k++)
@@ -37,18 +53,20 @@ public class RoomGen {
         }
         private ArrayList<int[]> adjRooms(int[] cr) {
             var list = new ArrayList<int[]>();
-            //Top
-            if (isRoomSpaceValid(cr[0],cr[1]-1))
-                list.add(new int[]{cr[0], cr[1]-1});
-            //Bottom
-            if (isRoomSpaceValid(cr[0],cr[1]+1))
-                list.add(new int[]{cr[0], cr[1]+1});
-            //Left
-            if (isRoomSpaceValid(cr[0]-1,cr[1]))
-                list.add(new int[]{cr[0]-1, cr[1]});
             //Right
+            if (isRoomSpaceValid(cr[0],cr[1]+1))
+                list.add(new int[]{cr[0], cr[1]+1,0});
+            //Top
+            if (isRoomSpaceValid(cr[0]-1,cr[1]))
+                list.add( new int[]{cr[0]-1, cr[1],1} );
+            //Left
+            if (isRoomSpaceValid(cr[0],cr[1]-1))
+                list.add(new int[]{cr[0], cr[1]-1,2});
+            //Bottom
             if (isRoomSpaceValid(cr[0]+1,cr[1]))
-                list.add(new int[]{cr[0]+1, cr[1]});
+                list.add(new int[]{cr[0]+1, cr[1],3});
+
+
 
             return list;
         }
