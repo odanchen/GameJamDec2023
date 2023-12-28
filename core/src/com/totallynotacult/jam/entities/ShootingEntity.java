@@ -1,6 +1,7 @@
 package com.totallynotacult.jam.entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.weapons.QuickShooter;
 import com.totallynotacult.jam.weapons.Weapon;
@@ -18,6 +19,11 @@ public abstract class ShootingEntity extends Entity {
     }
 
     public ShootingEntity(Texture texture, float xPos, float yPos) {
+        super(texture, xPos, yPos);
+        currentWeapon = Weapon.getRandomWeapon();
+    }
+
+    public ShootingEntity(TextureRegion texture, float xPos, float yPos) {
         super(texture, xPos, yPos);
         currentWeapon = Weapon.getRandomWeapon();
     }

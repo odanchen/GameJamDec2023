@@ -15,7 +15,7 @@ public class Enemy extends ShootingEntity {
         setBounds(xCor, yCor, 32, 32);
         speed = 100;
         angle = (float) (Math.random() * 2 * Math.PI);
-        maxHealth = 1;
+        maxHealth = 3;
         health = maxHealth;
     }
 

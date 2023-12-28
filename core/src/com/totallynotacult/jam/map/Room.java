@@ -45,23 +45,23 @@ public class Room {
                 break;
             }
             case 2: {
-                roomTexture = new Texture(Gdx.files.internal("room_edge_sheet.png"));
-                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth() / 6, roomTexture.getHeight());
+                roomTexture = new Texture(Gdx.files.internal("ne_sheet.png"));
+                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth() / 70, roomTexture.getHeight());
                 int index = 0;
                 if (exitDirections[0] == 0 || exitDirections[1] == 0) {
-                    if (exitDirections[0] == 1 || exitDirections[1] == 1) index = 5;
-                    if (exitDirections[0] == 3 || exitDirections[1] == 3) index = 3;
-                    if (exitDirections[0] == 2 || exitDirections[1] == 2) index = 0;
+                    if (exitDirections[0] == 1 || exitDirections[1] == 1) index = 60;
+                    if (exitDirections[0] == 3 || exitDirections[1] == 3) index = 30;
+                    if (exitDirections[0] == 2 || exitDirections[1] == 2) index = 10;
                 }
                 if (exitDirections[0] == 1 || exitDirections[1] == 1) {
-                    if (exitDirections[0] == 2 || exitDirections[1] == 2) index = 4;
-                    if (exitDirections[0] == 3 || exitDirections[1] == 3) index = 1;
+                    if (exitDirections[0] == 2 || exitDirections[1] == 2) index = 50;
+                    if (exitDirections[0] == 3 || exitDirections[1] == 3) index = 20;
                 }
                 if (exitDirections[0] == 2 || exitDirections[1] == 2) {
-                    if (exitDirections[0] == 3 || exitDirections[1] == 3) index = 2;
+                    if (exitDirections[0] == 3 || exitDirections[1] == 3) index = 70;
                 }
 
-                roomVariation = ss[0][index];
+                roomVariation = ss[0][index - (int) (Math.random()*9)];
                 break;
             }
             default: {

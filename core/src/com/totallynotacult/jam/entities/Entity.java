@@ -2,6 +2,7 @@ package com.totallynotacult.jam.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.map.Wall;
 
@@ -17,6 +18,12 @@ public abstract class Entity extends Sprite {
         super(texture);
         setPosition(xPos, yPos);
     }
+
+    public Entity(TextureRegion texture, float xPos, float yPos) {
+        super(texture);
+        setPosition(xPos, yPos);
+    }
+
 
     public abstract void update(List<Tile> room, float deltaTime, EntityManager manager);
 

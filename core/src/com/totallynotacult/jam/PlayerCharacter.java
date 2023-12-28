@@ -4,6 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.totallynotacult.jam.entities.EntityManager;
 import com.totallynotacult.jam.entities.ShootingEntity;
@@ -20,21 +24,44 @@ public class PlayerCharacter extends ShootingEntity {
     private Camera camera;
     private final DungeonScreen screen;
     private float facing;
-    Texture currentFrame;
     private float timeStopCoolDown = 10;
     private float timeStopDuration = 2;
     private float timeSinceLastStop = 0;
     private float timeStopLeft = 0;
+    private float stateTime = 0f;
+    private boolean isMoving = false;
+
+    //Animations
+    Texture sprites;
+    TextureRegion[][] sprite_sheet;
+    TextureRegion[] runCycleFrames;
+    TextureRegion idle;
+    Animation<TextureRegion> runCycleAni;
+
 
     public PlayerCharacter(EntityManager entityManager, Camera camera, DungeonScreen screen) {
-        super(new Texture(Gdx.files.internal("police.png")));
+        super(new Texture(Gdx.files.internal("sprite_player_sheet.png")));
+
+        sprites = new Texture(Gdx.files.internal("sprite_player_sheet.png"));
+
+        sprite_sheet = TextureRegion.split(sprites, sprites.getWidth() / 4, sprites.getHeight());
+
+
+        idle = sprite_sheet[0][0];
+
+        //Run Cycle
+        runCycleFrames = new TextureRegion[3];
+        runCycleFrames[0] = sprite_sheet[0][1];
+        runCycleFrames[1] = sprite_sheet[0][2];
+        runCycleFrames[2] = sprite_sheet[0][3];
+        runCycleAni = new Animation<TextureRegion>(0.06f, runCycleFrames);
 
         setBounds(100, 200, 16, 16);
         setOrigin(getWidth() / 2, 0);
         this.screen = screen;
         health = 15;
         maxHealth = 15;
-        speed = 200;
+        speed = 120;
         this.camera = camera;
         this.entityManager = entityManager;
         this.currentWeapon = new Pistol();
@@ -49,6 +76,43 @@ public class PlayerCharacter extends ShootingEntity {
         performShooting();
         checkBulletCollision(manager.getEnemyBullets());
         timeStopAction();
+        playerAnimations();
+    }
+
+
+    public void playerAnimations() {
+
+
+        Sprite sprite;
+        //Walk/RunCycle
+        TextureRegion currentWalkFrame;
+        stateTime += Gdx.graphics.getDeltaTime();
+        currentWalkFrame = runCycleAni.getKeyFrame(stateTime, true);
+
+
+        sprite = isMoving ? new Sprite(currentWalkFrame) : new Sprite(idle);
+
+       // System.arraycopy(getVertices(), 0, sprite.getVertices(), 0, 20);
+       // sprite.setU(getU());
+     //   sprite.setV(getV());
+     //   sprite.setU2(getU2());
+    //    sprite.setV2(getV2());
+        //    sprite.setRegionWidth(getRegionWidth());
+        //   sprite.setRegionHeight(getRegionHeight());
+
+
+        sprite.setX(getX());
+        sprite.setY(getY());
+
+        sprite.setSize(getWidth(),getHeight());
+        sprite.setOrigin(getOriginX(),getOriginY());
+        sprite.setRotation(getRotation());
+        sprite.setScale(getScaleX(),getScaleY());
+        sprite.setColor(getColor());
+
+
+        set(sprite);
+
     }
 
     public boolean isMovementAllowed() {
@@ -65,6 +129,9 @@ public class PlayerCharacter extends ShootingEntity {
         float horDir = getDir(Gdx.input.isKeyPressed(Input.Keys.D), Gdx.input.isKeyPressed(Input.Keys.A));
         float vertDir = getDir(Gdx.input.isKeyPressed(Input.Keys.W), Gdx.input.isKeyPressed(Input.Keys.S));
 
+        if (horDir != 0 || vertDir != 0)
+            isMoving = true;
+        else isMoving = false;
         Vector3 mx = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         camera.unproject(mx);
         facing = mx.x - (getX() + getOriginX());
@@ -101,7 +168,7 @@ public class PlayerCharacter extends ShootingEntity {
     }
 
     private void moveWithCollision(float localSpeed, List<Tile> room, float dir, boolean isHorizontal) {
-        if (dir == 0) return;
+        if (dir == 0) {return;}
         for (int i = 0; i < localSpeed; i++) {
             if (isHorizontal) translateX(dir);
             else translateY(dir);
