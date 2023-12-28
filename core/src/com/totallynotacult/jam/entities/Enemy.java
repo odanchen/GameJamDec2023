@@ -76,7 +76,7 @@ public class Enemy extends ShootingEntity {
         }
 
         float angle = (float) Math.atan2(manager.getCharacter().getY() - getY(), manager.getCharacter().getX() - getX());
-        setRotation();
+        setRotation((float)(angle * 180 / Math.PI));
         checkBulletCollision(manager.getFriendlyBullets());
         enemyAnimations();
     }
