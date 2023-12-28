@@ -17,6 +17,7 @@ import com.totallynotacult.jam.weapons.QuickShooter;
 import com.totallynotacult.jam.weapons.Weapon;
 
 import java.util.List;
+import java.util.Random;
 
 public class PlayerCharacter extends ShootingEntity {
     private float speed;
@@ -122,7 +123,7 @@ public class PlayerCharacter extends ShootingEntity {
     private void timeStopAction() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && timeSinceLastStop >= timeStopCoolDown) {
             timeStopLeft = timeStopDuration;
-            Sound sound = Gdx.audio.newSound(Gdx.files.internal("timeStopSoundEffect.mp3"));
+            Sound sound = Gdx.audio.newSound(Gdx.files.internal(new Random().nextInt(2) == 1 ? "timeStopSoundEffect.mp3" : "zawarudo.mp3"));
             sound.play();
         }
     }
