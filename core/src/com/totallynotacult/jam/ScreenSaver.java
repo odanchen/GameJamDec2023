@@ -1,6 +1,5 @@
 package com.totallynotacult.jam;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,7 +20,7 @@ public class ScreenSaver implements Screen {
         this.game = game;
         camera.setToOrtho(false, 800, 480);
 
-        mcpt_img = new Texture(Gdx.files.internal("mcpt_logo.png"));
+        mcpt_img = TextureHolder.MCPT_LOGO.getTexture();
         logo = new Rectangle();
         logo.x = 400;
         logo.y = 240;
@@ -29,7 +28,7 @@ public class ScreenSaver implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0.4f,0.4f,0.4f,1);
+        ScreenUtils.clear(0.4f, 0.4f, 0.4f, 1);
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 

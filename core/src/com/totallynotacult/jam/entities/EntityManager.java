@@ -23,7 +23,9 @@ public class EntityManager {
     }
 
     public void updateEntities(List<Tile> room, float deltaTime) {
-        enemyBullets.forEach(e -> e.update(room, deltaTime, this));
+        if (isMovementAllowed()) {
+            enemyBullets.forEach(e -> e.update(room, deltaTime, this));
+        }
         friendlyBullets.forEach(e -> e.update(room, deltaTime, this));
 
         enemies.forEach(enemy -> enemy.update(room, deltaTime, this));

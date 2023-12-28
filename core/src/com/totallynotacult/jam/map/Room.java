@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.totallynotacult.jam.TextureHolder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -61,7 +62,7 @@ public class Room {
                     if (exitDirections[0] == 3 || exitDirections[1] == 3) index = 70;
                 }
 
-                roomVariation = ss[0][index - (int) (Math.random()*9)];
+                roomVariation = ss[0][index - (int) (Math.random() * 9)];
                 break;
             }
             default: {
@@ -98,8 +99,8 @@ public class Room {
     public Tile[][] generateRoomMatrix(TextureRegion texture) {
         Tile[][] mat = new Tile[16][16];
         Random random = new Random();
-        var tileImg = new Texture(Gdx.files.internal("greyTile.jpeg"));
-        var wallImg = new Texture(Gdx.files.internal("wall.png"));
+        var tileImg = TextureHolder.GREY_TILE.getTexture();
+        var wallImg = TextureHolder.WALL.getTexture();
 
         for (int row = 0; row < 16; row++)
             for (int col = 0; col < 16; col++) {

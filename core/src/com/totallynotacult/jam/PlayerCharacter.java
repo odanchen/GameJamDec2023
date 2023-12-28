@@ -2,11 +2,11 @@ package com.totallynotacult.jam;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.totallynotacult.jam.entities.EntityManager;
@@ -25,8 +25,8 @@ public class PlayerCharacter extends ShootingEntity {
     private final DungeonScreen screen;
     private float facing;
     private float timeStopCoolDown = 10;
-    private float timeStopDuration = 2;
-    private float timeSinceLastStop = 0;
+    private float timeStopDuration = 3;
+    private float timeSinceLastStop = 10;
     private float timeStopLeft = 0;
     private float stateTime = 0f;
     private boolean isMoving = false;
@@ -92,11 +92,11 @@ public class PlayerCharacter extends ShootingEntity {
 
         sprite = isMoving ? new Sprite(currentWalkFrame) : new Sprite(idle);
 
-       // System.arraycopy(getVertices(), 0, sprite.getVertices(), 0, 20);
-       // sprite.setU(getU());
-     //   sprite.setV(getV());
-     //   sprite.setU2(getU2());
-    //    sprite.setV2(getV2());
+        // System.arraycopy(getVertices(), 0, sprite.getVertices(), 0, 20);
+        // sprite.setU(getU());
+        //   sprite.setV(getV());
+        //   sprite.setU2(getU2());
+        //    sprite.setV2(getV2());
         //    sprite.setRegionWidth(getRegionWidth());
         //   sprite.setRegionHeight(getRegionHeight());
 
@@ -104,10 +104,10 @@ public class PlayerCharacter extends ShootingEntity {
         sprite.setX(getX());
         sprite.setY(getY());
 
-        sprite.setSize(getWidth(),getHeight());
-        sprite.setOrigin(getOriginX(),getOriginY());
+        sprite.setSize(getWidth(), getHeight());
+        sprite.setOrigin(getOriginX(), getOriginY());
         sprite.setRotation(getRotation());
-        sprite.setScale(getScaleX(),getScaleY());
+        sprite.setScale(getScaleX(), getScaleY());
         sprite.setColor(getColor());
 
 
@@ -122,6 +122,8 @@ public class PlayerCharacter extends ShootingEntity {
     private void timeStopAction() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && timeSinceLastStop >= timeStopCoolDown) {
             timeStopLeft = timeStopDuration;
+            Sound sound = Gdx.audio.newSound(Gdx.files.internal("timeStopSoundEffect.mp3"));
+            sound.play();
         }
     }
 
@@ -168,7 +170,9 @@ public class PlayerCharacter extends ShootingEntity {
     }
 
     private void moveWithCollision(float localSpeed, List<Tile> room, float dir, boolean isHorizontal) {
-        if (dir == 0) {return;}
+        if (dir == 0) {
+            return;
+        }
         for (int i = 0; i < localSpeed; i++) {
             if (isHorizontal) translateX(dir);
             else translateY(dir);

@@ -59,8 +59,7 @@ public class DungeonScreen implements Screen {
     }
 
     boolean roomExists(int dRow, int dCol) {
-        return row + dRow >= 0 && row + dRow < rooms.length && col + dCol >= 0 &&
-                col + dCol < rooms[row].length && rooms[row + dRow][col + dCol].getRoomType() != 0;
+        return row + dRow >= 0 && row + dRow < rooms.length && col + dCol >= 0 && col + dCol < rooms[row].length && rooms[row + dRow][col + dCol].getRoomType() != 0;
     }
 
     void changeRoom(int dRow, int dCol) {
@@ -106,7 +105,7 @@ public class DungeonScreen implements Screen {
     }
 
     void renderTiles(SpriteBatch batch) {
-        Texture weaponTileTexture = new Texture(Gdx.files.internal("tempPlayer.png"));
+        Texture weaponTileTexture = TextureHolder.TEMP_PLAYER.getTexture();
         currentRoom.getAllTiles().forEach(tile -> {
             tile.draw(batch);
             if (tile.weaponTile) {

@@ -8,29 +8,26 @@ import com.totallynotacult.jam.map.Room;
 import com.totallynotacult.jam.map.RoomGen;
 
 public class MyGdxGame extends Game {
-	SpriteBatch batch;
-	Texture img;
-	BitmapFont font;
-	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		font = new BitmapFont();
-		this.setScreen(new DungeonScreen());
+    SpriteBatch batch;
+    Texture img;
+    BitmapFont font;
 
-		//RoomGen r = new RoomGen(5);
+    @Override
+    public void create() {
+        batch = new SpriteBatch();
+        font = new BitmapFont();
+        this.setScreen(new DungeonScreen());
 
+        //RoomGen r = new RoomGen(5);
+    }
 
+    public void render() {
+        super.render();
+    }
 
-
-	}
-
-	public void render () {
-		super.render();
-	}
-	
-	@Override
-	public void dispose () {
-		batch.dispose();
-		img.dispose();
-	}
+    @Override
+    public void dispose() {
+        batch.dispose();
+        img.dispose();
+    }
 }
