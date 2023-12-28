@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.totallynotacult.jam.entities.Bullet;
 import com.totallynotacult.jam.entities.EntityManager;
+import com.totallynotacult.jam.weapons.machine_guns.MachineGun;
+import com.totallynotacult.jam.weapons.shotguns.Shotgun;
 
 import java.util.Random;
 

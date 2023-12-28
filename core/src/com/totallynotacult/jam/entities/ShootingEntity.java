@@ -13,6 +13,7 @@ public abstract class ShootingEntity extends Entity {
     protected int health;
     protected int maxHealth;
     protected Weapon currentWeapon;
+
     public ShootingEntity(Texture texture) {
         super(texture);
         currentWeapon = Weapon.getRandomWeapon();

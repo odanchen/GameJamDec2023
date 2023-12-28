@@ -1,7 +1,8 @@
-package com.totallynotacult.jam.weapons;
+package com.totallynotacult.jam.weapons.shotguns;
 
 import com.totallynotacult.jam.TextureHolder;
 import com.totallynotacult.jam.entities.EntityManager;
+import com.totallynotacult.jam.weapons.Weapon;
 
 import java.util.Random;
 

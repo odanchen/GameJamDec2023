@@ -2,28 +2,31 @@ package com.totallynotacult.jam;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.totallynotacult.jam.map.Room;
-import com.totallynotacult.jam.map.RoomGen;
 
 public class MyGdxGame extends Game {
     SpriteBatch batch;
     BitmapFont font;
+    Screen dungeon;
 
     @Override
     public void create() {
+        prepareNewDungeon();
         batch = new SpriteBatch();
         font = new BitmapFont();
-        this.setScreen(new GameOverScreen(this));
+        this.setScreen(new StartMenuScreen(this));
 
         //RoomGen r = new RoomGen(5);
     }
 
-    public void changeScreen(Screen predecessor, Screen successor) {
-        predecessor.dispose();
-        setScreen(successor);
+
+    public void changeToDungeon() {
+        this.setScreen(this.dungeon);
+    }
+
+    public void prepareNewDungeon() {
+        this.dungeon = new DungeonScreen(this);
     }
 
     public void render() {

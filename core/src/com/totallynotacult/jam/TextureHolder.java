@@ -12,7 +12,8 @@ public enum TextureHolder {
     MCPT_LOGO("mcpt_logo.png"),
     POLICE("police.png"),
     TEMP_PLAYER("tempPlayer.png"),
-    WALL("wall.png");
+    WALL("wall.png"),
+    SHADOW("shadow.png");
 
     private final Texture texture;
 

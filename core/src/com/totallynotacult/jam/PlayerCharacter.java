@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.totallynotacult.jam.entities.EntityManager;
+import com.totallynotacult.jam.entities.Shadow;
 import com.totallynotacult.jam.entities.ShootingEntity;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.weapons.Pistol;
@@ -111,7 +112,6 @@ public class PlayerCharacter extends ShootingEntity {
 
 
         if (facing > 0) setScale(1, 1);
-
         else setScale(-1, 1);
 
 

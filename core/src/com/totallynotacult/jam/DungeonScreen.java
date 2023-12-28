@@ -98,9 +98,7 @@ public class DungeonScreen implements Screen {
 
         renderTiles(batch);
 
-
-        character.draw(batch);
-
+        
         entityManager.updateEntities(currentRoom.getAllTiles(), delta);
         entityManager.drawEntities();
 
@@ -117,7 +115,8 @@ public class DungeonScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
 
         if (character.isDead()) {
-            game.setScreen(new GameOverScreen(game));
+            game.setScreen(new StartMenuScreen(game));
+            game.prepareNewDungeon();
         }
     }
 

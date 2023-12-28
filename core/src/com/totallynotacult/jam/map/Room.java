@@ -61,8 +61,7 @@ public class Room {
                 if (exitDirections[0] == 2 || exitDirections[1] == 2) {
                     if (exitDirections[0] == 3 || exitDirections[1] == 3) index = 70;
                 }
-                Random random = new Random();
-                roomVariation = ss[0][index - random.nextInt(10) + 1];
+                roomVariation = ss[0][index - (int) (Math.random() * 9 + 1)];
                 break;
             }
             default: {

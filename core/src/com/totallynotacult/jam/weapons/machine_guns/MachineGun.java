@@ -1,6 +1,7 @@
-package com.totallynotacult.jam.weapons;
+package com.totallynotacult.jam.weapons.machine_guns;
 
 import com.totallynotacult.jam.TextureHolder;
+import com.totallynotacult.jam.weapons.Weapon;
 
 import java.util.Random;
 

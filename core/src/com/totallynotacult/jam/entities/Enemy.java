@@ -34,6 +34,7 @@ public class Enemy extends ShootingEntity {
         runCycleAni = new Animation<>(0.06f, runCycleFrames);
 
         setBounds(xCor, yCor, 16, 16);
+        setOrigin(getWidth() / 2, 0);
         speed = 60;
         angle = (float) (Math.random() * 2 * Math.PI);
         maxHealth = 3;
@@ -73,6 +74,9 @@ public class Enemy extends ShootingEntity {
             }
             performShooting(manager.getCharacter().getX(), manager.getCharacter().getY(), manager, false);
         }
+
+        float angle = (float) Math.atan2(manager.getCharacter().getY() - getY(), manager.getCharacter().getX() - getX());
+        setRotation();
         checkBulletCollision(manager.getFriendlyBullets());
         enemyAnimations();
     }
