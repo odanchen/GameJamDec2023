@@ -55,6 +55,8 @@ public abstract class ShootingEntity extends Entity {
         currentWeapon.update();
     }
 
+    protected abstract boolean collidesWithObstacle(List<Tile> room, EntityManager manager);
+
     public int getHealth() {
         return health;
     }
@@ -64,4 +66,25 @@ public abstract class ShootingEntity extends Entity {
     }
 
     public int getMaxHealth( ){return maxHealth;}
+
+    protected void moveWithCollision(float localSpeed, List<Tile> room, float dir, boolean isHorizontal, EntityManager manager) {
+        if (dir == 0) {
+            return;
+        }
+        for (int i = 0; i < Math.abs(localSpeed); i++) {
+            if (isHorizontal) translateX(dir);
+            else translateY(dir);
+            if (collidesWithObstacle(room, manager)) {
+                if (isHorizontal) translateX(-dir);
+                else translateY(-dir);
+                return;
+            }
+
+            int weaponTile = collisionWithWeaponTile(room);
+            if (weaponTile != -1) {
+                room.get(weaponTile).weaponTile = false;
+                currentWeapon = Weapon.getRandomWeapon();
+            }
+        }
+    }
 }

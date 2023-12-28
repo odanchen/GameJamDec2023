@@ -101,6 +101,11 @@ public class PlayerCharacter extends ShootingEntity {
         }
     }
 
+    @Override
+    protected boolean collidesWithObstacle(List<Tile> room, EntityManager manager) {
+        return collidesWithWall(room) || manager.getEnemies().stream().anyMatch(enemy -> getBoundingRectangle().overlaps(enemy.getBoundingRectangle()));
+    }
+
     public void performMovement(float deltaTime, List<Tile> room) {
         float horDir = getDir(Gdx.input.isKeyPressed(Input.Keys.D), Gdx.input.isKeyPressed(Input.Keys.A));
         float vertDir = getDir(Gdx.input.isKeyPressed(Input.Keys.W), Gdx.input.isKeyPressed(Input.Keys.S));
@@ -117,8 +122,8 @@ public class PlayerCharacter extends ShootingEntity {
 
         var localSpeed = speed * deltaTime / ((horDir != 0 && vertDir != 0) ? (float) Math.sqrt(2) : 1);
 
-        moveWithCollision(localSpeed, room, horDir, true);
-        moveWithCollision(localSpeed, room, vertDir, false);
+        moveWithCollision(localSpeed, room, horDir, true, entityManager);
+        moveWithCollision(localSpeed, room, vertDir, false, entityManager);
 
         if (getX() < 0 && screen.canSwitchRoom()) {
             screen.changeRoom(0, -1);
@@ -140,28 +145,6 @@ public class PlayerCharacter extends ShootingEntity {
             setY(0);
         } else if (getY() > 247) setY(247);
     }
-
-    private void moveWithCollision(float localSpeed, List<Tile> room, float dir, boolean isHorizontal) {
-        if (dir == 0) {
-            return;
-        }
-        for (int i = 0; i < localSpeed; i++) {
-            if (isHorizontal) translateX(dir);
-            else translateY(dir);
-            if (collidesWithWall(room)) {
-                if (isHorizontal) translateX(-dir);
-                else translateY(-dir);
-                return;
-            }
-
-            int weaponTile = collisionWithWeaponTile(room);
-            if (weaponTile != -1) {
-                room.get(weaponTile).weaponTile = false;
-                currentWeapon = Weapon.getRandomWeapon();
-            }
-        }
-    }
-
 
     private int getDir(boolean forward, boolean backward) {
         if (forward == backward) return 0;

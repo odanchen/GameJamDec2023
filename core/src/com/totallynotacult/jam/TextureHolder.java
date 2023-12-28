@@ -13,7 +13,8 @@ public enum TextureHolder {
     POLICE("police.png"),
     TEMP_PLAYER("tempPlayer.png"),
     WALL("wall.png"),
-    SHADOW("shadow.png");
+    SHADOW("shadow.png"),
+    ENEMY_SHEET("enemy_sheet.png");
 
     private final Texture texture;
 
