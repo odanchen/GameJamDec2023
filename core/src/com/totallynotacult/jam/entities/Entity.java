@@ -1,5 +1,6 @@
 package com.totallynotacult.jam.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,6 +11,10 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 public abstract class Entity extends Sprite {
+
+    protected Sprite currentSprite;
+    protected float stateTime = 0f;
+
     public Entity(Texture texture) {
         super(texture);
     }
@@ -30,6 +35,21 @@ public abstract class Entity extends Sprite {
     protected boolean collidesWithWall(List<Tile> room) {
         var rect = getBoundingRectangle();
         return room.stream().anyMatch(tile -> tile instanceof Wall && tile.getBoundingRectangle().overlaps(rect));
+    }
+
+    protected void entityAnimations() {
+
+        //Walk/RunCycle
+        TextureRegion currentWalkFrame;
+        stateTime += Gdx.graphics.getDeltaTime();
+        currentSprite.setX(getX());
+        currentSprite.setY(getY());
+        currentSprite.setSize(getWidth(), getHeight());
+        currentSprite.setOrigin(getOriginX(), getOriginY());
+        currentSprite.setRotation(getRotation());
+        currentSprite.setScale(getScaleX(), getScaleY());
+        currentSprite.setColor(getColor());
+        set(currentSprite);
     }
 
     protected int collisionWithWeaponTile(List<Tile> room) {

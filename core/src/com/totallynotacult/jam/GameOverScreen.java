@@ -27,11 +27,13 @@ public class GameOverScreen implements Screen {
     private OrthographicCamera camera;
     private TextureAtlas atlas;
     protected Skin skin;
+    MyGdxGame game;
 
-    public GameOverScreen()
+    public GameOverScreen(MyGdxGame game)
     {
-        atlas = new TextureAtlas("craftacular-ui.atlas");
-        skin = new Skin(Gdx.files.internal("craftacular-ui.json"), atlas);
+        this.game = game;
+        atlas = new TextureAtlas("skin/craftacular-ui.atlas");
+        skin = new Skin(Gdx.files.internal("skin/craftacular-ui.json"), atlas);
 
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
@@ -61,12 +63,13 @@ public class GameOverScreen implements Screen {
         TextButton playButton = new TextButton("Play", skin);
         TextButton optionsButton = new TextButton("Options", skin);
         TextButton exitButton = new TextButton("Exit", skin);
-
+        Screen menu = this;
         //Add listeners to buttons
         playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new DungeonScreen());
+                game.setScreen(new DungeonScreen(game));
+                playButton.clearListeners();
             }
         });
         exitButton.addListener(new ClickListener(){

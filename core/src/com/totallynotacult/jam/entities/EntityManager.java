@@ -28,6 +28,7 @@ public class EntityManager {
         }
         friendlyBullets.forEach(e -> e.update(room, deltaTime, this));
 
+        character.update(room, deltaTime, this);
         enemies.forEach(enemy -> enemy.update(room, deltaTime, this));
         friendlyBullets.removeIf(e -> outside(e) || e.collidesWithSomething(room, enemies));
         enemyBullets.removeIf(e -> outside(e) || e.collidesWithSomething(room, List.of(character)));

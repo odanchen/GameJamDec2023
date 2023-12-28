@@ -1,5 +1,6 @@
 package com.totallynotacult.jam;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -27,9 +28,11 @@ public class DungeonScreen implements Screen {
     private int row;
     private int col;
     private Camera cam;
+    private MyGdxGame game;
 
 
-    public DungeonScreen() {
+    public DungeonScreen(MyGdxGame game) {
+        this.game = game;
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         entityManager = new EntityManager(batch);
@@ -43,7 +46,7 @@ public class DungeonScreen implements Screen {
         row = r.getStartRoom()[0];
         col = r.getStartRoom()[1];
         currentRoom = rooms[row][col];
-
+        Gdx.gl.glLineWidth(3);
         fixRoom();
         currentRoom.makeVisited();
 
@@ -95,28 +98,54 @@ public class DungeonScreen implements Screen {
 
         renderTiles(batch);
 
-        character.update(currentRoom.getAllTiles(), delta, entityManager);
+
         character.draw(batch);
 
         entityManager.updateEntities(currentRoom.getAllTiles(), delta);
         entityManager.drawEntities();
 
-
-        renderer.begin(ShapeRenderer.ShapeType.Filled);
-        renderer.setColor(Color.CORAL);
-        renderer.rect(10, 230, (character.getHealth() / (float)character.getMaxHealth()) * 50f, 15);
-        renderer.end();
-
-
-
-
-
         batch.end();
+
+        drawHealthBar();
+        drawTimeBar();
+
 
         // camera.position.set(cam.x, cam.y, 0);
         camera.update();
+
+        renderer.setProjectionMatrix(camera.combined);
         batch.setProjectionMatrix(camera.combined);
 
+        if (character.isDead()) {
+            game.setScreen(new GameOverScreen(game));
+        }
+    }
+
+    private void drawHealthBar() {
+        renderer.begin(ShapeRenderer.ShapeType.Line);
+        renderer.setColor(Color.CORAL);
+        renderer.rect(7, 242, 75, 12);
+        renderer.end();
+
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
+        renderer.setColor(Color.CORAL);
+        renderer.rect(7, 242, (character.getHealth() / (float)character.getMaxHealth() * 75f), 12);
+        renderer.end();
+    }
+
+    private void drawTimeBar() {
+        renderer.begin(ShapeRenderer.ShapeType.Line);
+        renderer.setColor(Color.GOLD);
+        renderer.rect(7, 7, 75, 12);
+        renderer.end();
+
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
+        renderer.setColor(Color.GOLD);
+        if (entityManager.isMovementAllowed()) {
+
+        }
+        renderer.rect(7, 3, (character.getHealth() / (float)character.getMaxHealth() * 75f), 12);
+        renderer.end();
     }
 
     void renderTiles(SpriteBatch batch) {

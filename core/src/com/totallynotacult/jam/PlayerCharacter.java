@@ -43,20 +43,15 @@ public class PlayerCharacter extends ShootingEntity {
 
     public PlayerCharacter(EntityManager entityManager, Camera camera, DungeonScreen screen) {
         super(new Texture(Gdx.files.internal("sprite_player_sheet.png")));
-
         sprites = new Texture(Gdx.files.internal("sprite_player_sheet.png"));
-
         sprite_sheet = TextureRegion.split(sprites, sprites.getWidth() / 4, sprites.getHeight());
-
-
         idle = sprite_sheet[0][0];
-
         //Run Cycle
         runCycleFrames = new TextureRegion[3];
         runCycleFrames[0] = sprite_sheet[0][1];
         runCycleFrames[1] = sprite_sheet[0][2];
         runCycleFrames[2] = sprite_sheet[0][3];
-        runCycleAni = new Animation<>(0.06f, runCycleFrames);
+        runCycleAni = new Animation<>(0.08f, runCycleFrames);
 
         setBounds(100, 200, 16, 16);
         setOrigin(getWidth() / 2, 0);
@@ -84,37 +79,13 @@ public class PlayerCharacter extends ShootingEntity {
 
     public void playerAnimations() {
 
-
-        Sprite sprite;
         //Walk/RunCycle
         TextureRegion currentWalkFrame;
         stateTime += Gdx.graphics.getDeltaTime();
         currentWalkFrame = runCycleAni.getKeyFrame(stateTime, true);
+        currentSprite = isMoving ? new Sprite(currentWalkFrame) : new Sprite(idle);
 
-
-        sprite = isMoving ? new Sprite(currentWalkFrame) : new Sprite(idle);
-
-        // System.arraycopy(getVertices(), 0, sprite.getVertices(), 0, 20);
-        // sprite.setU(getU());
-        //   sprite.setV(getV());
-        //   sprite.setU2(getU2());
-        //    sprite.setV2(getV2());
-        //    sprite.setRegionWidth(getRegionWidth());
-        //   sprite.setRegionHeight(getRegionHeight());
-
-
-        sprite.setX(getX());
-        sprite.setY(getY());
-
-        sprite.setSize(getWidth(), getHeight());
-        sprite.setOrigin(getOriginX(), getOriginY());
-        sprite.setRotation(getRotation());
-        sprite.setScale(getScaleX(), getScaleY());
-        sprite.setColor(getColor());
-
-
-        set(sprite);
-
+        entityAnimations();
     }
 
     public boolean isMovementAllowed() {
@@ -142,7 +113,8 @@ public class PlayerCharacter extends ShootingEntity {
         facing = mx.x - (getX() + getOriginX());
 
 
-        if (facing <= 0) setScale(1, 1);
+        if (facing > 0) setScale(1, 1);
+
         else setScale(-1, 1);
 
 
@@ -208,5 +180,9 @@ public class PlayerCharacter extends ShootingEntity {
                 performQuickShooting(click.x, click.y, entityManager, true);
             } else performShooting(click.x, click.y, entityManager, true);
         }
+    }
+
+    public boolean isDead() {
+        return health <= 0;
     }
 }
