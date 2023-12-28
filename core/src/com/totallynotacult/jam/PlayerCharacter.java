@@ -25,7 +25,6 @@ public class PlayerCharacter extends ShootingEntity {
     private EntityManager entityManager;
     private Camera camera;
     private final DungeonScreen screen;
-    private float facing;
     private float timeStopCoolDown = 10;
     private float timeStopDuration = 3;
     private float timeSinceLastStop = 10;
@@ -70,6 +69,11 @@ public class PlayerCharacter extends ShootingEntity {
 
         timeStopLeft -= Gdx.graphics.getDeltaTime();
         timeSinceLastStop += Gdx.graphics.getDeltaTime();
+
+        Vector3 mPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        camera.unproject(mPos);
+        targetX = mPos.x;
+        targetY = mPos.y;
         performShooting();
         checkBulletCollision(manager.getEnemyBullets());
         timeStopAction();
@@ -154,11 +158,10 @@ public class PlayerCharacter extends ShootingEntity {
 
     private void performShooting() {
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            Vector3 click = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(click);
+
             if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && currentWeapon instanceof QuickShooter) {
-                performQuickShooting(click.x, click.y, entityManager, true);
-            } else performShooting(click.x, click.y, entityManager, true);
+                performQuickShooting(entityManager, true);
+            } else performShooting(entityManager, true);
         }
     }
 
