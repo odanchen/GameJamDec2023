@@ -77,4 +77,9 @@ public class EntityManager {
     public boolean isMovementAllowed() {
         return character.isMovementAllowed();
     }
+
+    public void removeAllBullets() {
+        friendlyBullets.clear();
+        enemyBullets.clear();
+    }
 }

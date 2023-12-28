@@ -1,11 +1,11 @@
 package com.totallynotacult.jam;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.totallynotacult.jam.entities.Enemy;
 import com.totallynotacult.jam.entities.EntityManager;
@@ -18,6 +18,8 @@ public class DungeonScreen implements Screen {
     private final PlayerCharacter character;
     private final SpriteBatch batch;
     private final EntityManager entityManager;
+    private final ShapeRenderer renderer;
+
 
     // final ROOMWIDTH =
     private Room currentRoom;
@@ -34,6 +36,7 @@ public class DungeonScreen implements Screen {
         character = new PlayerCharacter(entityManager, camera, this);
         cam = new Camera(character, 320, 320);
         entityManager.setCharacter(character);
+        renderer = new ShapeRenderer();
 
         RoomGen r = new RoomGen(7);
         rooms = r.getLevelMatrix();
@@ -63,6 +66,7 @@ public class DungeonScreen implements Screen {
     }
 
     void changeRoom(int dRow, int dCol) {
+        entityManager.removeAllBullets();
         currentRoom = rooms[row += dRow][col += dCol];
         cam = new Camera(character, 256, 256);
         fixRoom();
@@ -96,6 +100,17 @@ public class DungeonScreen implements Screen {
 
         entityManager.updateEntities(currentRoom.getAllTiles(), delta);
         entityManager.drawEntities();
+
+
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
+        renderer.setColor(Color.CORAL);
+        renderer.rect(10, 230, (character.getHealth() / (float)character.getMaxHealth()) * 50f, 15);
+        renderer.end();
+
+
+
+
+
         batch.end();
 
         // camera.position.set(cam.x, cam.y, 0);

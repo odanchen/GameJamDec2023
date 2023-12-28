@@ -61,4 +61,6 @@ public abstract class ShootingEntity extends Entity {
     public void receiveDamage(int damage) {
         health -= damage;
     }
+
+    public int getMaxHealth( ){return maxHealth;}
 }
