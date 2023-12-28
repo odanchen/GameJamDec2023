@@ -10,12 +10,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.totallynotacult.jam.entities.EntityManager;
-import com.totallynotacult.jam.entities.Shadow;
 import com.totallynotacult.jam.entities.ShootingEntity;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.weapons.Pistol;
 import com.totallynotacult.jam.weapons.QuickShooter;
-import com.totallynotacult.jam.weapons.Weapon;
 
 import java.util.List;
 import java.util.Random;
