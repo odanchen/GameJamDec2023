@@ -23,15 +23,14 @@ public class EntityManager {
     }
 
     public void updateEntities(List<Tile> room, float deltaTime) {
-        enemies.forEach(enemy -> enemy.update(room, deltaTime, this));
-
-        friendlyBullets.forEach(e -> e.update(room, deltaTime, this));
-        friendlyBullets.removeIf(e -> outside(e) || e.collidesWithSomething(room, enemies));
-
         enemyBullets.forEach(e -> e.update(room, deltaTime, this));
+        friendlyBullets.forEach(e -> e.update(room, deltaTime, this));
+
+        enemies.forEach(enemy -> enemy.update(room, deltaTime, this));
+        friendlyBullets.removeIf(e -> outside(e) || e.collidesWithSomething(room, enemies));
         enemyBullets.removeIf(e -> outside(e) || e.collidesWithSomething(room, List.of(character)));
 
-        enemies.removeIf(enemy -> enemy.getHealth() < 0);
+        enemies.removeIf(enemy -> enemy.getHealth() <= 0);
     }
 
     private boolean outside(Entity e) {
@@ -71,5 +70,9 @@ public class EntityManager {
 
     public void addEnemy(Enemy enemy) {
         enemies.add(enemy);
+    }
+
+    public boolean isMovementAllowed() {
+        return character.isMovementAllowed();
     }
 }

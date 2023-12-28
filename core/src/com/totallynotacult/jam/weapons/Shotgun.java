@@ -14,7 +14,7 @@ public class Shotgun extends Weapon {
     public Shotgun() {
         // Create random values for the shotgun
         Random rand = new Random();
-        this.damage = rand.nextInt(2);
+        this.damage = rand.nextInt(2) + 1;
         this.bulletSpeed = rand.nextInt(100) + 200;
         this.shootDelay = rand.nextInt(2) + 2f;
         this.numBullets = rand.nextInt(3) + 3;

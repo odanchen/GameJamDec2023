@@ -21,12 +21,16 @@ public class PlayerCharacter extends ShootingEntity {
     private final DungeonScreen screen;
     private float facing;
     Texture currentFrame;
+    private float timeStopCoolDown = 10;
+    private float timeStopDuration = 2;
+    private float timeSinceLastStop = 0;
+    private float timeStopLeft = 0;
 
     public PlayerCharacter(EntityManager entityManager, Camera camera, DungeonScreen screen) {
         super(new Texture(Gdx.files.internal("police.png")));
 
         setBounds(100, 200, 16, 16);
-        setOrigin(getWidth()/2,0);
+        setOrigin(getWidth() / 2, 0);
         this.screen = screen;
         health = 15;
         maxHealth = 15;
@@ -40,8 +44,21 @@ public class PlayerCharacter extends ShootingEntity {
         super.update(room, deltaTime, manager);
         performMovement(deltaTime, room);
 
+        timeStopLeft -= Gdx.graphics.getDeltaTime();
+        timeSinceLastStop += Gdx.graphics.getDeltaTime();
         performShooting();
         checkBulletCollision(manager.getEnemyBullets());
+        timeStopAction();
+    }
+
+    public boolean isMovementAllowed() {
+        return timeStopLeft <= 0;
+    }
+
+    private void timeStopAction() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && timeSinceLastStop >= timeStopCoolDown) {
+            timeStopLeft = timeStopDuration;
+        }
     }
 
     public void performMovement(float deltaTime, List<Tile> room) {
@@ -50,11 +67,11 @@ public class PlayerCharacter extends ShootingEntity {
 
         Vector3 mx = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         camera.unproject(mx);
-        facing = mx.x-(getX()+getOriginX());
+        facing = mx.x - (getX() + getOriginX());
 
 
-            if (facing > 0) setScale(1,1);
-                else setScale(-1,1);
+        if (facing > 0) setScale(1, 1);
+        else setScale(-1, 1);
 
 
         var localSpeed = speed * deltaTime / ((horDir != 0 && vertDir != 0) ? (float) Math.sqrt(2) : 1);

@@ -36,7 +36,10 @@ public abstract class ShootingEntity extends Entity {
 
     protected void checkBulletCollision(List<Bullet> enemyBullets) {
         enemyBullets.forEach(bullet -> {
-            if (getBoundingRectangle().overlaps(bullet.getBoundingRectangle())) health -= bullet.getDamage();
+            if (getBoundingRectangle().overlaps(bullet.getBoundingRectangle())) {
+                receiveDamage(bullet.getDamage());
+                System.out.println("HIT");
+            }
         });
     }
 
@@ -47,5 +50,9 @@ public abstract class ShootingEntity extends Entity {
 
     public int getHealth() {
         return health;
+    }
+
+    public void receiveDamage(int damage) {
+        health -= damage;
     }
 }
