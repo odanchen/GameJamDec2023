@@ -54,7 +54,7 @@ public class PlayerCharacter extends ShootingEntity {
         runCycleFrames[0] = sprite_sheet[0][1];
         runCycleFrames[1] = sprite_sheet[0][2];
         runCycleFrames[2] = sprite_sheet[0][3];
-        runCycleAni = new Animation<TextureRegion>(0.06f, runCycleFrames);
+        runCycleAni = new Animation<>(0.06f, runCycleFrames);
 
         setBounds(100, 200, 16, 16);
         setOrigin(getWidth() / 2, 0);
@@ -139,7 +139,7 @@ public class PlayerCharacter extends ShootingEntity {
         facing = mx.x - (getX() + getOriginX());
 
 
-        if (facing > 0) setScale(1, 1);
+        if (facing <= 0) setScale(1, 1);
         else setScale(-1, 1);
 
 

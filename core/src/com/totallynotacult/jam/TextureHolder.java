@@ -8,7 +8,7 @@ public enum TextureHolder {
     SHOTGUN_BULLET("bullets/shotgun_bullet.png"),
     MACHINEGUN_BULLET("bullets/machinegun_bullet.png"),
     ENEMY("enemy.png"),
-    GREY_TILE("greyTile.png"),
+    GREY_TILE("greyTile.jpeg"),
     MCPT_LOGO("mcpt_logo.png"),
     POLICE("police.png"),
     TEMP_PLAYER("tempPlayer.png"),
