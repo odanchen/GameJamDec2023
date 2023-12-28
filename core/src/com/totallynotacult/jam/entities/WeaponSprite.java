@@ -35,7 +35,7 @@ public class WeaponSprite extends Entity {
     @Override
     public void update(List<Tile> room, float deltaTime, EntityManager manager) {
 
-        setX(owner.getX()+owner.getOriginX()/2 + 3*owner.getFacing());
+        setX(owner.getX()+owner.getOriginX()/2 + 2*owner.getFacing());
         setY(owner.getY()-3);
         float angle = owner.getAimAngle();
         setRotation((float)(angle * 180 / Math.PI));
