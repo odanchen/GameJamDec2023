@@ -136,15 +136,16 @@ public class DungeonScreen implements Screen {
     private void drawTimeBar() {
         renderer.begin(ShapeRenderer.ShapeType.Line);
         renderer.setColor(Color.GOLD);
-        renderer.rect(7, 7, 75, 12);
+        renderer.rect(7, 3, 75, 12);
         renderer.end();
 
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(Color.GOLD);
         if (entityManager.isMovementAllowed()) {
-
+            renderer.rect(7, 3, Math.min(character.getTimeSinceLastStop() / character.getTimeStopCoolDown(), 1) * 75, 12);
+        } else {
+            renderer.rect(7, 3, Math.min(character.getTimeStopLeft() / character.getTimeStopDuration(), 1) * 75, 12);
         }
-        renderer.rect(7, 3, (character.getHealth() / (float)character.getMaxHealth() * 75f), 12);
         renderer.end();
     }
 

@@ -6,7 +6,6 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
@@ -95,7 +94,7 @@ public class PlayerCharacter extends ShootingEntity {
     private void timeStopAction() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && timeSinceLastStop >= timeStopCoolDown) {
             timeStopLeft = timeStopDuration;
-            timeSinceLastStop = 0;
+            timeSinceLastStop = -timeStopDuration;
             Sound sound = Gdx.audio.newSound(Gdx.files.internal(new Random().nextInt(2) == 1 ? "timeStopSoundEffect.mp3" : "zawarudo.mp3"));
             sound.play();
         }
@@ -105,9 +104,7 @@ public class PlayerCharacter extends ShootingEntity {
         float horDir = getDir(Gdx.input.isKeyPressed(Input.Keys.D), Gdx.input.isKeyPressed(Input.Keys.A));
         float vertDir = getDir(Gdx.input.isKeyPressed(Input.Keys.W), Gdx.input.isKeyPressed(Input.Keys.S));
 
-        if (horDir != 0 || vertDir != 0)
-            isMoving = true;
-        else isMoving = false;
+        isMoving = horDir != 0 || vertDir != 0;
         Vector3 mx = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         camera.unproject(mx);
         facing = mx.x - (getX() + getOriginX());
@@ -184,5 +181,21 @@ public class PlayerCharacter extends ShootingEntity {
 
     public boolean isDead() {
         return health <= 0;
+    }
+
+    public float getTimeStopCoolDown() {
+        return timeStopCoolDown;
+    }
+
+    public float getTimeStopDuration() {
+        return timeStopDuration;
+    }
+
+    public float getTimeSinceLastStop() {
+        return timeSinceLastStop;
+    }
+
+    public float getTimeStopLeft() {
+        return timeStopLeft;
     }
 }
