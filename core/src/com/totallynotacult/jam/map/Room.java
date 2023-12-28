@@ -116,6 +116,9 @@ public class Room {
         return mat;
     }
 
+    public void makeVisited() {
+        visited = true;
+    }
 
     public List<Tile> getAllTiles() {
         return Arrays.stream(tiles).flatMap(Arrays::stream).collect(Collectors.toList());

@@ -64,23 +64,23 @@ public class PlayerCharacter extends ShootingEntity {
 
         if (getX() < 0 && screen.canSwitchRoom()) {
             screen.changeRoom(0, -1);
-            setX(256);
+            setX(247);
         } else if (getX() < 0) setX(0);
 
         if (getY() < 0 && screen.canSwitchRoom()) {
             screen.changeRoom(1, 0);
-            setY(256);
+            setY(247);
         } else if (getY() < 0) setY(0);
 
-        if (getX() > 256 && screen.canSwitchRoom()) {
+        if (getX() > 247 && screen.canSwitchRoom()) {
             screen.changeRoom(0, 1);
             setX(0);
-        } else if (getX() > 256) setX(256);
+        } else if (getX() > 247) setX(247);
 
-        if (getY() > 256 && screen.canSwitchRoom()) {
+        if (getY() > 247 && screen.canSwitchRoom()) {
             screen.changeRoom(-1, 0);
             setY(0);
-        } else if (getY() > 256) setY(256);
+        } else if (getY() > 247) setY(247);
     }
 
     private void moveWithCollision(float localSpeed, List<Tile> room, float dir, boolean isHorizontal) {

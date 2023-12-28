@@ -42,7 +42,7 @@ public class DungeonScreen implements Screen {
         currentRoom = rooms[row][col];
 
         fixRoom();
-        entityManager.addEnemy(new Enemy(100, 100));
+        currentRoom.makeVisited();
 
         camera.setToOrtho(false, 256, 256);
     }
@@ -69,11 +69,12 @@ public class DungeonScreen implements Screen {
         fixRoom();
         for (int row = 0; row < currentRoom.getTiles().length; row++) {
             for (int col = 0; col < currentRoom.getTiles()[row].length; col++) {
-                if (currentRoom.getTiles()[row][col] instanceof EnemyTile) {
-                    entityManager.addEnemy(new Enemy(col * 32, row * 32));
+                if (currentRoom.getTiles()[row][col] instanceof EnemyTile && !currentRoom.isVisited()) {
+                    entityManager.addEnemy(new Enemy(col * 16, row * 16));
                 }
             }
         }
+        currentRoom.makeVisited();
     }
 
     @Override
