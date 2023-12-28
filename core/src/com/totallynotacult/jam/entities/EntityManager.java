@@ -24,6 +24,7 @@ public class EntityManager {
     public void setCharacter(PlayerCharacter character) {
         addShadow(new Shadow(TextureHolder.SHADOW.getTexture(), character));
         this.character = character;
+        addWeaponSprite(new WeaponSprite(0,character));
     }
 
     public List<ShootingEntity> getEnemies() {
@@ -40,11 +41,13 @@ public class EntityManager {
         enemies.forEach(enemy -> enemy.update(room, deltaTime, this));
 
         shadows.forEach(shadow -> shadow.update(room, deltaTime, this));
+        weaponSprites.forEach(weaponSprite -> weaponSprite.update(room, deltaTime, this));
 
         friendlyBullets.removeIf(e -> outside(e) || e.collidesWithSomething(room, enemies));
         enemyBullets.removeIf(e -> outside(e) || e.collidesWithSomething(room, List.of(character)));
 
         shadows.removeIf(shadow -> shadow.getOwner().getHealth() <= 0);
+        weaponSprites.removeIf(weaponSprite -> weaponSprite.getOwner().getHealth() <= 0);
         enemies.removeIf(enemy -> enemy.getHealth() <= 0);
     }
 
@@ -54,10 +57,13 @@ public class EntityManager {
 
     public void drawEntities() {
         shadows.forEach(shadow -> shadow.draw(batch));
+        enemies.forEach(e -> e.draw(batch));
         character.draw(batch);
+
+        weaponSprites.forEach(weaponSprite -> weaponSprite.draw(batch));
         friendlyBullets.forEach(e -> e.draw(batch));
         enemyBullets.forEach(e -> e.draw(batch));
-        enemies.forEach(e -> e.draw(batch));
+
     }
 
     public void addFriendlyBullet(Bullet bullet) {
@@ -91,6 +97,7 @@ public class EntityManager {
     public void addEnemy(Enemy enemy) {
         addShadow(new Shadow(TextureHolder.SHADOW.getTexture(), enemy));
         enemies.add(enemy);
+        addWeaponSprite(new WeaponSprite(0,enemy));
     }
 
     public boolean isMovementAllowed() {

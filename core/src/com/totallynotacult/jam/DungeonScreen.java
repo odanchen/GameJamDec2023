@@ -93,7 +93,6 @@ public class DungeonScreen implements Screen {
         // cam.camFollow();
         ScreenUtils.clear(Color.BLACK);
 
-
         batch.begin();
 
         renderTiles(batch);
@@ -149,7 +148,7 @@ public class DungeonScreen implements Screen {
     }
 
     void renderTiles(SpriteBatch batch) {
-        Texture weaponTileTexture = TextureHolder.TEMP_PLAYER.getTexture();
+        Texture weaponTileTexture = TextureHolder.ENEMY.getTexture();
         currentRoom.getAllTiles().forEach(tile -> {
             tile.draw(batch);
             if (tile.weaponTile) {

@@ -1,10 +1,10 @@
 package com.totallynotacult.jam.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.totallynotacult.jam.TextureHolder;
 import com.totallynotacult.jam.map.Tile;
 
 import java.util.List;
@@ -21,9 +21,9 @@ public class Enemy extends ShootingEntity {
     Animation<TextureRegion> runCycleAni;
 
     public Enemy(int xCor, int yCor) {
-        super(TextureHolder.ENEMY_SHEET.getTexture());
+        super(new Texture(Gdx.files.internal("enemy_sheet.png")));
 
-        sprites = TextureHolder.ENEMY_SHEET.getTexture();
+        sprites = new Texture(Gdx.files.internal("enemy_sheet.png"));
         sprite_sheet = TextureRegion.split(sprites, sprites.getWidth() / 4, sprites.getHeight());
         idle = sprite_sheet[0][0];
         //Run Cycle
@@ -55,9 +55,8 @@ public class Enemy extends ShootingEntity {
 
     @Override
     public void update(List<Tile> room, float deltaTime, EntityManager manager) {
-        if(manager.isMovementAllowed()) {
+        if (manager.isMovementAllowed()) {
             super.update(room, deltaTime, manager);
-
             float angle = (float) Math.atan2(manager.getCharacter().getY() - getY(), manager.getCharacter().getX() - getX());
 
             int xDir = getDir((float) (speed * deltaTime * Math.cos(angle)));
@@ -66,7 +65,9 @@ public class Enemy extends ShootingEntity {
             moveWithCollision((float) (speed * deltaTime * Math.cos(angle)), room, xDir, true, manager);
             moveWithCollision((float) (speed * deltaTime * Math.sin(angle)), room, yDir, false, manager);
 
-            performShooting(manager.getCharacter().getX(), manager.getCharacter().getY(), manager, false);
+            targetX = manager.getCharacter().getX();
+            targetY = manager.getCharacter().getY();
+            performShooting(manager, false);
         }
 
         checkBulletCollision(manager.getFriendlyBullets());

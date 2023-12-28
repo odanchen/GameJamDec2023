@@ -10,8 +10,6 @@ public enum TextureHolder {
     ENEMY("enemy.png"),
     GREY_TILE("greyTile.jpeg"),
     MCPT_LOGO("mcpt_logo.png"),
-    POLICE("police.png"),
-    TEMP_PLAYER("tempPlayer.png"),
     WALL("wall.png"),
     SHADOW("shadow.png"),
     ENEMY_SHEET("enemy_sheet.png");

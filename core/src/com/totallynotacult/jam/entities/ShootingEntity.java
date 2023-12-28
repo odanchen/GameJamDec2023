@@ -13,6 +13,11 @@ public abstract class ShootingEntity extends Entity {
     protected int health;
     protected int maxHealth;
     protected Weapon currentWeapon;
+    protected float aimAngle;
+    protected float targetX;
+    protected float targetY;
+    protected float facing;
+
 
     public ShootingEntity(Texture texture) {
         super(texture);
@@ -29,13 +34,19 @@ public abstract class ShootingEntity extends Entity {
         currentWeapon = Weapon.getRandomWeapon();
     }
 
-    protected void performShooting(float xTarget, float yTarget, EntityManager entityManager, boolean isFriendly) {
-        float angle = (float) Math.atan2(yTarget - getY(), xTarget - getX());
+    protected void performShooting(EntityManager entityManager, boolean isFriendly) {
+        float angle = getAimAngle();
         currentWeapon.shoot(getX(), getY(), angle, entityManager, isFriendly);
     }
 
-    protected void performQuickShooting(float xTarget, float yTarget, EntityManager entityManager, boolean isFriendly) {
-        float angle = (float) Math.atan2(yTarget - getY(), xTarget - getX());
+    public float getAimAngle() {
+        return (float) Math.atan2(targetY - getY(), targetX - getX());
+    }
+
+    public int getFacing() {return (int) (facing / Math.abs(facing));}
+
+    protected void performQuickShooting(EntityManager entityManager, boolean isFriendly) {
+        float angle = getAimAngle();
         if (currentWeapon instanceof QuickShooter) {
             ((QuickShooter) currentWeapon).quickShoot(getX(), getY(), angle, entityManager, isFriendly);
         }
