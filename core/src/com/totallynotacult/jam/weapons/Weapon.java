@@ -86,14 +86,15 @@ public abstract class Weapon extends Entity {
 
     }
 
-    public void shoot(float angle, EntityManager manager, boolean isFriendly) {
+    public void shoot(float targetX, float targetY, float angle, EntityManager manager, boolean isFriendly) {
         if (type == -1) return;
         float xx = getX() + getOriginX() + (float) (Math.cos(angle) * 6) - 5;
         float yy = getY() + getOriginY() + (float) (Math.sin(angle) * 8) - 4;
 
         if (readyToShoot()) {
             kickbackMag = 5;
-            var bullet = new Bullet(xx, yy, angle, bulletType(), bulletSpeed, damage);
+            float shootingAngle = (float) Math.atan2(targetY - yy, targetX - xx);
+            var bullet = new Bullet(xx, yy, shootingAngle, bulletType(), bulletSpeed, damage);
             if (isFriendly)
                 manager.addFriendlyBullet(bullet);
             else manager.addEnemyBullet(bullet);

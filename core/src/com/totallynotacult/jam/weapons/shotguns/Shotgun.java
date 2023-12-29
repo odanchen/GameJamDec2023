@@ -27,11 +27,11 @@ public class Shotgun extends Weapon {
     }
 
     @Override
-    public void shoot(float angle, EntityManager manager, boolean isFriendly) {
+    public void shoot(float targetX, float targetY, float angle, EntityManager manager, boolean isFriendly) {
         if (readyToShoot()) {
             for (int i = 0; i < numBullets; i++) {
                 timeSinceShot = shootDelay;
-                super.shoot((float) (angle + (Math.random() - 0.5) * spread), manager, isFriendly);
+                super.shoot(targetX, targetY, (float) (angle + (Math.random() - 0.5) * spread), manager, isFriendly);
             }
             reset();
         }
