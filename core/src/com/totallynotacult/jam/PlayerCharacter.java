@@ -11,9 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.totallynotacult.jam.entities.EntityManager;
 import com.totallynotacult.jam.entities.ShootingEntity;
-import com.totallynotacult.jam.entities.WeaponSprite;
 import com.totallynotacult.jam.map.Tile;
-import com.totallynotacult.jam.weapons.machine_guns.MachineGun;
 import com.totallynotacult.jam.weapons.QuickShooter;
 import com.totallynotacult.jam.weapons.pistols.NoWeapon;
 
@@ -31,7 +29,6 @@ public class PlayerCharacter extends ShootingEntity {
     private float timeStopLeft = 0;
     private float stateTime = 0f;
     private boolean isMoving = false;
-    //public WeaponSprite currentWeaponSprite;
 
     //Animations
     Texture sprites;

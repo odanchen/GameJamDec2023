@@ -16,15 +16,12 @@ import com.totallynotacult.jam.map.RoomGen;
 
 public class DungeonScreen implements Screen {
     private final OrthographicCamera camera;
-    private final OrthographicCamera cameraUI;
     private final PlayerCharacter character;
     private final SpriteBatch batch;
     private final EntityManager entityManager;
     private final ShapeRenderer renderer;
-    // private final SpriteBatch hudBatch;
 
 
-    // final ROOMWIDTH =
     private Room currentRoom;
     private Room[][] rooms;
     private int row;
@@ -38,8 +35,6 @@ public class DungeonScreen implements Screen {
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 320, 320);
-        cameraUI = new OrthographicCamera();
-        cameraUI.setToOrtho(false, 320, 320);
 
         entityManager = new EntityManager(batch);
         character = new PlayerCharacter(entityManager, camera, this);
@@ -53,11 +48,11 @@ public class DungeonScreen implements Screen {
         row = r.getStartRoom()[0];
         col = r.getStartRoom()[1];
         currentRoom = rooms[row][col];
-        Gdx.gl.glLineWidth(3);
+        Gdx.gl.glLineWidth(4);
         fixRoom();
         currentRoom.makeVisited();
 
-        cam = new Camera(character, 256, 256,this);
+        cam = new Camera(character, 256, 256, this);
     }
 
     public boolean canSwitchRoom() {
@@ -100,64 +95,64 @@ public class DungeonScreen implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
 
+
         batch.setProjectionMatrix(camera.combined);
         cam.camFollow();
         camera.position.set(cam.x, cam.y, 0);
         camera.update();
 
 
-
         batch.begin();
 
-            renderTiles(batch);
-            entityManager.updateEntities(currentRoom.getAllTiles(), delta);
-            entityManager.drawEntities();
+        renderTiles(batch);
+        entityManager.updateEntities(currentRoom.getAllTiles(), delta);
+        entityManager.drawEntities();
 
         batch.end();
 
 
-
-
-        renderer.setProjectionMatrix(cameraUI.combined);
+        renderer.setProjectionMatrix(camera.combined);
         drawHealthBar();
         drawTimeBar();
-
-
 
         if (character.isDead()) game.setScreen(new StartMenuScreen(game));
     }
 
     private void drawHealthBar() {
-
-        float x = cam.x - camera.viewportWidth/2;
-        float y = cam.y - camera.viewportHeight/2;
-        renderer.begin(ShapeRenderer.ShapeType.Line);
-        renderer.setColor(Color.CORAL);
-        renderer.rect(x, y, 75, 12);
-        renderer.end();
+        float x = cam.x - camera.viewportWidth / 2 + 10;
+        float y = cam.y - camera.viewportHeight / 2 + 10;
 
         renderer.begin(ShapeRenderer.ShapeType.Filled);
+        renderer.setColor(Color.WHITE);
+        renderer.rect(x, y, 75f, 12);
         renderer.setColor(Color.CORAL);
-        renderer.rect(x, y, (character.getHealth() / (float)character.getMaxHealth() * 75f), 12);
+        renderer.rect(x, y, (character.getHealth() / (float) character.getMaxHealth() * 75f), 12);
+        renderer.end();
+
+        renderer.begin(ShapeRenderer.ShapeType.Line);
+        renderer.setColor(Color.WHITE);
+        renderer.rect(x, y, 75, 12);
         renderer.end();
     }
 
     private void drawTimeBar() {
-
-        float x = camera.position.x;
-        float y = camera.position.y - camera.viewportHeight/2;
-        renderer.begin(ShapeRenderer.ShapeType.Line);
-        renderer.setColor(Color.GOLD);
-        renderer.rect(x, y, 75, 12);
-        renderer.end();
+        float x = camera.position.x + camera.viewportWidth / 2 - 85;
+        float y = camera.position.y - camera.viewportHeight / 2 + 10;
 
         renderer.begin(ShapeRenderer.ShapeType.Filled);
+        renderer.setColor(Color.WHITE);
+        renderer.rect(x, y, 75, 12);
         renderer.setColor(Color.GOLD);
         if (entityManager.isMovementAllowed()) {
             renderer.rect(x, y, Math.min(character.getTimeSinceLastStop() / character.getTimeStopCoolDown(), 1) * 75, 12);
         } else {
             renderer.rect(x, y, Math.min(character.getTimeStopLeft() / character.getTimeStopDuration(), 1) * 75, 12);
         }
+        renderer.end();
+
+        renderer.begin(ShapeRenderer.ShapeType.Line);
+        renderer.setColor(Color.WHITE);
+        renderer.rect(x, y, 75, 12);
         renderer.end();
     }
 

@@ -12,7 +12,8 @@ public enum TextureHolder {
     MCPT_LOGO("mcpt_logo.png"),
     WALL("wall_tile.png"),
     SHADOW("shadow.png"),
-    ENEMY_SHEET("enemy_sheet.png");
+    ENEMY_SHEET("enemy_sheet.png"),
+    HITBOX("hitbox.png");
 
     private final Texture texture;
 

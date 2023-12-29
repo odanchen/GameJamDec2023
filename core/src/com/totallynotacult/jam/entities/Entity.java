@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector4;
+import com.totallynotacult.jam.TextureHolder;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.map.Wall;
 
@@ -15,7 +16,7 @@ public abstract class Entity extends Sprite {
 
     protected Sprite currentSprite;
     protected float stateTime = 0f;
-    protected Sprite hitbox = new Sprite(new Texture(Gdx.files.internal("hitbox.png")));
+    protected Sprite hitbox = new Sprite(TextureHolder.HITBOX.getTexture());
 
     public Entity(Texture texture) {
         super(texture);
@@ -30,18 +31,17 @@ public abstract class Entity extends Sprite {
 
     public Entity(TextureRegion texture, float xPos, float yPos) {
         super(texture);
+        setOrigin(getWidth() / 2, getHeight() / 2);
         setPosition(xPos, yPos);
         hitbox.set(this);
     }
-    public Entity(Texture texture, float xPos, float yPos,float hbw,float hbh) {
+
+    public Entity(Texture texture, float xPos, float yPos, float hbw, float hbh) {
         super(texture);
         setPosition(xPos, yPos);
         hitbox.set(this);
-        hitbox.setBounds(xPos+getWidth()/2-hbw/2,yPos,hbw,hbh);
+        hitbox.setBounds(xPos + getWidth() / 2 - hbw / 2, yPos, hbw, hbh);
     }
-
-
-
 
 
     public abstract void update(List<Tile> room, float deltaTime, EntityManager manager);

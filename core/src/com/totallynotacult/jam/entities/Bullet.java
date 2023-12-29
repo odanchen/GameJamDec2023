@@ -14,12 +14,14 @@ public class Bullet extends Entity {
 
     public Bullet(float xCor, float yCor, float angle, Sprite texture, float speed, int damage) {
         super(texture, xCor, yCor);
+        //translateX(getOriginX());
+        //translateY(getOriginY());
 
         set (texture);
 
         setPosition(xCor,yCor);
 
-        this.setRotation((float) Math.toDegrees(angle));
+        //this.setRotation((float) Math.toDegrees(angle));
         this.speed = speed;
         this.angle = angle;
         this.damage = damage;
