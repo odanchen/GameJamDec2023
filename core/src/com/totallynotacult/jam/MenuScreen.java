@@ -2,7 +2,9 @@ package com.totallynotacult.jam;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -25,6 +27,7 @@ public class MenuScreen implements Screen {
     String mainText;
     String secondaryText;
     ClickListener[] clickListeners = new ClickListener[3];
+    Texture menuTexture;
 
     public MenuScreen(MyGdxGame game, String mainText, String secondaryText)
     {
@@ -37,9 +40,11 @@ public class MenuScreen implements Screen {
         this.exitButton = new TextButton("Exit", skin);
         this.storyLineButton = new TextButton("Story Line", skin);
 
+        menuTexture = new Texture("main_menu.png");
+
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
-        viewport = new FitViewport(800,800, camera);
+        viewport = new FitViewport(990,990, camera);
         viewport.apply();
 
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
@@ -61,8 +66,8 @@ public class MenuScreen implements Screen {
 
         //Create Table
         Table mainTable = new Table(skin);
-        //Set table to fill stage
-        mainTable.setFillParent(true);
+        Table textTable = new Table(skin);
+
         //Set alignment of contents in the table.
         mainTable.top();
 
@@ -93,18 +98,27 @@ public class MenuScreen implements Screen {
         playButton.addListener(clickListeners[0]);
         exitButton.addListener(clickListeners[1]);
         storyLineButton.addListener(clickListeners[2]);
-        mainTable.add(new Label(mainText, skin)).expandX().expandY();
-        mainTable.row();
-        mainTable.add(new Label(secondaryText, skin)).expandX().padBottom(50).expandY();
-        mainTable.row();
-        mainTable.add(playButton).expandY();
-        mainTable.row();
-        mainTable.add(storyLineButton).expandY();
-        mainTable.row();
-        mainTable.add(exitButton).expandY();
 
+        mainTable.moveBy(455,720);
+        mainTable.add(playButton);
+        mainTable.row();
+        mainTable.add(storyLineButton);
+        mainTable.row();
+        mainTable.add(exitButton);
 
+        textTable.moveBy(460, 900);
+        Label mainLabel = new Label(mainText, skin);
+        mainLabel.setFontScale(1.5f);
+        textTable.add(mainLabel);
+        textTable.row();
+
+        Label secondaryLabel = new Label(secondaryText, skin);
+        secondaryLabel.setFontScale(1.5f);
+        secondaryLabel.setColor(Color.RED);
+        textTable.add(secondaryLabel);
+        textTable.row();
         stage.addActor(mainTable);
+        stage.addActor(textTable);
     }
 
     private void clearListeners() {
@@ -119,7 +133,9 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(.1f, .12f, .16f, 1);
         //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        batch.begin();
+        batch.draw(menuTexture, 0, 0);
+        batch.end();
         stage.act();
         stage.draw();
     }

@@ -22,6 +22,10 @@ public class MyGdxGame extends Game {
 
 
     public void changeToDungeon() {
+        if (this.dungeon == null) {
+            this.setScreen(new DungeonScreen(this));
+            return;
+        }
         this.setScreen(this.dungeon);
     }
 
