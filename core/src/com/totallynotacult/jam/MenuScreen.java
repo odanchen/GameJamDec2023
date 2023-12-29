@@ -71,7 +71,6 @@ public class MenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 clearListeners();
                 game.changeToDungeon();
-                game.prepareNewDungeon();
             }
 
         };
@@ -85,6 +84,7 @@ public class MenuScreen implements Screen {
         clickListeners[2] = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                clearListeners();
                 game.setScreen(new StoryScreen(game));
             }
         };

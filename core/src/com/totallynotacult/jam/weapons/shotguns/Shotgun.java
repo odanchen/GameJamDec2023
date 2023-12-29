@@ -35,6 +35,7 @@ public class Shotgun extends Weapon {
             for (int i = 0; i < numBullets; i++) {
                 produceBullet((float) (angle + (Math.random() - 0.5) * spread), manager, isFriendly);
             }
+
             shootingSound.play();
             reset();
         }

@@ -19,7 +19,6 @@ public class MachineGun extends Weapon {
         type = 2;
         set(new Sprite(sprite_sheet[0][this.type]));
 
-        SoundHolder.GUN.getSound().play();
         shootingSound = SoundHolder.GUN.getSound();
     }
 }

@@ -27,20 +27,29 @@ public class StoryScreen implements Screen {
     MyGdxGame game;
     BitmapFont font;
 
-    String story;
+    int currentSection = 0;
+    float textY = 0;
+    String[] textSections;
 
     public StoryScreen(MyGdxGame game)
     {
 
         this.game = game;
-        story = " will start in the present and travel to the past and future to defeat Dr. Evil. Good luck!";
+        String firstSection = "You have received an emergency call to the court of the TVA. Variants have gone rampant and are trying to split the TVA timeline. You must use the past present and future to destroy them and expunge them from reality.";
+        String secondSection = "Are you still there?";
+        String thirdSection = "Knock Knock... Who's there?... Doctor... Doctor Who?... Exactly!";
+        String fourthSection = "Fine, here are the controls. Use WASD to move and the mouse to aim and shoot. Press space to stop time temporarily (represented by the yellow bar). Travel to the past via pressing E on the blue portal and travel to the future by pressing E on the red portal. The red bar represents your health bar. Good luck soldier.";
+
+        textSections = new String[] {firstSection, secondSection, thirdSection, fourthSection};
+
         atlas = new TextureAtlas("skin/craftacular-ui.atlas");
         skin = new Skin(Gdx.files.internal("skin/craftacular-ui.json"), atlas);
 
         batch = new SpriteBatch();
-        camera = new OrthographicCamera(800, 800);
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, 600, 600);
         this.font = new BitmapFont(Gdx.files.internal("skin/starwars.fnt"), Gdx.files.internal("skin/starwars.png"), false, true);
-
+        this.font.getData().setScale(1);
     }
 
 
@@ -53,10 +62,15 @@ public class StoryScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(.1f, .12f, .16f, 1);
+        if (textY > 1000 + textSections[currentSection].length() * 2) {
+            currentSection++;
+            textY = 0;
+        }
+        textY+=delta * 50;
+        ScreenUtils.clear(0,0,0, 1);
         //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        font.draw(batch, story, 200, 100, 600, 1, true);
+        font.draw(batch, textSections[currentSection], 180, textY, 600, 3, true);
         batch.end();
     }
 
