@@ -92,7 +92,7 @@ public class BitMasker {
                 if (colorAt(row, col, idxs[i], room).equals(color)) ans |= 2 << i;
             } else {
                 if (colorAt(row, col, idxs[i], room).equals(color) &&
-                        (colorAt(row, col, idxs[neightbors.get(i)[0]], room).equals(color) ||
+                        (colorAt(row, col, idxs[neightbors.get(i)[0]], room).equals(color) &&
                                 colorAt(row, col, idxs[neightbors.get(i)[1]], room).equals(color)))
                     ans |= 2 << i;
             }
