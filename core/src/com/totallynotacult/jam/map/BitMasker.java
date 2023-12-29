@@ -76,11 +76,6 @@ public class BitMasker {
         return new Color(pixmap.getPixel(texture.getRegionX() + x, texture.getRegionY() - y + texture.getRegionHeight() - 1));
     }
 
-    private static int fix(int i) {
-        if (i >= 0) return i % 8;
-        return (i + 8) % 8;
-    }
-
     private static Color colorAt(int row, int col, int[] delta, TextureRegion room) {
         return getPixelID(col + delta[0], row + delta[1], room);
     }

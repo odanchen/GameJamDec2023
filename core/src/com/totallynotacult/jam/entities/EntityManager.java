@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.totallynotacult.jam.PlayerCharacter;
 import com.totallynotacult.jam.TextureHolder;
 import com.totallynotacult.jam.map.Tile;
+import com.totallynotacult.jam.weapons.Weapon;
 import com.totallynotacult.jam.weapons.pistols.Pistol;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class EntityManager {
     private final List<Bullet> enemyBullets = new ArrayList<>();
     private final List<ShootingEntity> enemies = new ArrayList<>();
     private final List<Shadow> shadows = new ArrayList<>();
-    private final List<WeaponSprite> weaponSprites = new ArrayList<>();
+    private final List<Weapon> weapons = new ArrayList<>();
     private final SpriteBatch batch;
     private PlayerCharacter character;
 
@@ -25,6 +26,7 @@ public class EntityManager {
     public void setCharacter(PlayerCharacter character) {
         addShadow(new Shadow(TextureHolder.SHADOW.getTexture(), character));
         this.character = character;
+        addWeaponSprite(character.currentWeapon);
     }
 
     public List<ShootingEntity> getEnemies() {
@@ -38,17 +40,19 @@ public class EntityManager {
         friendlyBullets.forEach(e -> e.update(room, deltaTime, this));
 
         character.update(room, deltaTime, this);
-        character.currentWeaponSprite.update(room, deltaTime, this);
+        weapons.forEach(weaponSprite -> weaponSprite.update(room, deltaTime, this));
+
+        //character.currentWeaponSprite.update(room, deltaTime, this);
         enemies.forEach(enemy -> enemy.update(room, deltaTime, this));
 
         shadows.forEach(shadow -> shadow.update(room, deltaTime, this));
-        weaponSprites.forEach(weaponSprite -> weaponSprite.update(room, deltaTime, this));
+
 
         friendlyBullets.removeIf(e -> outside(e) || e.collidesWithSomething(room, enemies));
         enemyBullets.removeIf(e -> outside(e) || e.collidesWithSomething(room, List.of(character)));
 
         shadows.removeIf(shadow -> shadow.getOwner().getHealth() <= 0);
-        weaponSprites.removeIf(weaponSprite -> weaponSprite.getOwner().getHealth() <= 0);
+        weapons.removeIf(weaponSprite -> weaponSprite.getOwner().getHealth() <= 0);
         enemies.removeIf(enemy -> enemy.getHealth() <= 0);
 
     }
@@ -63,8 +67,8 @@ public class EntityManager {
 
         character.draw(batch);
 
-        weaponSprites.forEach(weaponSprite -> weaponSprite.draw(batch));
-        character.currentWeaponSprite.draw(batch);
+        weapons.forEach(weaponSprite -> weaponSprite.draw(batch));
+        //character.currentWeaponSprite.draw(batch);
         enemyBullets.forEach(e -> e.draw(batch));
         friendlyBullets.forEach(e -> e.draw(batch));
 
@@ -80,7 +84,7 @@ public class EntityManager {
 
     public void addShadow(Shadow shadow) {shadows.add(shadow);}
     
-    public void addWeaponSprite(WeaponSprite weaponSprite) {weaponSprites.add(weaponSprite);}
+    public void addWeaponSprite(Weapon weaponSprite) {weapons.add(weaponSprite);}
 
     public boolean roomClear() {
         return enemies.isEmpty();
@@ -101,7 +105,7 @@ public class EntityManager {
     public void addEnemy(Enemy enemy) {
         addShadow(new Shadow(TextureHolder.SHADOW.getTexture(), enemy));
         enemies.add(enemy);
-        addWeaponSprite(new WeaponSprite(enemy.getCurrentWeapon(),enemy));
+        addWeaponSprite(enemy.currentWeapon);
     }
 
     public boolean isMovementAllowed() {
@@ -111,5 +115,9 @@ public class EntityManager {
     public void removeAllBullets() {
         friendlyBullets.clear();
         enemyBullets.clear();
+    }
+
+    public void removeWeapon(Weapon weapon){
+        weapons.remove(weapon);
     }
 }

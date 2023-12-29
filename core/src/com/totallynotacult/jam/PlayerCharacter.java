@@ -14,9 +14,7 @@ import com.totallynotacult.jam.entities.ShootingEntity;
 import com.totallynotacult.jam.entities.WeaponSprite;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.weapons.machine_guns.MachineGun;
-import com.totallynotacult.jam.weapons.pistols.Pistol;
 import com.totallynotacult.jam.weapons.QuickShooter;
-import com.totallynotacult.jam.weapons.shotguns.Shotgun;
 
 import java.util.List;
 import java.util.Random;
@@ -32,7 +30,7 @@ public class PlayerCharacter extends ShootingEntity {
     private float timeStopLeft = 0;
     private float stateTime = 0f;
     private boolean isMoving = false;
-    public WeaponSprite currentWeaponSprite;
+    //public WeaponSprite currentWeaponSprite;
 
     //Animations
     Texture sprites;
@@ -62,8 +60,8 @@ public class PlayerCharacter extends ShootingEntity {
         speed = 120;
         this.camera = camera;
         this.entityManager = entityManager;
-        this.currentWeapon = new MachineGun();
-        currentWeaponSprite = new WeaponSprite(this.currentWeapon,this);
+        this.currentWeapon = new MachineGun(this);
+        //currentWeaponSprite = new WeaponSprite(this.currentWeapon,this);
     }
 
     public void update(List<Tile> room, float deltaTime, EntityManager manager) {
