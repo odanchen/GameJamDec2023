@@ -97,11 +97,7 @@ public class BitMasker {
             }
         }
 
-
-        List<TextureRegion> res = new ArrayList<>();
-        for (var line: tileset) {
-            res.addAll(Arrays.asList(line));
-        }
-        return res.get(indexMap.get(ans));
+        ans = indexMap.get(ans);
+        return tileset[ans / 7][ans % 7];
     }
 }

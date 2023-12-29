@@ -16,5 +16,6 @@ public class DesktopLauncher {
 		Graphics.DisplayMode dm = Lwjgl3ApplicationConfiguration.getDisplayMode();
 		config.setWindowedMode(dm.width / 2, dm.width / 2);
 		new Lwjgl3Application(new MyGdxGame(), config);
+
 	}
 }
