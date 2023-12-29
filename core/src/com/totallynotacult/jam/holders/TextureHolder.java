@@ -14,7 +14,8 @@ public enum TextureHolder {
     SHADOW("shadow.png"),
     ENEMY_SHEET("enemy_sheet.png"),
     HITBOX("hitbox.png"),
-    TIME_TILE("timeTravelTile.png");
+    TIME_TILE("timeTravelTile.png"),
+    TILESET("tileset.png");
 
     private final Texture texture;
 

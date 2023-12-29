@@ -3,8 +3,11 @@ package com.totallynotacult.jam.map;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -69,6 +72,7 @@ public class BitMasker {
             entry(0, 46));
 
     private static Color getPixelID(int x, int y, TextureRegion texture) {
+        if (x < 0 || x > 15 || y < 0 || y > 15) return Color.BLACK;
         if (!texture.getTexture().getTextureData().isPrepared()) {
             texture.getTexture().getTextureData().prepare();
         }
@@ -80,7 +84,7 @@ public class BitMasker {
         return getPixelID(col + delta[0], row + delta[1], room);
     }
 
-    public static Texture getTexture(List<Texture> tileset, TextureRegion room, int row, int col, Color color) {
+    public static TextureRegion getTexture(TextureRegion[][] tileset, TextureRegion room, int row, int col, Color color) {
         int ans = 0;
         for (int i = 0; i < idxs.length; i++) {
             if (i == 1 || i == 3 || i == 4 || i == 6) {
@@ -93,6 +97,11 @@ public class BitMasker {
             }
         }
 
-        return tileset.get(indexMap.get(ans));
+
+        List<TextureRegion> res = new ArrayList<>();
+        for (var line: tileset) {
+            res.addAll(Arrays.asList(line));
+        }
+        return res.get(indexMap.get(ans));
     }
 }
