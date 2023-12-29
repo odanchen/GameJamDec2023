@@ -3,6 +3,7 @@ package com.totallynotacult.jam;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -19,30 +20,27 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class StoryScreen implements Screen {
 
     private SpriteBatch batch;
-    protected Stage stage;
-    private Viewport viewport;
+
     private OrthographicCamera camera;
     private TextureAtlas atlas;
     protected Skin skin;
     MyGdxGame game;
+    BitmapFont font;
 
+    String story;
 
     public StoryScreen(MyGdxGame game)
     {
 
         this.game = game;
+        story = " will start in the present and travel to the past and future to defeat Dr. Evil. Good luck!";
         atlas = new TextureAtlas("skin/craftacular-ui.atlas");
         skin = new Skin(Gdx.files.internal("skin/craftacular-ui.json"), atlas);
 
         batch = new SpriteBatch();
-        camera = new OrthographicCamera();
-        viewport = new FitViewport(800,800, camera);
-        viewport.apply();
+        camera = new OrthographicCamera(800, 800);
+        this.font = new BitmapFont(Gdx.files.internal("skin/starwars.fnt"), Gdx.files.internal("skin/starwars.png"), false, true);
 
-
-        camera.update();
-
-        stage = new Stage(viewport, batch);
     }
 
 
@@ -57,16 +55,14 @@ public class StoryScreen implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(.1f, .12f, .16f, 1);
         //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        stage.act();
-        stage.draw();
+        batch.begin();
+        font.draw(batch, story, 200, 100, 600, 1, true);
+        batch.end();
     }
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
-        camera.update();
+
     }
 
     @Override

@@ -16,7 +16,8 @@ public abstract class Entity extends Sprite {
     protected Sprite currentSprite;
     protected float stateTime = 0f;
     protected Sprite hitbox = new Sprite(TextureHolder.HITBOX.getTexture());
-
+    protected float hbw;
+    protected float hbh;
     public Entity(Texture texture) {
         super(texture);
         hitbox.set(this);
@@ -40,6 +41,8 @@ public abstract class Entity extends Sprite {
         setPosition(xPos, yPos);
         hitbox.set(this);
         hitbox.setBounds(xPos + getWidth() / 2 - hbw / 2, yPos, hbw, hbh);
+        this.hbw = hbw;
+        this.hbh = hbh;
     }
 
 
@@ -64,6 +67,7 @@ public abstract class Entity extends Sprite {
         currentSprite.setScale(getScaleX(), getScaleY());
         currentSprite.setColor(getColor());
         set(currentSprite);
+        hitbox.setBounds(getX() + getWidth() / 2 - hbw / 2, getY(), hbw, hbh);
     }
 
     protected int collisionWithWeaponTile(List<Tile> room) {

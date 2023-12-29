@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.totallynotacult.jam.DungeonScreen;
 import com.totallynotacult.jam.holders.TextureHolder;
 
 import java.util.Arrays;
@@ -17,8 +18,9 @@ public class Room {
     private int type;
     private int[] exitDirections;
     private boolean visited;
+    private int indexVariation;
 
-    public Room(int type, int[] exitDirections, int timeLine) {
+    public Room(int type, int[] exitDirections, int timeLine, int indexVariation) {
         /*
         Types
         0 = null
@@ -28,6 +30,7 @@ public class Room {
         */
         this.type = type;
         this.exitDirections = exitDirections;
+        this.indexVariation = indexVariation;
         Texture roomTexture;
         TextureRegion roomVariation;
         switch (type) {
@@ -60,8 +63,10 @@ public class Room {
                 if (exitDirections[0] == 2 || exitDirections[1] == 2) {
                     if (exitDirections[0] == 3 || exitDirections[1] == 3) index = 70;
                 }
-                roomVariation = ss[1][index - (int) (Math.random() * 9 + 1)];
-                break;
+
+                //roomVariation = ss[DungeonScreen.currentTimeLine][index - indexVariation]; break;
+                roomVariation = ss[DungeonScreen.currentTimeLine][index - 9]; break;
+
             }
             default: {
                 roomTexture = new Texture(Gdx.files.internal("room1.png"));
@@ -77,6 +82,12 @@ public class Room {
         }
     }
 
+    public int[] getExitDirections() {
+        return exitDirections;
+    }
+    public int getIndexVariation() {
+        return indexVariation;
+    }
     public boolean isVisited() {
         return visited;
     }
@@ -106,9 +117,9 @@ public class Room {
                     mat[row][col] = new Wall(wallImg, row, col);
                 } else if (getPixelID(col, row, texture).equals(Color.RED)) {
                     mat[row][col] = new EnemyTile(tileImg, row, col);
-                } else if ((getPixelID(col, row, texture).equals(Color.BLUE))) {
+                } else if ((getPixelID(col, row, texture).equals(Color.YELLOW))) {
                     mat[row][col] = new ForwardTravelTile(timeTile, row, col);
-                } if ((getPixelID(col, row, texture).equals(Color.SKY))) {
+                } else if ((getPixelID(col, row, texture).equals(Color.BLUE))) {
                     mat[row][col] = new BackwardTravelTile(timeTile, row, col);
                 } else {
                     mat[row][col] = new Tile(tileImg, row, col);

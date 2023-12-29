@@ -85,8 +85,10 @@ public class PlayerCharacter extends ShootingEntity {
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             if (room.stream().anyMatch(tile -> tile instanceof BackwardTravelTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle()))) {
                 DungeonScreen.currentTimeLine--;
+                screen.regenerateRoom();
             } else if (room.stream().anyMatch(tile -> tile instanceof ForwardTravelTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle())))  {
                 DungeonScreen.currentTimeLine++;
+                screen.regenerateRoom();
             }
         }
     }

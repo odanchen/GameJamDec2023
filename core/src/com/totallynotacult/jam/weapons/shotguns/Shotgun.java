@@ -1,10 +1,9 @@
 package com.totallynotacult.jam.weapons.shotguns;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.totallynotacult.jam.holders.SoundHolder;
-import com.totallynotacult.jam.holders.TextureHolder;
 import com.totallynotacult.jam.entities.EntityManager;
 import com.totallynotacult.jam.entities.ShootingEntity;
+import com.totallynotacult.jam.holders.TextureHolder;
 import com.totallynotacult.jam.weapons.Weapon;
 
 import java.util.Random;
@@ -25,8 +24,6 @@ public class Shotgun extends Weapon {
         this.bulletTexture = TextureHolder.SHOTGUN_BULLET.getTexture();
         type = 1;
         set(new Sprite(sprite_sheet[0][this.type]));
-
-        shootingSound = SoundHolder.SHOTGUN.getSound();
     }
 
     @Override
@@ -34,10 +31,9 @@ public class Shotgun extends Weapon {
         if (readyToShoot()) {
             for (int i = 0; i < numBullets; i++) {
                 timeSinceShot = shootDelay;
-                produceBullet((float) (angle + (Math.random() - 0.5) * spread), manager, isFriendly);
+                super.shoot((float) (angle + (Math.random() - 0.5) * spread), manager, isFriendly);
             }
             reset();
-            shootingSound.play();
         }
     }
 }

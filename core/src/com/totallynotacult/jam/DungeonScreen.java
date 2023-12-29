@@ -60,6 +60,10 @@ public class DungeonScreen implements Screen {
         return entityManager.roomClear();
     }
 
+    public void regenerateRoom() {
+        currentRoom = new Room(currentRoom.getRoomType(),currentRoom.getExitDirections(),currentTimeLine,currentRoom.getIndexVariation());
+    }
+
     void fixRoom() {
         if (!roomExists(1, 0)) currentRoom.sealExit(1, 0);
         if (!roomExists(-1, 0)) currentRoom.sealExit(-1, 0);
