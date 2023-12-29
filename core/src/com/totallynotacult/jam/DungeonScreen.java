@@ -54,6 +54,7 @@ public class DungeonScreen implements Screen {
         fixRoom();
         currentRoom.makeVisited();
 
+
         cam = new Camera(character, 256, 256, this);
     }
 

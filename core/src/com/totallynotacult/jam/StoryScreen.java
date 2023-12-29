@@ -47,7 +47,7 @@ public class StoryScreen implements Screen {
 
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 600, 600);
+        camera.setToOrtho(false, 480, 480);
         this.font = new BitmapFont(Gdx.files.internal("skin/starwars.fnt"), Gdx.files.internal("skin/starwars.png"), false, true);
         this.font.getData().setScale(1);
     }
@@ -70,7 +70,8 @@ public class StoryScreen implements Screen {
         ScreenUtils.clear(0,0,0, 1);
         //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        font.draw(batch, textSections[currentSection], 180, textY, 600, 3, true);
+        int offset = Constants.window_size / 3;
+        font.draw(batch, textSections[currentSection], offset / 2, textY, Constants.window_size - offset, 3, true);
         batch.end();
     }
 
