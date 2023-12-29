@@ -125,6 +125,7 @@ public class Room {
                     hasAFuture = true;
                 } else if ((getPixelID(col, row, texture).equals(Color.BLUE))) {
                     mat[row][col] = new BackwardTravelTile(timeTile, row, col);
+                   // mat[row][col] = new EnemyTile(tileImg, row, col);
                 } else if ((getPixelID(col, row, texture).equals(Color.GREEN))) {
                     mat[row][col] = new SuperChargeTile(timeTile, row, col);
                 } else {

@@ -45,7 +45,7 @@ public class DungeonScreen implements Screen {
         entityManager.setCharacter(character);
         renderer = new ShapeRenderer();
 
-        RoomGen r = new RoomGen(9);
+        RoomGen r = new RoomGen(5);
         rooms = r.getLevelMatrix();
         row = r.getStartRoom()[0];
         col = r.getStartRoom()[1];
