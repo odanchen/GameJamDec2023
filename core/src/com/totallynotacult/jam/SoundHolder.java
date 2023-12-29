@@ -8,7 +8,9 @@ public enum SoundHolder {
     TIMESTOP_SOUND("timeStopSoundEffect.mp3"),
     ZAWARUDO("zawarudo.mp3"),
     GUN("gun.wav"),
-    SHOTGUN("shotgun.wav");
+    SHOTGUN("shotgun.wav"),
+    AMMO_PICKUP("ammo_pickup.wav"),
+    DAMAGE("enemy_wounded.wav");
     private final Sound sound;
 
     public Sound getSound() {

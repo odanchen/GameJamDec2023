@@ -1,6 +1,7 @@
 package com.totallynotacult.jam.entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.totallynotacult.jam.SoundHolder;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.weapons.QuickShooter;
 import com.totallynotacult.jam.weapons.Weapon;
@@ -84,6 +85,7 @@ public abstract class ShootingEntity extends Entity {
 
     public void receiveDamage(int damage) {
         health -= damage;
+        SoundHolder.DAMAGE.getSound().play();
     }
 
     public int getMaxHealth() {
@@ -109,6 +111,7 @@ public abstract class ShootingEntity extends Entity {
                 manager.removeWeapon(currentWeapon);
                 currentWeapon = Weapon.getRandomWeapon(this);
                 manager.addWeaponSprite(currentWeapon);
+                SoundHolder.AMMO_PICKUP.getSound().play();
                 //manager.getCharacter().currentWeaponSprite = new WeaponSprite(currentWeapon, this);
                 //weaponSprites.remove(currentWeapon);
             }
