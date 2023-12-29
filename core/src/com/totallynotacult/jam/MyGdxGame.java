@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.totallynotacult.jam.holders.MusicHolder;
 
 public class MyGdxGame extends Game {
     SpriteBatch batch;
@@ -12,6 +13,9 @@ public class MyGdxGame extends Game {
 
     @Override
     public void create() {
+        MusicHolder.THEME.getMusic().setVolume(0.1f);
+        MusicHolder.THEME.getMusic().setLooping(true);
+        MusicHolder.THEME.getMusic().play();
         prepareNewDungeon();
         batch = new SpriteBatch();
         font = new BitmapFont();
