@@ -55,7 +55,7 @@ public class Camera {
                 if (abs(x) >= abs(roomSwitchHorX)-100) {
                     x = 180 + (-roomSwitchHorX);
                     switchingRoom = false;
-                    screen.changeRoom(0, (int) (roomSwitchHorX/abs(roomSwitchHorX)));
+                    screen.changeRoom(0, (int) (roomSwitchHorX/abs(roomSwitchHorX)),false);
                 }
             }
             else {
@@ -63,7 +63,7 @@ public class Camera {
                     y = 180 +(-roomSwitchVerY);
                     switchingRoom = false;
 
-                    screen.changeRoom( (int) (-roomSwitchVerY/abs(roomSwitchVerY)), 0);
+                    screen.changeRoom( (int) (-roomSwitchVerY/abs(roomSwitchVerY)), 0,false);
 
                 }
             }

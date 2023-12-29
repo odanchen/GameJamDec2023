@@ -13,6 +13,7 @@ import com.totallynotacult.jam.entities.ShootingEntity;
 import com.totallynotacult.jam.holders.SoundHolder;
 import com.totallynotacult.jam.map.BackwardTravelTile;
 import com.totallynotacult.jam.map.ForwardTravelTile;
+import com.totallynotacult.jam.map.SuperChargeTile;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.weapons.QuickShooter;
 import com.totallynotacult.jam.weapons.pistols.NoWeapon;
@@ -31,6 +32,8 @@ public class PlayerCharacter extends ShootingEntity {
     private float timeStopLeft = 0;
     private float stateTime = 0f;
     private boolean isMoving = false;
+
+
 
     //Animations
     Texture sprites;
@@ -61,6 +64,7 @@ public class PlayerCharacter extends ShootingEntity {
         this.camera = camera;
         this.entityManager = entityManager;
         this.currentWeapon = new NoWeapon(this);
+        isSuperCharged = false;
         //currentWeaponSprite = new WeaponSprite(this.currentWeapon,this);
     }
 
@@ -82,6 +86,8 @@ public class PlayerCharacter extends ShootingEntity {
         timeStopAction();
         playerAnimations();
 
+
+        //Interactable Tile Collisions
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             if (room.stream().anyMatch(tile -> tile instanceof BackwardTravelTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle()))) {
                 DungeonScreen.currentTimeLine--;
@@ -89,9 +95,13 @@ public class PlayerCharacter extends ShootingEntity {
             } else if (room.stream().anyMatch(tile -> tile instanceof ForwardTravelTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle())))  {
                 DungeonScreen.currentTimeLine++;
                 screen.regenerateRoom();
+            } else if (room.stream().anyMatch(tile -> tile instanceof SuperChargeTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle())))  {
+                isSuperCharged = true;
             }
+
         }
     }
+
 
 
     public void playerAnimations() {
@@ -119,7 +129,8 @@ public class PlayerCharacter extends ShootingEntity {
 
     @Override
     protected boolean collidesWithObstacle(List<Tile> room, EntityManager manager) {
-        return collidesWithWall(room) || manager.getEnemies().stream().anyMatch(enemy -> getBoundingRectangle().overlaps(enemy.getBoundingRectangle()));
+        //return collidesWithWall(room) || manager.getEnemies().stream().anyMatch(enemy -> getBoundingRectangle().overlaps(enemy.getBoundingRectangle()));
+        return collidesWithWall(room);
     }
 
     public void performMovement(float deltaTime, List<Tile> room) {

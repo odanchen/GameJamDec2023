@@ -23,7 +23,7 @@ public class DungeonScreen implements Screen {
     private final EntityManager entityManager;
     private final ShapeRenderer renderer;
     public static int currentTimeLine = 1; // - 0 = past, 1 = present, 2 = future
-
+    public static PlayerCharacter currentCharacter;
     private Room currentRoom;
     private Room[][] rooms;
     private int row;
@@ -39,8 +39,8 @@ public class DungeonScreen implements Screen {
         camera.setToOrtho(false, 320, 320);
 
         entityManager = new EntityManager(batch);
-        character = new PlayerCharacter(entityManager, camera, this);
-
+        currentCharacter = new PlayerCharacter(entityManager, camera, this);
+        character = currentCharacter;
 
         entityManager.setCharacter(character);
         renderer = new ShapeRenderer();
@@ -62,7 +62,10 @@ public class DungeonScreen implements Screen {
     }
 
     public void regenerateRoom() {
+
         currentRoom = new Room(currentRoom.getRoomType(),currentRoom.getExitDirections(),currentTimeLine,currentRoom.getIndexVariation());
+        entityManager.removeEnemies();
+        changeRoom(0,0,true);
     }
 
     void fixRoom() {
@@ -76,20 +79,22 @@ public class DungeonScreen implements Screen {
         return row + dRow >= 0 && row + dRow < rooms.length && col + dCol >= 0 && col + dCol < rooms[row].length && rooms[row + dRow][col + dCol].getRoomType() != 0;
     }
 
-    void changeRoom(int dRow, int dCol) {
+    void changeRoom(int dRow, int dCol, boolean timeLineSwap) {
+
         //camera.position.set(character.getX(), character.getY(), 0);
         entityManager.removeAllBullets();
-        currentRoom = rooms[row += dRow][col += dCol];
+        if (!timeLineSwap) currentRoom = rooms[row += dRow][col += dCol];
 
         fixRoom();
         for (int row = 0; row < currentRoom.getTiles().length; row++) {
             for (int col = 0; col < currentRoom.getTiles()[row].length; col++) {
                 if (currentRoom.getTiles()[row][col] instanceof EnemyTile && !currentRoom.isVisited()) {
-                    entityManager.addEnemy(new Enemy(col * 16, row * 16));
+                    if (currentTimeLine == 1) entityManager.addEnemy(new Enemy(col * 16, row * 16,true));
+                        else entityManager.addEnemy(new Enemy(col * 16, row * 16,false));
                 }
             }
         }
-        currentRoom.makeVisited();
+        if (currentTimeLine == 1 && entityManager.noMoreEnemies()) currentRoom.makeVisited();
     }
 
     @Override
@@ -121,6 +126,7 @@ public class DungeonScreen implements Screen {
         drawHealthBar();
         drawTimeBar();
 
+        if (entityManager.noMoreEnemies() && currentTimeLine == 1) currentRoom.makeVisited();
         if (character.isDead()) game.setScreen(new MenuScreen(game, "You died, yet, you may still choose to travel back to the past if so your will holds.", "Try again?"));
     }
 

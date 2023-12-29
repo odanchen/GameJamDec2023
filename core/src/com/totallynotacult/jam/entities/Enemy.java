@@ -18,7 +18,6 @@ public class Enemy extends ShootingEntity {
     private boolean rangedEnemy;
     private float agroRange;
 
-
     //Animations
     Texture sprites;
     TextureRegion[][] sprite_sheet;
@@ -26,9 +25,10 @@ public class Enemy extends ShootingEntity {
     TextureRegion idle;
     Animation<TextureRegion> runCycleAni;
 
-    public Enemy(int xCor, int yCor) {
+    public Enemy(int xCor, int yCor,boolean isSuperCharged) {
         super(new Texture(Gdx.files.internal("enemy_sheet.png")));
         currentWeapon = new EnemyPistol(this);
+        this.isSuperCharged = isSuperCharged;
         sprites = new Texture(Gdx.files.internal("enemy_sheet.png"));
         sprite_sheet = TextureRegion.split(sprites, sprites.getWidth() / 4, sprites.getHeight());
         idle = sprite_sheet[0][0];

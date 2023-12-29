@@ -48,7 +48,7 @@ public class Room {
                 break;
             }
             case 2: {
-                roomTexture = new Texture(Gdx.files.internal("room_edge_sheet.png"));
+                roomTexture = new Texture(Gdx.files.internal("room_edge_noFrame.png"));
                 TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth() / 70, roomTexture.getHeight()/3);
                 int index = 0;
                 if (exitDirections[0] == 0 || exitDirections[1] == 0) {
@@ -65,7 +65,7 @@ public class Room {
                 }
 
                 //roomVariation = ss[DungeonScreen.currentTimeLine][index - indexVariation]; break;
-                roomVariation = ss[DungeonScreen.currentTimeLine][index - 9]; break;
+                roomVariation = ss[DungeonScreen.currentTimeLine][index - 6]; break;
 
             }
             default: {
@@ -123,6 +123,8 @@ public class Room {
                     mat[row][col] = new ForwardTravelTile(timeTile, row, col);
                 } else if ((getPixelID(col, row, texture).equals(Color.BLUE))) {
                     mat[row][col] = new BackwardTravelTile(timeTile, row, col);
+                } else if ((getPixelID(col, row, texture).equals(Color.GREEN))) {
+                    mat[row][col] = new SuperChargeTile(timeTile, row, col);
                 } else {
                     mat[row][col] = new Tile(tileImg, row, col);
                     if (random.nextInt(100) == 20)

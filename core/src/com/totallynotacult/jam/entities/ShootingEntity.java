@@ -1,6 +1,8 @@
 package com.totallynotacult.jam.entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.totallynotacult.jam.DungeonScreen;
+import com.totallynotacult.jam.PlayerCharacter;
 import com.totallynotacult.jam.holders.SoundHolder;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.weapons.QuickShooter;
@@ -18,7 +20,9 @@ public abstract class ShootingEntity extends Entity {
     protected float facing;
     protected float hitboxWidth;
     protected float hitboxHeight;
+    protected boolean isSuperCharged;
 
+    public boolean getIsSuperCharged() {return isSuperCharged;}
 
     public ShootingEntity(Texture texture) {
         super(texture);
@@ -28,7 +32,6 @@ public abstract class ShootingEntity extends Entity {
 
     public ShootingEntity(Texture texture, float xPos, float yPos) {
         super(texture, xPos, yPos);
-
     }
 
     public ShootingEntity(Texture texture, float xPos, float yPos, float hbw, float hbh) {
@@ -84,8 +87,17 @@ public abstract class ShootingEntity extends Entity {
     }
 
     public void receiveDamage(int damage) {
-        health -= damage;
-        SoundHolder.DAMAGE.getSound().play();
+
+        if (this instanceof PlayerCharacter) {
+            health -= damage;
+            SoundHolder.DAMAGE.getSound().play();
+        } else {
+            if (!this.getIsSuperCharged() || DungeonScreen.currentCharacter.getIsSuperCharged() && this.getIsSuperCharged()) {
+                health -= damage;
+                SoundHolder.DAMAGE.getSound().play();
+            }
+        }
+
     }
 
     public int getMaxHealth() {

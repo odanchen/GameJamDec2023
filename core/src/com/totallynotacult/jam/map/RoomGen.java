@@ -12,7 +12,7 @@ public class RoomGen {
     public RoomGen(int roomCount) {
         for (int i = 0; i < 5; i++)
             for (int k = 0; k < 5; k++)
-                sceneGrid[i][k] = new Room(0, new int[]{}, DungeonScreen.currentTimeLine,(int) (Math.random() * 9 + 1));
+                sceneGrid[i][k] = new Room(0, new int[]{}, 1,0);
 
         int[] currentRoom = new int[]{2, 2}; //Current room being generated
 
@@ -35,7 +35,7 @@ public class RoomGen {
             } else if (i == roomCount - 1) //Ending room
                 sceneGrid[currentRoom[0]][currentRoom[1]] = new Room(3, new int[]{previousRoomExit},DungeonScreen.currentTimeLine,0);
             else
-                sceneGrid[currentRoom[0]][currentRoom[1]] = new Room(2, new int[]{list.get(nextRoomRandom)[2], previousRoomExit},DungeonScreen.currentTimeLine,9); //Everything else
+                sceneGrid[currentRoom[0]][currentRoom[1]] = new Room(2, new int[]{list.get(nextRoomRandom)[2], previousRoomExit},DungeonScreen.currentTimeLine,6); //(int) (Math.random() * 9 + 1)Everything else
 
             currentRoom = new int[]{list.get(nextRoomRandom)[0], list.get(nextRoomRandom)[1]};
             previousRoomExit = (list.get(nextRoomRandom)[2] + 2) % 4;

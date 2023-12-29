@@ -22,12 +22,22 @@ public class EntityManager {
         this.batch = batch;
     }
 
+    public void removeEnemies() {
+        enemies.clear();
+        enemyBullets.clear();
+        weapons.removeIf(weaponSprite -> !(weaponSprite.getOwner() instanceof PlayerCharacter));
+        shadows.removeIf(shadow -> !(shadow.getOwner() instanceof PlayerCharacter));
+    }
+
     public void setCharacter(PlayerCharacter character) {
         addShadow(new Shadow(TextureHolder.SHADOW.getTexture(), character));
         this.character = character;
         addWeaponSprite(character.currentWeapon);
     }
 
+    public boolean noMoreEnemies() {
+        return enemies.isEmpty();
+    }
     public List<ShootingEntity> getEnemies() {
         return enemies;
     }
