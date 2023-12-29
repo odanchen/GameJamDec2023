@@ -92,7 +92,6 @@ public class Room {
         }
         Pixmap pixmap = texture.getTexture().getTextureData().consumePixmap();
         return new Color(pixmap.getPixel(texture.getRegionX() + x, texture.getRegionY() - y + texture.getRegionHeight() - 1));
-
     }
 
     public Tile[][] generateRoomMatrix(TextureRegion texture) {
