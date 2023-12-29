@@ -134,6 +134,8 @@ public class PlayerCharacter extends ShootingEntity {
     }
 
     public void performMovement(float deltaTime, List<Tile> room) {
+
+        //f
         float horDir = getDir(Gdx.input.isKeyPressed(Input.Keys.D), Gdx.input.isKeyPressed(Input.Keys.A));
         float vertDir = getDir(Gdx.input.isKeyPressed(Input.Keys.W), Gdx.input.isKeyPressed(Input.Keys.S));
 
