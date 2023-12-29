@@ -1,8 +1,6 @@
 package com.totallynotacult.jam.entities;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.totallynotacult.jam.map.Room;
 import com.totallynotacult.jam.map.Tile;
 
 import java.util.List;
@@ -17,9 +15,11 @@ public class Bullet extends Entity {
         //translateX(getOriginX());
         //translateY(getOriginY());
 
-        set (texture);
+        set(texture);
+        setSize(8, 8);
+        setOrigin(getWidth() / 2, getHeight() / 2);
 
-        setPosition(xCor,yCor);
+        setPosition(xCor, yCor);
 
         //this.setRotation((float) Math.toDegrees(angle));
         this.speed = speed;

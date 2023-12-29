@@ -15,32 +15,32 @@ public abstract class Entity extends Sprite {
 
     protected Sprite currentSprite;
     protected float stateTime = 0f;
-    protected Sprite hitbox = new Sprite(TextureHolder.HITBOX.getTexture());
+    //protected Sprite hitbox = new Sprite(TextureHolder.HITBOX.getTexture());
     protected float hbw;
     protected float hbh;
     public Entity(Texture texture) {
         super(texture);
-        hitbox.set(this);
+        //hitbox.set(this);
     }
 
     public Entity(Texture texture, float xPos, float yPos) {
         super(texture);
         setPosition(xPos, yPos);
-        hitbox.set(this);
+        //hitbox.set(this);
     }
 
     public Entity(TextureRegion texture, float xPos, float yPos) {
         super(texture);
         setOrigin(getWidth() / 2, getHeight() / 2);
         setPosition(xPos, yPos);
-        hitbox.set(this);
+        //hitbox.set(this);
     }
 
     public Entity(Texture texture, float xPos, float yPos, float hbw, float hbh) {
         super(texture);
         setPosition(xPos, yPos);
-        hitbox.set(this);
-        hitbox.setBounds(xPos + getWidth() / 2 - hbw / 2, yPos, hbw, hbh);
+        //hitbox.set(this);
+        //hitbox.setBounds(xPos + getWidth() / 2 - hbw / 2, yPos, hbw, hbh);
         this.hbw = hbw;
         this.hbh = hbh;
     }
@@ -67,7 +67,7 @@ public abstract class Entity extends Sprite {
         currentSprite.setScale(getScaleX(), getScaleY());
         currentSprite.setColor(getColor());
         set(currentSprite);
-        hitbox.setBounds(getX() + getWidth() / 2 - hbw / 2, getY(), hbw, hbh);
+        //hitbox.setBounds(getX() + getWidth() / 2 - hbw / 2, getY(), hbw, hbh);
     }
 
     protected int collisionWithWeaponTile(List<Tile> room) {

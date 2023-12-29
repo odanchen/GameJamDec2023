@@ -126,7 +126,7 @@ public abstract class Weapon extends Entity {
 
     protected void produceBullet(float angle, EntityManager manager, boolean isFriendly) {
         kickbackMag = 5;
-        float xx = getX() + getOriginX() + (float) (Math.cos(angle) * 6) - 5;
+        float xx = getX() + getOriginX() + (float) (Math.cos(angle) * 6) + 1;
         float yy = getY() + getOriginY() + (float) (Math.sin(angle) * 8) - 4;
 
         var bullet = new Bullet(xx, yy, angle, bulletType(), bulletSpeed, damage);
