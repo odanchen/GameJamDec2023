@@ -62,7 +62,6 @@ public abstract class ShootingEntity extends Entity {
         enemyBullets.forEach(bullet -> {
             if (getBoundingRectangle().overlaps(bullet.getBoundingRectangle())) {
                 receiveDamage(bullet.getDamage());
-                System.out.println("HIT");
             }
         });
     }
