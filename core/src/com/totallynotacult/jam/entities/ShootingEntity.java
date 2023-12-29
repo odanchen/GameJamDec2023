@@ -1,7 +1,7 @@
 package com.totallynotacult.jam.entities;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.totallynotacult.jam.SoundHolder;
+import com.totallynotacult.jam.holders.SoundHolder;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.weapons.QuickShooter;
 import com.totallynotacult.jam.weapons.Weapon;

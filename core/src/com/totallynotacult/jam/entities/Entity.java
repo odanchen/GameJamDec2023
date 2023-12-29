@@ -4,8 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector4;
-import com.totallynotacult.jam.TextureHolder;
+import com.totallynotacult.jam.holders.TextureHolder;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.map.Wall;
 

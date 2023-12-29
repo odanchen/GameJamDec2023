@@ -2,10 +2,9 @@ package com.totallynotacult.jam.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.totallynotacult.jam.PlayerCharacter;
-import com.totallynotacult.jam.TextureHolder;
+import com.totallynotacult.jam.holders.TextureHolder;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.weapons.Weapon;
-import com.totallynotacult.jam.weapons.pistols.Pistol;
 
 import java.util.ArrayList;
 import java.util.List;

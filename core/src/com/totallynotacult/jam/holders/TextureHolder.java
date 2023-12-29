@@ -1,4 +1,4 @@
-package com.totallynotacult.jam;
+package com.totallynotacult.jam.holders;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,7 +13,8 @@ public enum TextureHolder {
     WALL("wall_tile.png"),
     SHADOW("shadow.png"),
     ENEMY_SHEET("enemy_sheet.png"),
-    HITBOX("hitbox.png");
+    HITBOX("hitbox.png"),
+    TIME_TILE("timeTravelTile.png");
 
     private final Texture texture;
 

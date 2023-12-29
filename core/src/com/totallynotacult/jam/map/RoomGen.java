@@ -1,5 +1,7 @@
 package com.totallynotacult.jam.map;
 
+import com.totallynotacult.jam.DungeonScreen;
+
 import java.util.ArrayList;
 
 public class RoomGen {
@@ -10,7 +12,7 @@ public class RoomGen {
     public RoomGen(int roomCount) {
         for (int i = 0; i < 5; i++)
             for (int k = 0; k < 5; k++)
-                sceneGrid[i][k] = new Room(0, new int[]{});
+                sceneGrid[i][k] = new Room(0, new int[]{}, DungeonScreen.currentTimeLine);
 
         int[] currentRoom = new int[]{2, 2}; //Current room being generated
 
@@ -28,12 +30,12 @@ public class RoomGen {
             System.out.println(list.get(nextRoomRandom)[2]);
 
             if (i == 0) { //Starting room
-                sceneGrid[currentRoom[0]][currentRoom[1]] = new Room(1, new int[]{list.get(nextRoomRandom)[2]});
+                sceneGrid[currentRoom[0]][currentRoom[1]] = new Room(1, new int[]{list.get(nextRoomRandom)[2]},DungeonScreen.currentTimeLine);
                 startRoom = currentRoom;
             } else if (i == roomCount - 1) //Ending room
-                sceneGrid[currentRoom[0]][currentRoom[1]] = new Room(3, new int[]{previousRoomExit});
+                sceneGrid[currentRoom[0]][currentRoom[1]] = new Room(3, new int[]{previousRoomExit},DungeonScreen.currentTimeLine);
             else
-                sceneGrid[currentRoom[0]][currentRoom[1]] = new Room(2, new int[]{list.get(nextRoomRandom)[2], previousRoomExit}); //Everything else
+                sceneGrid[currentRoom[0]][currentRoom[1]] = new Room(2, new int[]{list.get(nextRoomRandom)[2], previousRoomExit},DungeonScreen.currentTimeLine); //Everything else
 
             currentRoom = new int[]{list.get(nextRoomRandom)[0], list.get(nextRoomRandom)[1]};
             previousRoomExit = (list.get(nextRoomRandom)[2] + 2) % 4;

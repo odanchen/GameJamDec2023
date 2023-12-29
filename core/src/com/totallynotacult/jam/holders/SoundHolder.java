@@ -1,4 +1,4 @@
-package com.totallynotacult.jam;
+package com.totallynotacult.jam.holders;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;

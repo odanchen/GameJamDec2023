@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.totallynotacult.jam.entities.Enemy;
 import com.totallynotacult.jam.entities.EntityManager;
+import com.totallynotacult.jam.holders.TextureHolder;
 import com.totallynotacult.jam.map.EnemyTile;
 import com.totallynotacult.jam.map.Room;
 import com.totallynotacult.jam.map.RoomGen;
@@ -20,7 +21,7 @@ public class DungeonScreen implements Screen {
     private final SpriteBatch batch;
     private final EntityManager entityManager;
     private final ShapeRenderer renderer;
-
+    public static int currentTimeLine = 1; // - 0 = past, 1 = present, 2 = future
 
     private Room currentRoom;
     private Room[][] rooms;
@@ -115,7 +116,7 @@ public class DungeonScreen implements Screen {
         drawHealthBar();
         drawTimeBar();
 
-        if (character.isDead()) game.setScreen(new StartMenuScreen(game));
+        if (character.isDead()) game.setScreen(new MenuScreen(game, "You died, yet, you may still choose to travel back to the past if so your will holds.", "Try again?"));
     }
 
     private void drawHealthBar() {

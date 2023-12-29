@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class StartMenuScreen implements Screen {
+public class MenuScreen implements Screen {
 
     private SpriteBatch batch;
     protected Stage stage;
@@ -22,12 +22,20 @@ public class StartMenuScreen implements Screen {
     private TextureAtlas atlas;
     protected Skin skin;
     MyGdxGame game;
+    String mainText;
+    String secondaryText;
+    ClickListener[] clickListeners = new ClickListener[3];
 
-    public StartMenuScreen(MyGdxGame game)
+    public MenuScreen(MyGdxGame game, String mainText, String secondaryText)
     {
+        this.mainText = mainText;
+        this.secondaryText = secondaryText;
         this.game = game;
         atlas = new TextureAtlas("skin/craftacular-ui.atlas");
         skin = new Skin(Gdx.files.internal("skin/craftacular-ui.json"), atlas);
+        this.playButton = new TextButton("Play", skin);
+        this.exitButton = new TextButton("Exit", skin);
+        this.storyLineButton = new TextButton("Story Line", skin);
 
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
@@ -40,10 +48,15 @@ public class StartMenuScreen implements Screen {
         stage = new Stage(viewport, batch);
     }
 
+    //Create buttons
+    TextButton playButton;
 
+    TextButton storyLineButton;
+
+    TextButton exitButton;
     @Override
     public void show() {
-        //Stage should controll input:
+        //Stage should control input:
         Gdx.input.setInputProcessor(stage);
 
         //Create Table
@@ -53,42 +66,53 @@ public class StartMenuScreen implements Screen {
         //Set alignment of contents in the table.
         mainTable.top();
 
-        //Create buttons
-        TextButton playButton = new TextButton("Play", skin);
-
-        TextButton exitButton = new TextButton("Exit", skin);
-        ClickListener[] listeners = new ClickListener[2];
-        listeners[0] = new ClickListener(){
+        clickListeners[0] = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                for (ClickListener listener : listeners) {
-                    playButton.removeListener(listener);
-                    exitButton.removeListener(listener);
-                }
+                clearListeners();
                 game.changeToDungeon();
                 game.prepareNewDungeon();
             }
 
         };
-        listeners[1] = new ClickListener(){
+        clickListeners[1] = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
 
             }
         };
+        clickListeners[2] = new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new StoryScreen(game));
+            }
+        };
 
         //Add listeners to buttons
-        playButton.addListener(listeners[0]);
-        exitButton.addListener(listeners[1]);
-        mainTable.add(new Label("Welcome to the Time Massacre", skin)).expandX().expandY();
+        playButton.addListener(clickListeners[0]);
+        exitButton.addListener(clickListeners[1]);
+        storyLineButton.addListener(clickListeners[2]);
+        mainTable.add(new Label(mainText, skin)).expandX().expandY();
+        mainTable.row();
+        mainTable.add(new Label(secondaryText, skin)).expandX().padBottom(50).expandY();
         mainTable.row();
         mainTable.add(playButton).expandY();
+        mainTable.row();
+        mainTable.add(storyLineButton).expandY();
         mainTable.row();
         mainTable.add(exitButton).expandY();
 
 
         stage.addActor(mainTable);
+    }
+
+    private void clearListeners() {
+        for (ClickListener listener : clickListeners) {
+            playButton.removeListener(listener);
+            exitButton.removeListener(listener);
+            storyLineButton.removeListener(listener);
+        }
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.totallynotacult.jam.weapons.machine_guns;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.totallynotacult.jam.SoundHolder;
-import com.totallynotacult.jam.TextureHolder;
+import com.totallynotacult.jam.holders.SoundHolder;
+import com.totallynotacult.jam.holders.TextureHolder;
 import com.totallynotacult.jam.entities.ShootingEntity;
 import com.totallynotacult.jam.weapons.Weapon;
 

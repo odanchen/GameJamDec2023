@@ -10,10 +10,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.totallynotacult.jam.entities.EntityManager;
 import com.totallynotacult.jam.entities.ShootingEntity;
+import com.totallynotacult.jam.holders.SoundHolder;
+import com.totallynotacult.jam.map.BackwardTravelTile;
+import com.totallynotacult.jam.map.ForwardTravelTile;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.weapons.QuickShooter;
 import com.totallynotacult.jam.weapons.pistols.NoWeapon;
-import com.totallynotacult.jam.weapons.shotguns.Shotgun;
 
 import java.util.List;
 import java.util.Random;
@@ -79,6 +81,14 @@ public class PlayerCharacter extends ShootingEntity {
         checkBulletCollision(manager.getEnemyBullets());
         timeStopAction();
         playerAnimations();
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+            if (room.stream().anyMatch(tile -> tile instanceof BackwardTravelTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle()))) {
+                DungeonScreen.currentTimeLine--;
+            } else if (room.stream().anyMatch(tile -> tile instanceof ForwardTravelTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle())))  {
+                DungeonScreen.currentTimeLine++;
+            }
+        }
     }
 
 

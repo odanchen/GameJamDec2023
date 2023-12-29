@@ -4,9 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.totallynotacult.jam.TextureHolder;
+import com.totallynotacult.jam.holders.TextureHolder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +18,7 @@ public class Room {
     private int[] exitDirections;
     private boolean visited;
 
-    public Room(int type, int[] exitDirections) {
+    public Room(int type, int[] exitDirections, int timeLine) {
         /*
         Types
         0 = null
@@ -46,8 +45,8 @@ public class Room {
                 break;
             }
             case 2: {
-                roomTexture = new Texture(Gdx.files.internal("ne_sheet.png"));
-                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth() / 70, roomTexture.getHeight());
+                roomTexture = new Texture(Gdx.files.internal("room_edge_sheet.png"));
+                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth() / 70, roomTexture.getHeight()/3);
                 int index = 0;
                 if (exitDirections[0] == 0 || exitDirections[1] == 0) {
                     if (exitDirections[0] == 1 || exitDirections[1] == 1) index = 60;
@@ -61,7 +60,7 @@ public class Room {
                 if (exitDirections[0] == 2 || exitDirections[1] == 2) {
                     if (exitDirections[0] == 3 || exitDirections[1] == 3) index = 70;
                 }
-                roomVariation = ss[0][index - (int) (Math.random() * 9 + 1)];
+                roomVariation = ss[1][index - (int) (Math.random() * 9 + 1)];
                 break;
             }
             default: {
@@ -99,6 +98,7 @@ public class Room {
         Random random = new Random();
         var tileImg = TextureHolder.GREY_TILE.getTexture();
         var wallImg = TextureHolder.WALL.getTexture();
+        var timeTile = TextureHolder.TIME_TILE.getTexture();
 
         for (int row = 0; row < 16; row++)
             for (int col = 0; col < 16; col++) {
@@ -106,6 +106,10 @@ public class Room {
                     mat[row][col] = new Wall(wallImg, row, col);
                 } else if (getPixelID(col, row, texture).equals(Color.RED)) {
                     mat[row][col] = new EnemyTile(tileImg, row, col);
+                } else if ((getPixelID(col, row, texture).equals(Color.BLUE))) {
+                    mat[row][col] = new ForwardTravelTile(timeTile, row, col);
+                } if ((getPixelID(col, row, texture).equals(Color.SKY))) {
+                    mat[row][col] = new BackwardTravelTile(timeTile, row, col);
                 } else {
                     mat[row][col] = new Tile(tileImg, row, col);
                     if (random.nextInt(100) == 20)
