@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.totallynotacult.jam.PlayerCharacter;
 import com.totallynotacult.jam.TextureHolder;
 import com.totallynotacult.jam.map.Tile;
+import com.totallynotacult.jam.weapons.pistols.Pistol;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,6 @@ public class EntityManager {
     public void setCharacter(PlayerCharacter character) {
         addShadow(new Shadow(TextureHolder.SHADOW.getTexture(), character));
         this.character = character;
-        addWeaponSprite(new WeaponSprite(0,character));
     }
 
     public List<ShootingEntity> getEnemies() {
@@ -38,6 +38,7 @@ public class EntityManager {
         friendlyBullets.forEach(e -> e.update(room, deltaTime, this));
 
         character.update(room, deltaTime, this);
+        character.currentWeaponSprite.update(room, deltaTime, this);
         enemies.forEach(enemy -> enemy.update(room, deltaTime, this));
 
         shadows.forEach(shadow -> shadow.update(room, deltaTime, this));
@@ -49,6 +50,7 @@ public class EntityManager {
         shadows.removeIf(shadow -> shadow.getOwner().getHealth() <= 0);
         weaponSprites.removeIf(weaponSprite -> weaponSprite.getOwner().getHealth() <= 0);
         enemies.removeIf(enemy -> enemy.getHealth() <= 0);
+
     }
 
     private boolean outside(Entity e) {
@@ -58,11 +60,13 @@ public class EntityManager {
     public void drawEntities() {
         shadows.forEach(shadow -> shadow.draw(batch));
         enemies.forEach(e -> e.draw(batch));
+
         character.draw(batch);
 
         weaponSprites.forEach(weaponSprite -> weaponSprite.draw(batch));
-        friendlyBullets.forEach(e -> e.draw(batch));
+        character.currentWeaponSprite.draw(batch);
         enemyBullets.forEach(e -> e.draw(batch));
+        friendlyBullets.forEach(e -> e.draw(batch));
 
     }
 
@@ -97,7 +101,7 @@ public class EntityManager {
     public void addEnemy(Enemy enemy) {
         addShadow(new Shadow(TextureHolder.SHADOW.getTexture(), enemy));
         enemies.add(enemy);
-        addWeaponSprite(new WeaponSprite(0,enemy));
+        addWeaponSprite(new WeaponSprite(enemy.getCurrentWeapon(),enemy));
     }
 
     public boolean isMovementAllowed() {

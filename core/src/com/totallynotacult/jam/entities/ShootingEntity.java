@@ -13,6 +13,7 @@ public abstract class ShootingEntity extends Entity {
     protected int health;
     protected int maxHealth;
     protected Weapon currentWeapon;
+    protected WeaponSprite currentWeaponSprite;
     protected float aimAngle;
     protected float targetX;
     protected float targetY;
@@ -22,21 +23,19 @@ public abstract class ShootingEntity extends Entity {
     public ShootingEntity(Texture texture) {
         super(texture);
         currentWeapon = Weapon.getRandomWeapon();
+
     }
 
     public ShootingEntity(Texture texture, float xPos, float yPos) {
         super(texture, xPos, yPos);
         currentWeapon = Weapon.getRandomWeapon();
-    }
 
+    }
+    public Weapon getCurrentWeapon() {return currentWeapon;}
     public ShootingEntity(TextureRegion texture, float xPos, float yPos) {
         super(texture, xPos, yPos);
         currentWeapon = Weapon.getRandomWeapon();
-    }
 
-    protected void performShooting(EntityManager entityManager, boolean isFriendly) {
-        float angle = getAimAngle();
-        currentWeapon.shoot(getX(), getY(), angle, entityManager, isFriendly);
     }
 
     public float getAimAngle() {
@@ -44,6 +43,13 @@ public abstract class ShootingEntity extends Entity {
     }
 
     public int getFacing() {return (int) (facing / Math.abs(facing));}
+
+    protected void performShooting(EntityManager entityManager, boolean isFriendly) {
+        float angle = getAimAngle();
+        currentWeapon.shoot(getX(), getY(), angle, entityManager, isFriendly);
+    }
+
+
 
     protected void performQuickShooting(EntityManager entityManager, boolean isFriendly) {
         float angle = getAimAngle();
@@ -92,9 +98,12 @@ public abstract class ShootingEntity extends Entity {
             }
 
             int weaponTile = collisionWithWeaponTile(room);
-            if (weaponTile != -1) {
+            if (weaponTile != -1 && this.equals(manager.getCharacter())) {
                 room.get(weaponTile).weaponTile = false;
-                currentWeapon = Weapon.getRandomWeapon();
+                Weapon changeWeapon = Weapon.getRandomWeapon();
+                currentWeapon = changeWeapon;
+                manager.getCharacter().currentWeaponSprite = new WeaponSprite(currentWeapon,this);
+                //weaponSprites.remove(currentWeapon);
             }
         }
     }

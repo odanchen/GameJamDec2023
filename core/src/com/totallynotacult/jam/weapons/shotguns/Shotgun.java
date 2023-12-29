@@ -13,12 +13,13 @@ public class Shotgun extends Weapon {
     public Shotgun() {
         // Create random values for the shotgun
         Random rand = new Random();
-        this.damage = rand.nextInt(2) + 1;
-        this.bulletSpeed = rand.nextInt(100) + 200;
-        this.shootDelay = rand.nextInt(2) + 2f;
-        this.numBullets = rand.nextInt(3) + 3;
+        this.damage = 1;
+        this.bulletSpeed = 500;
+        this.shootDelay = 0.5f;
+        this.numBullets = 10;
         this.spread = (float) Math.PI / 4;
         this.bulletTexture = TextureHolder.SHOTGUN_BULLET.getTexture();
+        type = 1;
     }
 
     @Override

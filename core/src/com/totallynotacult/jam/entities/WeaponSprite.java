@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.totallynotacult.jam.map.Tile;
+import com.totallynotacult.jam.weapons.Weapon;
 
 import java.util.List;
 
@@ -15,15 +16,15 @@ public class WeaponSprite extends Entity {
     Texture sprites;
     TextureRegion[][] sprite_sheet;
 
-    public WeaponSprite(int type, ShootingEntity owner) {
+    public WeaponSprite(Weapon type, ShootingEntity owner) {
         super(new Texture(Gdx.files.internal("weapon_sheet.png")));
         this.owner = owner;
-        this.type = type;
+        this.type = type.getType();
 
         sprites = new Texture(Gdx.files.internal("weapon_sheet.png"));
         sprite_sheet = TextureRegion.split(sprites, sprites.getWidth() / 3, sprites.getHeight());
 
-        set( new Sprite(sprite_sheet[0][type]));
+        set( new Sprite(sprite_sheet[0][this.type]));
 
         setOrigin(4,4);
     }
