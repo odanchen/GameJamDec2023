@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector4;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.map.Wall;
 
@@ -14,26 +15,40 @@ public abstract class Entity extends Sprite {
 
     protected Sprite currentSprite;
     protected float stateTime = 0f;
+    protected Sprite hitbox = new Sprite(new Texture(Gdx.files.internal("hitbox.png")));
 
     public Entity(Texture texture) {
         super(texture);
+        hitbox.set(this);
     }
 
     public Entity(Texture texture, float xPos, float yPos) {
         super(texture);
         setPosition(xPos, yPos);
+        hitbox.set(this);
     }
 
     public Entity(TextureRegion texture, float xPos, float yPos) {
         super(texture);
         setPosition(xPos, yPos);
+        hitbox.set(this);
     }
+    public Entity(Texture texture, float xPos, float yPos,float hbw,float hbh) {
+        super(texture);
+        setPosition(xPos, yPos);
+        hitbox.set(this);
+        hitbox.setBounds(xPos+getWidth()/2-hbw/2,yPos,hbw,hbh);
+    }
+
+
+
 
 
     public abstract void update(List<Tile> room, float deltaTime, EntityManager manager);
 
     protected boolean collidesWithWall(List<Tile> room) {
-        var rect = getBoundingRectangle();
+
+        var rect = getBoundingRectangle(); // ----< hitbox not working :(
         return room.stream().anyMatch(tile -> tile instanceof Wall && tile.getBoundingRectangle().overlaps(rect));
     }
 

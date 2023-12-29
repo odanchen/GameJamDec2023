@@ -1,6 +1,7 @@
 package com.totallynotacult.jam.entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.totallynotacult.jam.PlayerCharacter;
 import com.totallynotacult.jam.map.Tile;
 
 import java.util.List;
@@ -21,7 +22,11 @@ public class Shadow extends Entity {
     @Override
     public void update(List<Tile> room, float deltaTime, EntityManager manager) {
         setX(owner.getX()+owner.getOriginX() - getWidth()/2);
-        setY(owner.getY()-3);
+
+        if (owner instanceof PlayerCharacter)
+            setY(owner.getY()-2);
+        else setY(owner.getY()-3);
+
 
 
     }

@@ -6,12 +6,18 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.totallynotacult.jam.map.Tile;
+import com.totallynotacult.jam.weapons.Weapon;
+import com.totallynotacult.jam.weapons.pistols.EnemyPistol;
 
 import java.util.List;
+
 
 public class Enemy extends ShootingEntity {
     private float angle;
     private float speed;
+    private boolean rangedEnemy;
+    private float agroRange;
+
 
     //Animations
     Texture sprites;
@@ -22,7 +28,7 @@ public class Enemy extends ShootingEntity {
 
     public Enemy(int xCor, int yCor) {
         super(new Texture(Gdx.files.internal("enemy_sheet.png")));
-
+        currentWeapon = new EnemyPistol(this);
         sprites = new Texture(Gdx.files.internal("enemy_sheet.png"));
         sprite_sheet = TextureRegion.split(sprites, sprites.getWidth() / 4, sprites.getHeight());
         idle = sprite_sheet[0][0];
@@ -39,6 +45,8 @@ public class Enemy extends ShootingEntity {
         angle = (float) (Math.random() * 2 * Math.PI);
         maxHealth = 20;
         health = maxHealth;
+        rangedEnemy = true;
+        agroRange = 130;
     }
 
     int getDir(float localSpeed) {
@@ -57,23 +65,35 @@ public class Enemy extends ShootingEntity {
     public void update(List<Tile> room, float deltaTime, EntityManager manager) {
         if (manager.isMovementAllowed()) {
             super.update(room, deltaTime, manager);
-            float angle = (float) Math.atan2(manager.getCharacter().getY() - getY(), manager.getCharacter().getX() - getX());
+
+            float tY = manager.getCharacter().getY();
+            float tX = manager.getCharacter().getX();
+
+            float angle = (float) Math.atan2(tY - getY(), tX - getX());
 
             int xDir = getDir((float) (speed * deltaTime * Math.cos(angle)));
             int yDir = getDir((float) (speed * deltaTime * Math.sin(angle)));
 
-            moveWithCollision((float) (speed * deltaTime * Math.cos(angle)), room, xDir, true, manager);
-            moveWithCollision((float) (speed * deltaTime * Math.sin(angle)), room, yDir, false, manager);
+            float dis = pointDistance(getX(),getY(),tX,tY);
+            if (dis < agroRange) {
 
-            targetX = manager.getCharacter().getX();
-            targetY = manager.getCharacter().getY();
-            performShooting(manager, false);
+                if (rangedEnemy && dis >= 50) {
+                    moveWithCollision((float) (speed * deltaTime * Math.cos(angle)), room, xDir, true, manager);
+                    moveWithCollision((float) (speed * deltaTime * Math.sin(angle)), room, yDir, false, manager);
+                }
+                targetX = manager.getCharacter().getX();
+                targetY = manager.getCharacter().getY();
+                performShooting(manager, false);
+            }
         }
 
         checkBulletCollision(manager.getFriendlyBullets());
         enemyAnimations();
     }
 
+    public float pointDistance (float x1, float y1, float x2, float y2) {
+        return (float) Math.sqrt( (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+    }
     public void enemyAnimations() {
         TextureRegion currentWalkFrame;
         currentWalkFrame = runCycleAni.getKeyFrame(stateTime, true);

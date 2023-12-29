@@ -15,6 +15,7 @@ import com.totallynotacult.jam.entities.WeaponSprite;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.weapons.machine_guns.MachineGun;
 import com.totallynotacult.jam.weapons.QuickShooter;
+import com.totallynotacult.jam.weapons.pistols.NoWeapon;
 
 import java.util.List;
 import java.util.Random;
@@ -41,7 +42,7 @@ public class PlayerCharacter extends ShootingEntity {
 
 
     public PlayerCharacter(EntityManager entityManager, Camera camera, DungeonScreen screen) {
-        super(new Texture(Gdx.files.internal("sprite_player_sheet.png")));
+        super(new Texture(Gdx.files.internal("sprite_player_sheet.png")),0,0,10,5);
         sprites = new Texture(Gdx.files.internal("sprite_player_sheet.png"));
         sprite_sheet = TextureRegion.split(sprites, sprites.getWidth() / 4, sprites.getHeight());
         idle = sprite_sheet[0][0];
@@ -55,12 +56,12 @@ public class PlayerCharacter extends ShootingEntity {
         setBounds(100, 200, 16, 16);
         setOrigin(getWidth() / 2, 0);
         this.screen = screen;
-        health = 15;
-        maxHealth = 15;
+        health = 30;
+        maxHealth = health;
         speed = 120;
         this.camera = camera;
         this.entityManager = entityManager;
-        this.currentWeapon = new MachineGun(this);
+        this.currentWeapon = new NoWeapon(this);
         //currentWeaponSprite = new WeaponSprite(this.currentWeapon,this);
     }
 
@@ -72,6 +73,8 @@ public class PlayerCharacter extends ShootingEntity {
         timeSinceLastStop += Gdx.graphics.getDeltaTime();
 
         Vector3 mPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+
+        if (!isMoving) setPosition((float) Math.floor(getX()), (float) Math.floor(getY()));
         camera.unproject(mPos);
         targetX = mPos.x;
         targetY = mPos.y;
@@ -131,23 +134,25 @@ public class PlayerCharacter extends ShootingEntity {
         moveWithCollision(localSpeed, room, vertDir, false, entityManager);
 
         if (getX() < 0 && screen.canSwitchRoom()) {
-            screen.changeRoom(0, -1);
             setX(247);
+            screen.cam.switchRoom(true,false);
         } else if (getX() < 0) setX(0);
 
         if (getY() < 0 && screen.canSwitchRoom()) {
-            screen.changeRoom(1, 0);
+
             setY(247);
+            screen.cam.switchRoom(false,false);
         } else if (getY() < 0) setY(0);
 
         if (getX() > 247 && screen.canSwitchRoom()) {
-            screen.changeRoom(0, 1);
             setX(0);
+            screen.cam.switchRoom(true,true);
         } else if (getX() > 247) setX(247);
 
         if (getY() > 247 && screen.canSwitchRoom()) {
-            screen.changeRoom(-1, 0);
+
             setY(0);
+            screen.cam.switchRoom(false,true);
         } else if (getY() > 247) setY(247);
     }
 
@@ -159,7 +164,7 @@ public class PlayerCharacter extends ShootingEntity {
 
     private void performShooting() {
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-
+           // setX(getX()-1);
             if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) && currentWeapon instanceof QuickShooter) {
                 performQuickShooting(entityManager, true);
             } else performShooting(entityManager, true);

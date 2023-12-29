@@ -25,6 +25,9 @@ public abstract class Weapon extends Entity {
     protected float timeSinceShot = 0;
     protected int type;
     protected ShootingEntity owner;
+    public float kickbackX;
+    public float kickbackY;
+    public float kickbackMag;
     Texture sprite;
     protected TextureRegion[][] sprite_sheet;
     Texture sprites;
@@ -34,20 +37,25 @@ public abstract class Weapon extends Entity {
         this.owner = owner;
 
         sprites = new Texture(Gdx.files.internal("weapon_sheet.png"));
-        sprite_sheet = TextureRegion.split(sprites, sprites.getWidth() / 3, sprites.getHeight());
+        sprite_sheet = TextureRegion.split(sprites, sprites.getWidth() / 4, sprites.getHeight());
 
         set(new Sprite(sprite_sheet[0][this.type]));
-
+        kickbackX = 0;
+        kickbackY = 0;
+        kickbackMag = 0;
         setOrigin(4, 4);
     }
 
     @Override
     public void update(List<Tile> room, float deltaTime, EntityManager manager) {
-        setX(owner.getX() + owner.getOriginX() / 2 + 2 * owner.getFacing());
-        setY(owner.getY() - 3);
+        kickbackX = (float) (kickbackMag * Math.cos(owner.getAimAngle()));
+        kickbackY = (float) (kickbackMag * Math.sin(owner.getAimAngle()));
+        if (kickbackMag > 0) kickbackMag -= 1;
+        setX(owner.getX() + owner.getOriginX() / 2 + 2 * owner.getFacing() - kickbackX);
+        setY(owner.getY() - 3 - kickbackY);
         float angle = owner.getAimAngle();
         setRotation((float) (angle * 180 / Math.PI));
-        if (angle > Math.PI / 2 && angle < Math.PI * 3 / 2 || angle < -Math.PI / 2) setScale(1, -1);
+        if (angle >= Math.PI / 2 && angle <= Math.PI * 3 / 2 || angle <= -Math.PI / 2) setScale(1, -1);
         else setScale(1, 1);
     }
 
@@ -66,15 +74,21 @@ public abstract class Weapon extends Entity {
     }
 
     public Sprite bulletType() {
+
         int amountOfBulletTypes = 3;
         sprite = new Texture(Gdx.files.internal("weapon_bullet_sheet.png"));
         sprite_sheet = TextureRegion.split(sprite, sprite.getWidth() / amountOfBulletTypes, sprite.getHeight());
 
-        return new Sprite(sprite_sheet[0][type]);
+        if (type == -1)
+            return new Sprite(sprite_sheet[0][amountOfBulletTypes]);
+        else
+            return new Sprite(sprite_sheet[0][type]);
 
     }
 
     public void shoot(float angle, EntityManager manager, boolean isFriendly) {
+
+        if (type == -1) return;
         float xCor = getX() + (float) (Math.cos(angle) * 2);// + getOriginX();//float) (getX() + (Math.cos(angle) * 5));
         float yCor = getY() + (float) (Math.cos(angle) * 2);// + getOriginY();//(float) (getX() + (Math.sin(angle) * 5));
 
@@ -82,6 +96,7 @@ public abstract class Weapon extends Entity {
         float yy = getY() + getOriginY();
 
         if (readyToShoot()) {
+            kickbackMag = 5;
             if (isFriendly)
                 manager.addFriendlyBullet(new Bullet(xx, yy, angle, bulletType(), bulletSpeed, damage));
             else manager.addEnemyBullet(new Bullet(xx, yy, angle, bulletType(), bulletSpeed, damage));

@@ -36,8 +36,9 @@ public class EntityManager {
     public void updateEntities(List<Tile> room, float deltaTime) {
         if (isMovementAllowed()) {
             enemyBullets.forEach(e -> e.update(room, deltaTime, this));
+            friendlyBullets.forEach(e -> e.update(room, deltaTime, this));
         }
-        friendlyBullets.forEach(e -> e.update(room, deltaTime, this));
+
 
         character.update(room, deltaTime, this);
         weapons.forEach(weaponSprite -> weaponSprite.update(room, deltaTime, this));

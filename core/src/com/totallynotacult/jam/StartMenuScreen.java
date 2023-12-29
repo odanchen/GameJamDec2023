@@ -66,6 +66,7 @@ public class StartMenuScreen implements Screen {
                     exitButton.removeListener(listener);
                 }
                 game.changeToDungeon();
+                game.prepareNewDungeon();
             }
 
         };

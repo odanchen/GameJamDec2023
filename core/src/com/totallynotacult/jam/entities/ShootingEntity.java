@@ -15,16 +15,25 @@ public abstract class ShootingEntity extends Entity {
     protected float targetX;
     protected float targetY;
     protected float facing;
+    protected float hitboxWidth;
+    protected float hitboxHeight;
 
 
     public ShootingEntity(Texture texture) {
         super(texture);
-        currentWeapon = Weapon.getRandomWeapon(this);
+
 
     }
 
     public ShootingEntity(Texture texture, float xPos, float yPos) {
         super(texture, xPos, yPos);
+
+    }
+
+    public ShootingEntity(Texture texture, float xPos, float yPos, float hbw, float hbh) {
+        super(texture, xPos, yPos, hbw, hbh);
+        hitboxWidth = hbw;
+        hitboxHeight = hbh;
         currentWeapon = Weapon.getRandomWeapon(this);
     }
 
@@ -63,7 +72,8 @@ public abstract class ShootingEntity extends Entity {
 
     @Override
     public void update(List<Tile> room, float deltaTime, EntityManager manager) {
-        currentWeapon.update();
+        if (currentWeapon != null) currentWeapon.update();
+        hitbox.setBounds(getX()+getOriginX(),getY(),hitboxWidth,hitboxHeight);
     }
 
     protected abstract boolean collidesWithObstacle(List<Tile> room, EntityManager manager);

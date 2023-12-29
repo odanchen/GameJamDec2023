@@ -16,10 +16,12 @@ import com.totallynotacult.jam.map.RoomGen;
 
 public class DungeonScreen implements Screen {
     private final OrthographicCamera camera;
+    private final OrthographicCamera cameraUI;
     private final PlayerCharacter character;
     private final SpriteBatch batch;
     private final EntityManager entityManager;
     private final ShapeRenderer renderer;
+    // private final SpriteBatch hudBatch;
 
 
     // final ROOMWIDTH =
@@ -27,7 +29,7 @@ public class DungeonScreen implements Screen {
     private Room[][] rooms;
     private int row;
     private int col;
-    private Camera cam;
+    public Camera cam;
     private MyGdxGame game;
 
 
@@ -35,9 +37,14 @@ public class DungeonScreen implements Screen {
         this.game = game;
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
+        camera.setToOrtho(false, 320, 320);
+        cameraUI = new OrthographicCamera();
+        cameraUI.setToOrtho(false, 320, 320);
+
         entityManager = new EntityManager(batch);
         character = new PlayerCharacter(entityManager, camera, this);
-        cam = new Camera(character, 320, 320);
+
+
         entityManager.setCharacter(character);
         renderer = new ShapeRenderer();
 
@@ -50,7 +57,7 @@ public class DungeonScreen implements Screen {
         fixRoom();
         currentRoom.makeVisited();
 
-        camera.setToOrtho(false, 256, 256);
+        cam = new Camera(character, 256, 256,this);
     }
 
     public boolean canSwitchRoom() {
@@ -69,9 +76,10 @@ public class DungeonScreen implements Screen {
     }
 
     void changeRoom(int dRow, int dCol) {
+        //camera.position.set(character.getX(), character.getY(), 0);
         entityManager.removeAllBullets();
         currentRoom = rooms[row += dRow][col += dCol];
-        cam = new Camera(character, 256, 256);
+
         fixRoom();
         for (int row = 0; row < currentRoom.getTiles().length; row++) {
             for (int col = 0; col < currentRoom.getTiles()[row].length; col++) {
@@ -90,59 +98,65 @@ public class DungeonScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        // cam.camFollow();
         ScreenUtils.clear(Color.BLACK);
+
+        batch.setProjectionMatrix(camera.combined);
+        cam.camFollow();
+        camera.position.set(cam.x, cam.y, 0);
+        camera.update();
+
+
 
         batch.begin();
 
-        renderTiles(batch);
-
-        
-        entityManager.updateEntities(currentRoom.getAllTiles(), delta);
-        entityManager.drawEntities();
+            renderTiles(batch);
+            entityManager.updateEntities(currentRoom.getAllTiles(), delta);
+            entityManager.drawEntities();
 
         batch.end();
 
+
+
+
+        renderer.setProjectionMatrix(cameraUI.combined);
         drawHealthBar();
         drawTimeBar();
 
 
-        // camera.position.set(cam.x, cam.y, 0);
-        camera.update();
 
-        renderer.setProjectionMatrix(camera.combined);
-        batch.setProjectionMatrix(camera.combined);
-
-        if (character.isDead()) {
-            game.setScreen(new StartMenuScreen(game));
-            game.prepareNewDungeon();
-        }
+        if (character.isDead()) game.setScreen(new StartMenuScreen(game));
     }
 
     private void drawHealthBar() {
+
+        float x = camera.position.x;
+        float y = camera.position.y;
         renderer.begin(ShapeRenderer.ShapeType.Line);
         renderer.setColor(Color.CORAL);
-        renderer.rect(7, 242, 75, 12);
+        renderer.rect(x, y, 75, 12);
         renderer.end();
 
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(Color.CORAL);
-        renderer.rect(7, 242, (character.getHealth() / (float)character.getMaxHealth() * 75f), 12);
+        renderer.rect(x, y, (character.getHealth() / (float)character.getMaxHealth() * 75f), 12);
         renderer.end();
     }
 
     private void drawTimeBar() {
+
+        float x = camera.position.x;
+        float y = camera.position.y;
         renderer.begin(ShapeRenderer.ShapeType.Line);
         renderer.setColor(Color.GOLD);
-        renderer.rect(7, 3, 75, 12);
+        renderer.rect(x, y, 75, 12);
         renderer.end();
 
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(Color.GOLD);
         if (entityManager.isMovementAllowed()) {
-            renderer.rect(7, 3, Math.min(character.getTimeSinceLastStop() / character.getTimeStopCoolDown(), 1) * 75, 12);
+            renderer.rect(x, y, Math.min(character.getTimeSinceLastStop() / character.getTimeStopCoolDown(), 1) * 75, 12);
         } else {
-            renderer.rect(7, 3, Math.min(character.getTimeStopLeft() / character.getTimeStopDuration(), 1) * 75, 12);
+            renderer.rect(x, y, Math.min(character.getTimeStopLeft() / character.getTimeStopDuration(), 1) * 75, 12);
         }
         renderer.end();
     }
@@ -152,7 +166,6 @@ public class DungeonScreen implements Screen {
         currentRoom.getAllTiles().forEach(tile -> {
             tile.draw(batch);
             if (tile.weaponTile) {
-
                 batch.draw(weaponTileTexture, tile.getX(), tile.getY(), tile.getWidth(), tile.getHeight());
             }
         });
