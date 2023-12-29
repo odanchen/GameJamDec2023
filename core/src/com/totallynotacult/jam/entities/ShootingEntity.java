@@ -1,7 +1,6 @@
 package com.totallynotacult.jam.entities;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.weapons.QuickShooter;
 import com.totallynotacult.jam.weapons.Weapon;
@@ -13,8 +12,6 @@ public abstract class ShootingEntity extends Entity {
     protected int health;
     protected int maxHealth;
     protected Weapon currentWeapon;
-    protected WeaponSprite currentWeaponSprite;
-    protected float aimAngle;
     protected float targetX;
     protected float targetY;
     protected float facing;
@@ -22,33 +19,31 @@ public abstract class ShootingEntity extends Entity {
 
     public ShootingEntity(Texture texture) {
         super(texture);
-        currentWeapon = Weapon.getRandomWeapon();
+        currentWeapon = Weapon.getRandomWeapon(this);
 
     }
 
     public ShootingEntity(Texture texture, float xPos, float yPos) {
         super(texture, xPos, yPos);
-        currentWeapon = Weapon.getRandomWeapon();
-
+        currentWeapon = Weapon.getRandomWeapon(this);
     }
-    public Weapon getCurrentWeapon() {return currentWeapon;}
-    public ShootingEntity(TextureRegion texture, float xPos, float yPos) {
-        super(texture, xPos, yPos);
-        currentWeapon = Weapon.getRandomWeapon();
 
+    public Weapon getCurrentWeapon() {
+        return currentWeapon;
     }
 
     public float getAimAngle() {
         return (float) Math.atan2(targetY - getY(), targetX - getX());
     }
 
-    public int getFacing() {return (int) (facing / Math.abs(facing));}
+    public int getFacing() {
+        return (int) (facing / Math.abs(facing));
+    }
 
     protected void performShooting(EntityManager entityManager, boolean isFriendly) {
         float angle = getAimAngle();
-        currentWeapon.shoot(getX(), getY(), angle, entityManager, isFriendly);
+        currentWeapon.shoot(angle, entityManager, isFriendly);
     }
-
 
 
     protected void performQuickShooting(EntityManager entityManager, boolean isFriendly) {
@@ -81,7 +76,9 @@ public abstract class ShootingEntity extends Entity {
         health -= damage;
     }
 
-    public int getMaxHealth( ){return maxHealth;}
+    public int getMaxHealth() {
+        return maxHealth;
+    }
 
     protected void moveWithCollision(float localSpeed, List<Tile> room, float dir, boolean isHorizontal, EntityManager manager) {
         if (dir == 0) {
@@ -99,9 +96,10 @@ public abstract class ShootingEntity extends Entity {
             int weaponTile = collisionWithWeaponTile(room);
             if (weaponTile != -1 && this.equals(manager.getCharacter())) {
                 room.get(weaponTile).weaponTile = false;
-                Weapon changeWeapon = Weapon.getRandomWeapon();
-                currentWeapon = changeWeapon;
-                manager.getCharacter().currentWeaponSprite = new WeaponSprite(currentWeapon,this);
+                manager.removeWeapon(currentWeapon);
+                currentWeapon = Weapon.getRandomWeapon(this);
+                manager.addWeaponSprite(currentWeapon);
+                //manager.getCharacter().currentWeaponSprite = new WeaponSprite(currentWeapon, this);
                 //weaponSprites.remove(currentWeapon);
             }
         }
