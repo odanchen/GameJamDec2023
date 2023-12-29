@@ -89,7 +89,7 @@ public class DungeonScreen implements Screen {
         for (int row = 0; row < currentRoom.getTiles().length; row++) {
             for (int col = 0; col < currentRoom.getTiles()[row].length; col++) {
                 if (currentRoom.getTiles()[row][col] instanceof EnemyTile && !currentRoom.isVisited()) {
-                    if (currentTimeLine == 1) entityManager.addEnemy(new Enemy(col * 16, row * 16,true));
+                    if (currentTimeLine == 1 && currentRoom.hasAFuture) entityManager.addEnemy(new Enemy(col * 16, row * 16,true));
                         else entityManager.addEnemy(new Enemy(col * 16, row * 16,false));
                 }
             }

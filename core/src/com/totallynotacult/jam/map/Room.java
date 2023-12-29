@@ -19,6 +19,7 @@ public class Room {
     private int[] exitDirections;
     private boolean visited;
     private int indexVariation;
+    public boolean hasAFuture = false;
 
     public Room(int type, int[] exitDirections, int timeLine, int indexVariation) {
         /*
@@ -64,8 +65,8 @@ public class Room {
                     if (exitDirections[0] == 3 || exitDirections[1] == 3) index = 70;
                 }
 
-                //roomVariation = ss[DungeonScreen.currentTimeLine][index - indexVariation]; break;
-                roomVariation = ss[DungeonScreen.currentTimeLine][index - 6]; break;
+                roomVariation = ss[DungeonScreen.currentTimeLine][index - indexVariation]; break;
+                //roomVariation = ss[DungeonScreen.currentTimeLine][index - 6]; break;
 
             }
             default: {
@@ -121,6 +122,7 @@ public class Room {
                     mat[row][col] = new EnemyTile(tileImg, row, col);
                 } else if ((getPixelID(col, row, texture).equals(Color.YELLOW))) {
                     mat[row][col] = new ForwardTravelTile(timeTile, row, col);
+                    hasAFuture = true;
                 } else if ((getPixelID(col, row, texture).equals(Color.BLUE))) {
                     mat[row][col] = new BackwardTravelTile(timeTile, row, col);
                 } else if ((getPixelID(col, row, texture).equals(Color.GREEN))) {
