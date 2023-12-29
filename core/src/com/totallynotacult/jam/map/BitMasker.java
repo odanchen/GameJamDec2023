@@ -89,12 +89,12 @@ public class BitMasker {
         int ans = 0;
         for (int i = 0; i < idxs.length; i++) {
             if (i == 1 || i == 3 || i == 4 || i == 6) {
-                if (colorAt(row, col, idxs[i], room).equals(color)) ans |= 2 << i;
+                if (colorAt(row, col, idxs[i], room).equals(color)) ans |= 1 << i;
             } else {
                 if (colorAt(row, col, idxs[i], room).equals(color) &&
                         (colorAt(row, col, idxs[neightbors.get(i)[0]], room).equals(color) &&
                                 colorAt(row, col, idxs[neightbors.get(i)[1]], room).equals(color)))
-                    ans |= 2 << i;
+                    ans |= 1 << i;
             }
         }
 
