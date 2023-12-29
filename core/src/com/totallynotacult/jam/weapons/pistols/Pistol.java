@@ -1,7 +1,9 @@
 package com.totallynotacult.jam.weapons.pistols;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.totallynotacult.jam.SoundHolder;
 import com.totallynotacult.jam.TextureHolder;
+import com.totallynotacult.jam.entities.EntityManager;
 import com.totallynotacult.jam.entities.ShootingEntity;
 import com.totallynotacult.jam.weapons.QuickShooter;
 
@@ -18,5 +20,6 @@ public class Pistol extends QuickShooter {
         this.bulletTexture = TextureHolder.PISTOL_BULLET.getTexture();
         type = 0;
         set(new Sprite(sprite_sheet[0][this.type]));
+        shootingSound = SoundHolder.GUN.getSound();
     }
 }

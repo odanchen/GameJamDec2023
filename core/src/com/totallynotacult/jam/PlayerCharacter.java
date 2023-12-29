@@ -2,7 +2,6 @@ package com.totallynotacult.jam;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -14,6 +13,7 @@ import com.totallynotacult.jam.entities.ShootingEntity;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.weapons.QuickShooter;
 import com.totallynotacult.jam.weapons.pistols.NoWeapon;
+import com.totallynotacult.jam.weapons.shotguns.Shotgun;
 
 import java.util.List;
 import java.util.Random;
@@ -101,8 +101,7 @@ public class PlayerCharacter extends ShootingEntity {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && timeSinceLastStop >= timeStopCoolDown) {
             timeStopLeft = timeStopDuration;
             timeSinceLastStop = -timeStopDuration;
-            Sound sound = Gdx.audio.newSound(Gdx.files.internal(new Random().nextInt(2) == 1 ? "timeStopSoundEffect.mp3" : "zawarudo.mp3"));
-            sound.play();
+            (new Random().nextInt(2) == 1 ? SoundHolder.TIMESTOP_SOUND : SoundHolder.ZAWARUDO).getSound().play();
         }
     }
 

@@ -1,6 +1,7 @@
 package com.totallynotacult.jam.weapons.machine_guns;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.totallynotacult.jam.SoundHolder;
 import com.totallynotacult.jam.TextureHolder;
 import com.totallynotacult.jam.entities.ShootingEntity;
 import com.totallynotacult.jam.weapons.Weapon;
@@ -17,5 +18,8 @@ public class MachineGun extends Weapon {
         this.bulletTexture = TextureHolder.MACHINEGUN_BULLET.getTexture();
         type = 2;
         set(new Sprite(sprite_sheet[0][this.type]));
+
+        SoundHolder.GUN.getSound().play();
+        shootingSound = SoundHolder.GUN.getSound();
     }
 }

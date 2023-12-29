@@ -8,8 +8,8 @@ public abstract class QuickShooter extends Weapon {
         super(owner);
     }
 
-    public void quickShoot(float targetX, float targetY, float angle, EntityManager manager, boolean isFriendly) {
+    public void quickShoot(float angle, EntityManager manager, boolean isFriendly) {
         timeSinceShot = shootDelay;
-        super.shoot(targetX, targetY, angle, manager, isFriendly);
+        super.shoot(angle, manager, isFriendly);
     }
 }

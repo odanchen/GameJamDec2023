@@ -51,14 +51,14 @@ public abstract class ShootingEntity extends Entity {
 
     protected void performShooting(EntityManager entityManager, boolean isFriendly) {
         float angle = getAimAngle();
-        currentWeapon.shoot(targetX, targetY, angle, entityManager, isFriendly);
+        currentWeapon.shoot(angle, entityManager, isFriendly);
     }
 
 
     protected void performQuickShooting(EntityManager entityManager, boolean isFriendly) {
         float angle = getAimAngle();
         if (currentWeapon instanceof QuickShooter) {
-            ((QuickShooter) currentWeapon).quickShoot(targetX, targetY, angle, entityManager, isFriendly);
+            ((QuickShooter) currentWeapon).quickShoot(angle, entityManager, isFriendly);
         }
     }
 

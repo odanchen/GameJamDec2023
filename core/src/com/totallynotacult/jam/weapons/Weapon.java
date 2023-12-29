@@ -1,6 +1,7 @@
 package com.totallynotacult.jam.weapons;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -31,6 +32,7 @@ public abstract class Weapon extends Entity {
     Texture sprite;
     protected TextureRegion[][] sprite_sheet;
     Texture sprites;
+    protected Sound shootingSound;
 
     public Weapon(ShootingEntity owner) {
         super(new Texture(Gdx.files.internal("weapon_sheet.png")));
@@ -86,19 +88,19 @@ public abstract class Weapon extends Entity {
 
     }
 
-    public void shoot(float targetX, float targetY, float angle, EntityManager manager, boolean isFriendly) {
+    public void shoot(float angle, EntityManager manager, boolean isFriendly) {
         if (type == -1) return;
         float xx = getX() + getOriginX() + (float) (Math.cos(angle) * 6) - 5;
         float yy = getY() + getOriginY() + (float) (Math.sin(angle) * 8) - 4;
 
         if (readyToShoot()) {
             kickbackMag = 5;
-            float shootingAngle = (float) Math.atan2(targetY - yy, targetX - xx);
-            var bullet = new Bullet(xx, yy, shootingAngle, bulletType(), bulletSpeed, damage);
+            var bullet = new Bullet(xx, yy, angle, bulletType(), bulletSpeed, damage);
             if (isFriendly)
                 manager.addFriendlyBullet(bullet);
             else manager.addEnemyBullet(bullet);
             reset();
+            shootingSound.play();
         }
     }
 
@@ -120,5 +122,16 @@ public abstract class Weapon extends Entity {
 
     public ShootingEntity getOwner() {
         return owner;
+    }
+
+    protected void produceBullet(float angle, EntityManager manager, boolean isFriendly) {
+        kickbackMag = 5;
+        float xx = getX() + getOriginX() + (float) (Math.cos(angle) * 6) - 5;
+        float yy = getY() + getOriginY() + (float) (Math.sin(angle) * 8) - 4;
+
+        var bullet = new Bullet(xx, yy, angle, bulletType(), bulletSpeed, damage);
+        if (isFriendly)
+            manager.addFriendlyBullet(bullet);
+        else manager.addEnemyBullet(bullet);
     }
 }
