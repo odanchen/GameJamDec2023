@@ -48,7 +48,7 @@ public class DungeonScreen implements Screen {
         entityManager.setCharacter(character);
         renderer = new ShapeRenderer();
 
-        RoomGen r = new RoomGen(7);
+        RoomGen r = new RoomGen(9);
         rooms = r.getLevelMatrix();
         row = r.getStartRoom()[0];
         col = r.getStartRoom()[1];
@@ -129,8 +129,8 @@ public class DungeonScreen implements Screen {
 
     private void drawHealthBar() {
 
-        float x = camera.position.x;
-        float y = camera.position.y;
+        float x = cam.x - camera.viewportWidth/2;
+        float y = cam.y - camera.viewportHeight/2;
         renderer.begin(ShapeRenderer.ShapeType.Line);
         renderer.setColor(Color.CORAL);
         renderer.rect(x, y, 75, 12);
@@ -145,7 +145,7 @@ public class DungeonScreen implements Screen {
     private void drawTimeBar() {
 
         float x = camera.position.x;
-        float y = camera.position.y;
+        float y = camera.position.y - camera.viewportHeight/2;
         renderer.begin(ShapeRenderer.ShapeType.Line);
         renderer.setColor(Color.GOLD);
         renderer.rect(x, y, 75, 12);
