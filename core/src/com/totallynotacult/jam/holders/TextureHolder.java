@@ -24,7 +24,7 @@ public enum TextureHolder {
     }
 
     public void dispose() {
-        for (var value : values()) value.texture.dispose();
+        for (TextureHolder value : values()) value.texture.dispose();
     }
 
     private TextureHolder(String s) {

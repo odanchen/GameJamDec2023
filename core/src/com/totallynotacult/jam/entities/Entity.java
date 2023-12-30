@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.totallynotacult.jam.holders.TextureHolder;
+import com.badlogic.gdx.math.Rectangle;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.map.Wall;
 
@@ -50,7 +50,7 @@ public abstract class Entity extends Sprite {
 
     protected boolean collidesWithWall(List<Tile> room) {
 
-        var rect = getBoundingRectangle(); // ----< hitbox not working :(
+        Rectangle rect = getBoundingRectangle(); // ----< hitbox not working :(
         return room.stream().anyMatch(tile -> tile instanceof Wall && tile.getBoundingRectangle().overlaps(rect));
     }
 
@@ -71,7 +71,7 @@ public abstract class Entity extends Sprite {
     }
 
     protected int collisionWithWeaponTile(List<Tile> room) {
-        var rect = getBoundingRectangle();
+        Rectangle rect = getBoundingRectangle();
         return IntStream.range(0, room.size())
                 .filter(i -> room.get(i).weaponTile && room.get(i).getBoundingRectangle().overlaps(rect))
                 .findFirst()

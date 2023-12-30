@@ -108,15 +108,15 @@ public class Room {
     public Tile[][] generateRoomMatrix(TextureRegion texture) {
         Tile[][] mat = new Tile[16][16];
         Random random = new Random();
-        var tileImg = TextureHolder.GREY_TILE.getTexture();
-        var wallImg = TextureHolder.WALL.getTexture();
-        var timeTile = TextureHolder.TIME_TILE.getTexture();
+        Texture tileImg = TextureHolder.GREY_TILE.getTexture();
+        Texture wallImg = TextureHolder.WALL.getTexture();
+        Texture timeTile = TextureHolder.TIME_TILE.getTexture();
 
         for (int row = 0; row < 16; row++)
             for (int col = 0; col < 16; col++) {
                 if (getPixelID(col, row, texture).equals(Color.BLACK)) {
                     TextureRegion[][] region = TextureRegion.split(TextureHolder.TILESET.getTexture(), 16, 16);
-                    var currentTexture = BitMasker.getTexture(region, texture, row, col, Color.BLACK);
+                    TextureRegion currentTexture = BitMasker.getTexture(region, texture, row, col, Color.BLACK);
                     mat[row][col] = new Wall(currentTexture, row, col);
                 } else if (getPixelID(col, row, texture).equals(Color.RED)) {
                     mat[row][col] = new EnemyTile(tileImg, row, col);
@@ -125,10 +125,9 @@ public class Room {
                     hasAFuture = true;
                 } else if ((getPixelID(col, row, texture).equals(Color.BLUE))) {
                     mat[row][col] = new BackwardTravelTile(timeTile, row, col);
-                   // mat[row][col] = new EnemyTile(tileImg, row, col);
                 } else if ((getPixelID(col, row, texture).equals(Color.GREEN))) {
                     mat[row][col] = new SuperChargeTile(timeTile, row, col);
-                } else {
+                } else if (getPixelID(col, row, texture).equals(Color.BROWN)){
                     mat[row][col] = new Tile(tileImg, row, col);
                     if (random.nextInt(100) == 20)
                         mat[row][col].weaponTile = true;

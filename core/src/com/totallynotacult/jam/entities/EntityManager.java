@@ -7,6 +7,7 @@ import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.weapons.Weapon;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class EntityManager {
@@ -60,7 +61,7 @@ public class EntityManager {
 
 
         friendlyBullets.removeIf(e -> outside(e) || e.collidesWithSomething(room, enemies));
-        enemyBullets.removeIf(e -> outside(e) || e.collidesWithSomething(room, List.of(character)));
+        enemyBullets.removeIf(e -> outside(e) || e.collidesWithSomething(room, Collections.singletonList(character)));
 
         shadows.removeIf(shadow -> shadow.getOwner().getHealth() <= 0);
         weapons.removeIf(weaponSprite -> weaponSprite.getOwner().getHealth() <= 0);

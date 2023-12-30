@@ -150,7 +150,7 @@ public class PlayerCharacter extends ShootingEntity {
         else setScale(-1, 1);
 
 
-        var localSpeed = speed * deltaTime / ((horDir != 0 && vertDir != 0) ? (float) Math.sqrt(2) : 1);
+        float localSpeed = speed * deltaTime / ((horDir != 0 && vertDir != 0) ? (float) Math.sqrt(2) : 1);
 
         moveWithCollision(localSpeed, room, horDir, true, entityManager);
         moveWithCollision(localSpeed, room, vertDir, false, entityManager);
