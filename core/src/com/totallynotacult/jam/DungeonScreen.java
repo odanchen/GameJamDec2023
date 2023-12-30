@@ -44,7 +44,7 @@ public class DungeonScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 320, 320);
         this.black = new Sprite(new Texture(Gdx.files.internal("hitbox.png")));
-        this.black.setBounds(0,0,256,256);
+        this.black.setBounds(0, 0, 256, 256);
         entityManager = new EntityManager(batch);
         character = new PlayerCharacter(entityManager, camera, this);
         currentCharacter = character;
@@ -64,15 +64,14 @@ public class DungeonScreen implements Screen {
         currentRoom.makeVisited();
 
 
-        blur = new Sprite(new Texture(Gdx.files.internal("blurVig.png")));
-        blur.setPosition(-131,-103);
+        blur = new Sprite(TextureHolder.BLUR.getTexture());
+        blur.setPosition(-131, -103);
         cam = new Camera(character, 256, 256, this);
 
         MusicHolder.THEME.getMusic().setVolume(0.1f);
         MusicHolder.THEME.getMusic().setLooping(true);
         MusicHolder.THEME.getMusic().play();
     }
-
 
 
     public boolean canSwitchRoom() {
@@ -154,11 +153,10 @@ public class DungeonScreen implements Screen {
             }
             fadeCounter = fadeCounterMax + 0.01f;
             check = true;
-        }else {
+        } else {
             if (!check) fadeCounter += delta;
             else check = false;
         }
-
 
 
         batch.setProjectionMatrix(camera.combined);
@@ -172,40 +170,41 @@ public class DungeonScreen implements Screen {
         renderTiles(batch);
 
 
-
         entityManager.updateEntities(currentRoom.getAllTiles(), delta);
         entityManager.drawEntities();
+
+        batch.setProjectionMatrix(camera.combined);
+
         blur.draw(batch);
 
-        batch.end();
-
-
-
-        renderer.setProjectionMatrix(camera.combined);
-
+        float x;
+        float y;
         if (isFade()) {
             float opacity;
             if (fadeCounter > fadeCounterMax) {
-                opacity =  (fadeCounterMax * 2 - fadeCounter) / fadeCounterMax;
+                opacity = (fadeCounterMax * 2 - fadeCounter) / fadeCounterMax;
             } else {
                 opacity = fadeCounter / fadeCounterMax;
             }
-            batch.begin();
             black.setAlpha(opacity);
             black.draw(batch);
-            float x = camera.position.x - camera.viewportWidth / 2 + 10;
-            float y = camera.position.y - camera.viewportHeight / 2 + 10;
-            font.draw(batch, "Level: "+level, x, y+40);
+            x = camera.position.x - camera.viewportWidth / 2 + 10;
+            y = camera.position.y - camera.viewportHeight / 2 + 10;
             String timeStream = "Present";
             if (currentTimeLine == 2) timeStream = "Future";
             else if (currentTimeLine == 0) timeStream = "Past";
             font.draw(batch, "The "+timeStream, x+100, y+40);
-            batch.end();
-//            renderer.begin(ShapeRenderer.ShapeType.Filled);
-//            renderer.setColor(new Color(0,0,0, opacity));
-//            renderer.rect(-20, -20, 1000, 1000);
-//            renderer.end();
         }
+
+         x = cam.x - camera.viewportWidth / 2 + 10;
+         y = cam.y - camera.viewportHeight / 2 + 40;
+        font.draw(batch, "Level: " + level, x, y);
+        batch.end();
+
+
+        renderer.setProjectionMatrix(camera.combined);
+
+
         drawHealthBar();
         drawTimeBar();
 
@@ -216,7 +215,7 @@ public class DungeonScreen implements Screen {
         }
     }
 
-    public void fadeToBlack(){
+    public void fadeToBlack() {
         fadeCounter = 0;
     }
 

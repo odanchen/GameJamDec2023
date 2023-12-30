@@ -11,7 +11,7 @@ import com.totallynotacult.jam.entities.EntityManager;
 import com.totallynotacult.jam.entities.ShootingEntity;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.weapons.machine_guns.MachineGun;
-import com.totallynotacult.jam.weapons.machine_guns.RocketLauncher;
+//import com.totallynotacult.jam.weapons.machine_guns.RocketLauncher;
 import com.totallynotacult.jam.weapons.pistols.Pistol;
 import com.totallynotacult.jam.weapons.shotguns.Shotgun;
 
@@ -64,7 +64,7 @@ public abstract class Weapon extends Entity {
 
     public static Weapon getRandomWeapon(ShootingEntity owner) {
         Random rand = new Random();
-        int weapon = rand.nextInt(4);
+        int weapon = rand.nextInt(3);
         switch (weapon) {
             case 0:
                 return new Pistol(owner);
@@ -72,8 +72,8 @@ public abstract class Weapon extends Entity {
                 return new Shotgun(owner);
             case 2:
                 return new MachineGun(owner);
-            case 3:
-                return new RocketLauncher(owner);
+            //case 3:
+              //  return new RocketLauncher(owner);
         }
         return null;
     }

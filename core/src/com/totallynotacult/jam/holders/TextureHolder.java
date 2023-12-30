@@ -16,7 +16,8 @@ public enum TextureHolder {
     HITBOX("hitbox.png"),
     TIME_TILE("timeTravelTile.png"),
     TILESET("tileset.png"),
-    EMPTY("tileEmpty.png");
+    EMPTY("tileEmpty.png"),
+    BLUR("blurVig.png");
 
     private final Texture texture;
 
