@@ -129,9 +129,8 @@ public class Room {
                     mat[row][col] = new SuperChargeTile(timeTile, row, col);
                 } else if (getPixelID(col, row, texture).equals(Color.BROWN)){
                     mat[row][col] = new Tile(tileImg, row, col);
-                    if (random.nextInt(100) == 20)
-                        mat[row][col].weaponTile = true;
-                }
+                    mat[row][col].weaponTile = true;
+                } else mat[row][col] = new Tile(tileImg, row, col);
             }
         return mat;
     }

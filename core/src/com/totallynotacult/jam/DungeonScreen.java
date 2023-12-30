@@ -15,6 +15,9 @@ import com.totallynotacult.jam.holders.TextureHolder;
 import com.totallynotacult.jam.map.EnemyTile;
 import com.totallynotacult.jam.map.Room;
 import com.totallynotacult.jam.map.RoomGen;
+import com.totallynotacult.jam.map.Tile;
+
+import java.util.List;
 
 public class DungeonScreen implements Screen {
     private final OrthographicCamera camera;
@@ -64,9 +67,9 @@ public class DungeonScreen implements Screen {
 
     public void regenerateRoom() {
 
-        currentRoom = new Room(currentRoom.getRoomType(),currentRoom.getExitDirections(),currentTimeLine,currentRoom.getIndexVariation());
+        currentRoom = new Room(currentRoom.getRoomType(), currentRoom.getExitDirections(), currentTimeLine, currentRoom.getIndexVariation());
         entityManager.removeEnemies();
-        changeRoom(0,0,true);
+        changeRoom(0, 0, true);
     }
 
     void fixRoom() {
@@ -90,8 +93,9 @@ public class DungeonScreen implements Screen {
         for (int row = 0; row < currentRoom.getTiles().length; row++) {
             for (int col = 0; col < currentRoom.getTiles()[row].length; col++) {
                 if (currentRoom.getTiles()[row][col] instanceof EnemyTile && !currentRoom.isVisited()) {
-                    if (currentTimeLine == 1 && currentRoom.hasAFuture) entityManager.addEnemy(new Enemy(col * 16, row * 16,true));
-                        else entityManager.addEnemy(new Enemy(col * 16, row * 16,false));
+                    if (currentTimeLine == 1 && currentRoom.hasAFuture)
+                        entityManager.addEnemy(new Enemy(col * 16, row * 16, true));
+                    else entityManager.addEnemy(new Enemy(col * 16, row * 16, false));
                 }
             }
         }
@@ -128,7 +132,8 @@ public class DungeonScreen implements Screen {
         drawTimeBar();
 
         if (entityManager.noMoreEnemies() && currentTimeLine == 1) currentRoom.makeVisited();
-        if (character.isDead()) game.setScreen(new MenuScreen(game, "You died, yet, you may still choose to travel back to the past if so your will holds.", "Try again?"));
+        if (character.isDead())
+            game.setScreen(new MenuScreen(game, "You died, yet, you may still choose to travel back to the past if so your will holds.", "Try again?"));
     }
 
     private void drawHealthBar() {
