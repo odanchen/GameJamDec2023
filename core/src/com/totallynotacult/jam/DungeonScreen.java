@@ -46,8 +46,8 @@ public class DungeonScreen implements Screen {
         this.black = new Sprite(new Texture(Gdx.files.internal("hitbox.png")));
         this.black.setBounds(0,0,256,256);
         entityManager = new EntityManager(batch);
-        currentCharacter = new PlayerCharacter(entityManager, camera, this);
-        character = currentCharacter;
+        character = new PlayerCharacter(entityManager, camera, this);
+        currentCharacter = character;
 
         batch.enableBlending();
         fadeCounter = fadeCounterMax;
@@ -103,20 +103,21 @@ public class DungeonScreen implements Screen {
         entityManager.removeAllBullets();
         if (!timeLineSwap) {
             currentRoom = rooms[row += dRow][col += dCol];
-            character.isSuperCharged = false;
+            character.setIsSuperCharged(false);
+            currentCharacter = character;
         }
 
         fixRoom();
         for (int row = 0; row < currentRoom.getTiles().length; row++) {
             for (int col = 0; col < currentRoom.getTiles()[row].length; col++) {
                 if (currentRoom.getTiles()[row][col] instanceof EnemyTile && !currentRoom.isVisited()) {
-                    if (currentTimeLine == 1 && currentRoom.hasAFuture)
+                    if (currentTimeLine == 1 && currentRoom.hasAFuture && !currentRoom.isVisited())
                         entityManager.addEnemy(new Enemy(col * 16, row * 16, true));
                     else entityManager.addEnemy(new Enemy(col * 16, row * 16, false));
                 }
             }
         }
-        if (currentTimeLine == 1 && entityManager.noMoreEnemies()) currentRoom.makeVisited();
+
     }
 
     @Override
@@ -129,6 +130,7 @@ public class DungeonScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        if (currentTimeLine == 1 && entityManager.noMoreEnemies()) System.out.println("clear");//currentRoom.makeVisited();
         if (currentRoom.getRoomType() == 1) currentTimeLine = 1;
         ScreenUtils.clear(Color.BLACK);
         ///////////
@@ -147,7 +149,8 @@ public class DungeonScreen implements Screen {
                 regenerateRoom();
                 if (currentTimeLine == 1)
                     tileImg = TextureHolder.GREY_TILE.getTexture();
-                else tileImg = new Texture(Gdx.files.internal("tiledFloor2.png"));
+                else if (currentTimeLine == 2)  tileImg = new Texture(Gdx.files.internal("tiledFloor3.png"));
+                    else tileImg = new Texture(Gdx.files.internal("tiledFloor2.png"));
             }
             fadeCounter = fadeCounterMax + 0.01f;
             check = true;
@@ -176,6 +179,10 @@ public class DungeonScreen implements Screen {
         float x = camera.position.x - camera.viewportWidth / 2 + 10;
         float y = camera.position.y - camera.viewportHeight / 2 + 10;
         font.draw(batch, "Level: "+level, x, y+40);
+        String timeStream = "Present";
+        if (currentTimeLine == 2) timeStream = "Future";
+        else if (currentTimeLine == 0) timeStream = "Past";
+        font.draw(batch, "The "+timeStream, x+100, y+40);
         batch.end();
 
 
@@ -265,6 +272,7 @@ public class DungeonScreen implements Screen {
             }
             if (tile instanceof BackwardTravelTile) ((BackwardTravelTile) tile).timeTileAnimations();
             if (tile instanceof ForwardTravelTile) ((ForwardTravelTile) tile).timeTileAnimations();
+            if (tile instanceof SuperChargerTile) ((SuperChargerTile) tile).superChargerAnimation();
         });
     }
 

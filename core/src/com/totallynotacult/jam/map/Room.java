@@ -122,10 +122,11 @@ public class Room {
                     TextureRegion[][] region;
                     if (timeline == 1)
                        region = TextureRegion.split(TextureHolder.TILESET.getTexture(), 16, 16);
-                    else region = TextureRegion.split(new Texture(Gdx.files.internal("tilesetTemplate2.png")), 16, 16);
+                    else if (timeline == 2) region = TextureRegion.split(new Texture(Gdx.files.internal("tilesetTemplate3.png")), 16, 16);
+                        else region = TextureRegion.split(new Texture(Gdx.files.internal("tilesetTemplate2.png")), 16, 16);
                     TextureRegion currentTexture = BitMasker.getTexture(region, texture, row, col, Color.BLACK);
                     mat[row][col] = new Wall(currentTexture, row, col);
-                } else if (getPixelID(col, row, texture).equals(Color.RED)) {
+                } else if (getPixelID(col, row, texture).equals(Color.RED) && !visited) {
                     mat[row][col] = new EnemyTile(empty, row, col);
                 } else if ((getPixelID(col, row, texture).equals(Color.YELLOW))) {
                     mat[row][col] = new ForwardTravelTile(new Texture(Gdx.files.internal("timeTravelTile2.png")), row, col);
@@ -133,7 +134,7 @@ public class Room {
                 } else if ((getPixelID(col, row, texture).equals(Color.BLUE))) {
                     mat[row][col] = new BackwardTravelTile(timeTile, row, col);
                 } else if ((getPixelID(col, row, texture).equals(Color.GREEN))) {
-                    mat[row][col] = new SuperChargeTile(timeTile, row, col);
+                    mat[row][col] = new SuperChargerTile(timeTile, row, col);
                 } else if (getPixelID(col, row, texture).equals(Color.BROWN)){
                     mat[row][col] = new Tile(empty,row,col);
                     mat[row][col].weaponTile = true;

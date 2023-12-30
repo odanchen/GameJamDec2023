@@ -13,7 +13,7 @@ import com.totallynotacult.jam.entities.ShootingEntity;
 import com.totallynotacult.jam.holders.SoundHolder;
 import com.totallynotacult.jam.map.BackwardTravelTile;
 import com.totallynotacult.jam.map.ForwardTravelTile;
-import com.totallynotacult.jam.map.SuperChargeTile;
+import com.totallynotacult.jam.map.SuperChargerTile;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.weapons.QuickShooter;
 import com.totallynotacult.jam.weapons.pistols.NoWeapon;
@@ -32,7 +32,7 @@ public class PlayerCharacter extends ShootingEntity {
     private float timeStopLeft = 0;
     private float stateTime = 0f;
     private boolean isMoving = false;
-    public boolean isSuperCharged;
+  //  public boolean isSuperCharged;
 
 
 
@@ -96,8 +96,9 @@ public class PlayerCharacter extends ShootingEntity {
 
 
         //Interactable Tile Collisions
-        if (room.stream().anyMatch(tile -> tile instanceof SuperChargeTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle())))  {
+        if (room.stream().anyMatch(tile -> tile instanceof SuperChargerTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle())))  {
             isSuperCharged = true;
+            DungeonScreen.currentCharacter = this;
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             if (room.stream().anyMatch(tile -> tile instanceof BackwardTravelTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle()))) {

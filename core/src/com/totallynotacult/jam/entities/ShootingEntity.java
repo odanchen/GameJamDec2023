@@ -23,6 +23,7 @@ public abstract class ShootingEntity extends Entity {
     protected boolean isSuperCharged;
 
     public boolean getIsSuperCharged() {return isSuperCharged;}
+    public void setIsSuperCharged(boolean b) {isSuperCharged = b;}
 
     public ShootingEntity(Texture texture) {
         super(texture);
