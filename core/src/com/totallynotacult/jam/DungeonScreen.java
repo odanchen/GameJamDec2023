@@ -130,7 +130,6 @@ public class DungeonScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if (currentTimeLine == 1 && entityManager.noMoreEnemies()) System.out.println("clear");//currentRoom.makeVisited();
         if (currentRoom.getRoomType() == 1) currentTimeLine = 1;
         ScreenUtils.clear(Color.BLACK);
         ///////////
