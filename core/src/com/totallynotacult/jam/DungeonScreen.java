@@ -176,13 +176,7 @@ public class DungeonScreen implements Screen {
         entityManager.updateEntities(currentRoom.getAllTiles(), delta);
         entityManager.drawEntities();
         blur.draw(batch);
-        float x = camera.position.x - camera.viewportWidth / 2 + 10;
-        float y = camera.position.y - camera.viewportHeight / 2 + 10;
-        font.draw(batch, "Level: "+level, x, y+40);
-        String timeStream = "Present";
-        if (currentTimeLine == 2) timeStream = "Future";
-        else if (currentTimeLine == 0) timeStream = "Past";
-        font.draw(batch, "The "+timeStream, x+100, y+40);
+
         batch.end();
 
 
@@ -199,6 +193,13 @@ public class DungeonScreen implements Screen {
             batch.begin();
             black.setAlpha(opacity);
             black.draw(batch);
+            float x = camera.position.x - camera.viewportWidth / 2 + 10;
+            float y = camera.position.y - camera.viewportHeight / 2 + 10;
+            font.draw(batch, "Level: "+level, x, y+40);
+            String timeStream = "Present";
+            if (currentTimeLine == 2) timeStream = "Future";
+            else if (currentTimeLine == 0) timeStream = "Past";
+            font.draw(batch, "The "+timeStream, x+100, y+40);
             batch.end();
 //            renderer.begin(ShapeRenderer.ShapeType.Filled);
 //            renderer.setColor(new Color(0,0,0, opacity));

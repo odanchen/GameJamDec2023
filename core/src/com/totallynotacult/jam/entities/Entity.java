@@ -56,8 +56,8 @@ public abstract class Entity extends Sprite {
         float sX = getScaleX();
         float sY = getScaleY();
         float oX = getOriginX();
-        setSize(5,1);
-        setOrigin(2,getOriginY());
+        setSize(11,1);
+        setOrigin(5,getOriginY());
         setScale(1,1);
         Rectangle rect = getBoundingRectangle(); // ----< hitbox not working :(
         boolean b = room.stream().anyMatch(tile -> tile instanceof Wall && tile.getBoundingRectangle().overlaps(rect));

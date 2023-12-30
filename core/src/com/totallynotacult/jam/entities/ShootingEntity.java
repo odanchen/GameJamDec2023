@@ -117,7 +117,6 @@ public abstract class ShootingEntity extends Entity {
 
         for (int i = 0; i < Math.abs(localSpeed); i++) {
             if (isHorizontal) translateX(dir); else translateY(dir);
-
             if (collidesWithObstacle(room, manager)) {
                 if (isHorizontal) {
                     translateX(-dir);
@@ -125,7 +124,6 @@ public abstract class ShootingEntity extends Entity {
                 else {
                     translateY(-dir);
                 }
-                set(hitbox);
                 return;
             }
 
