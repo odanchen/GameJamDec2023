@@ -30,7 +30,7 @@ public class ControlScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        batch.draw(img, 0, 0); // Adjust the position as needed
+        batch.draw(img, 0, 0, Constants.window_size, Constants.window_size); // Adjust the position as needed
         batch.end();
 
 
