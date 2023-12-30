@@ -12,7 +12,7 @@ public class MachineGun extends Weapon {
     public MachineGun(ShootingEntity owner) {
         super(owner);
         Random rand = new Random();
-        this.damage = rand.nextInt(1) + 1;
+        this.damage = 2;
         this.bulletSpeed = rand.nextInt(300) + 300;
         this.shootDelay = 0.1f;
         this.bulletTexture = TextureHolder.MACHINEGUN_BULLET.getTexture();

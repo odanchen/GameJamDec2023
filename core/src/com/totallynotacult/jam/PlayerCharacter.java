@@ -137,10 +137,12 @@ public class PlayerCharacter extends ShootingEntity {
         //return collidesWithWall(room) || manager.getEnemies().stream().anyMatch(enemy -> getBoundingRectangle().overlaps(enemy.getBoundingRectangle()));
         return collidesWithWall(room);
     }
-
+    public float pointDistance (float x1, float y1, float x2, float y2) {
+        return (float) Math.sqrt( (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+    }
     public void performMovement(float deltaTime, List<Tile> room) {
 
-        //f
+        if (pointDistance(getX(),getY(),screen.cam.x,screen.cam.y) > 60) return;
         float horDir = getDir(Gdx.input.isKeyPressed(Input.Keys.D), Gdx.input.isKeyPressed(Input.Keys.A));
         float vertDir = getDir(Gdx.input.isKeyPressed(Input.Keys.W), Gdx.input.isKeyPressed(Input.Keys.S));
 

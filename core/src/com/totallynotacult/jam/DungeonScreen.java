@@ -11,6 +11,7 @@ import com.totallynotacult.jam.entities.Enemy;
 import com.totallynotacult.jam.entities.EntityManager;
 import com.totallynotacult.jam.holders.MusicHolder;
 import com.totallynotacult.jam.holders.TextureHolder;
+import com.totallynotacult.jam.map.BackwardTravelTile;
 import com.totallynotacult.jam.map.EnemyTile;
 import com.totallynotacult.jam.map.Room;
 import com.totallynotacult.jam.map.RoomGen;
@@ -37,6 +38,7 @@ public class DungeonScreen implements Screen {
 
 
     public DungeonScreen(MyGdxGame game) {
+        currentTimeLine = 1;
         this.game = game;
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
@@ -48,7 +50,7 @@ public class DungeonScreen implements Screen {
         character = currentCharacter;
 
         batch.enableBlending();
-
+        fadeCounter = fadeCounterMax;
         entityManager.setCharacter(character);
         renderer = new ShapeRenderer();
 
@@ -126,7 +128,10 @@ public class DungeonScreen implements Screen {
         ScreenUtils.clear(Color.BLACK);
         ///////////
         if (fadeCounter + delta > fadeCounterMax && fadeCounter < fadeCounterMax) {
-            regenerateRoom();
+            if (currentRoom.getRoomType() == 3) {
+                game.setScreen(new DungeonScreen(game));
+
+            } else regenerateRoom();
             fadeCounter = fadeCounterMax + 0.01f;
             check = true;
         }else {
@@ -238,6 +243,7 @@ public class DungeonScreen implements Screen {
             if (tile.weaponTile) {
                 batch.draw(weaponTileTexture, tile.getX(), tile.getY(), tile.getWidth(), tile.getHeight());
             }
+            if (tile instanceof BackwardTravelTile) ((BackwardTravelTile) tile).timeTileAnimations();
         });
     }
 

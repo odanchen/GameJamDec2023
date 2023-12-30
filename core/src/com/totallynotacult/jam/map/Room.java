@@ -44,7 +44,7 @@ public class Room {
                 break;
             }
             case 3: {
-                roomTexture = new Texture(Gdx.files.internal("room_start_sheet.png"));
+                roomTexture = new Texture(Gdx.files.internal("room_end.png"));
                 TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth() / 4, roomTexture.getHeight());
                 roomVariation = ss[0][exitDirections[0]];
                 break;
