@@ -50,8 +50,9 @@ public class EntityManager {
             friendlyBullets.forEach(e -> e.update(room, deltaTime, this));
         }
 
-
-        character.update(room, deltaTime, this);
+        if(!character.screen.isFade()) {
+            character.update(room, deltaTime, this);
+        }
         weapons.forEach(weaponSprite -> weaponSprite.update(room, deltaTime, this));
 
         //character.currentWeaponSprite.update(room, deltaTime, this);

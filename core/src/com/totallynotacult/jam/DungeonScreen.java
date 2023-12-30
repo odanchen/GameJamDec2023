@@ -15,9 +15,6 @@ import com.totallynotacult.jam.holders.TextureHolder;
 import com.totallynotacult.jam.map.EnemyTile;
 import com.totallynotacult.jam.map.Room;
 import com.totallynotacult.jam.map.RoomGen;
-import com.totallynotacult.jam.map.Tile;
-
-import java.util.List;
 
 public class DungeonScreen implements Screen {
     private final OrthographicCamera camera;
@@ -33,6 +30,8 @@ public class DungeonScreen implements Screen {
     private int col;
     public Camera cam;
     private MyGdxGame game;
+    private float fadeCounterMax = 1;
+    private float fadeCounter = fadeCounterMax * 2;
 
 
     public DungeonScreen(MyGdxGame game) {
@@ -64,6 +63,8 @@ public class DungeonScreen implements Screen {
         MusicHolder.THEME.getMusic().setLooping(true);
         MusicHolder.THEME.getMusic().play();
     }
+
+
 
     public boolean canSwitchRoom() {
         return entityManager.roomClear();
@@ -114,6 +115,10 @@ public class DungeonScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
+        ///////////
+        if (fadeCounter + delta > fadeCounterMax && fadeCounter < fadeCounterMax) regenerateRoom();
+
+        fadeCounter += delta;
 
 
         batch.setProjectionMatrix(camera.combined);
@@ -131,7 +136,16 @@ public class DungeonScreen implements Screen {
         batch.end();
 
 
+
         renderer.setProjectionMatrix(camera.combined);
+
+        if (isFade()) {
+            renderer.begin(ShapeRenderer.ShapeType.Filled);
+            float opacity = fadeCounter > fadeCounterMax ? (fadeCounter - fadeCounterMax)/fadeCounterMax : fadeCounter / fadeCounterMax;
+            renderer.setColor(new Color(0,0,0, opacity));
+            renderer.rect(0, 0, 1000, 1000);
+            renderer.end();
+        }
         drawHealthBar();
         drawTimeBar();
 
@@ -140,6 +154,14 @@ public class DungeonScreen implements Screen {
             game.setScreen(new MenuScreen(game, "Try Again?", "You have died; however, you may \n still choose to travel back to \n the past if your will holds."));
             MusicHolder.THEME.getMusic().stop();
         }
+    }
+
+    public void fadeToBlack(){
+        fadeCounter = 0;
+    }
+
+    public boolean isFade() {
+        return fadeCounter < fadeCounterMax * 2;
     }
 
     private void drawHealthBar() {

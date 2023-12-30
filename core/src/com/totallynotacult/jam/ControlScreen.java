@@ -68,6 +68,8 @@ public class ControlScreen implements Screen {
         table.row();
         table.add("The yellow bar represents time stop").left();
         table.row();
+        table.add("The yellow bar represents time stop").left();
+        table.row();
         table.add("Press space to return to main menu").height(100);
 
         table.center();

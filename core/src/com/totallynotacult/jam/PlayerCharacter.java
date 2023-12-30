@@ -25,7 +25,7 @@ public class PlayerCharacter extends ShootingEntity {
     private float speed;
     private EntityManager entityManager;
     private Camera camera;
-    private final DungeonScreen screen;
+    public final DungeonScreen screen;
     private float timeStopCoolDown = 10;
     private float timeStopDuration = 3;
     private float timeSinceLastStop = 10;
@@ -91,11 +91,14 @@ public class PlayerCharacter extends ShootingEntity {
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             if (room.stream().anyMatch(tile -> tile instanceof BackwardTravelTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle()))) {
                 DungeonScreen.currentTimeLine--;
-                screen.regenerateRoom();
+                screen.fadeToBlack();
+                //screen.regenerateRoom();
+
                 //setPosition(tile.getPos);
             } else if (room.stream().anyMatch(tile -> tile instanceof ForwardTravelTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle())))  {
                 DungeonScreen.currentTimeLine++;
-                screen.regenerateRoom();
+                screen.fadeToBlack();
+                //screen.regenerateRoom();
             } else if (room.stream().anyMatch(tile -> tile instanceof SuperChargeTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle())))  {
                 isSuperCharged = true;
             }
