@@ -58,7 +58,7 @@ public class PlayerCharacter extends ShootingEntity {
         setBounds(100, 200, 16, 16);
         setOrigin(getWidth() / 2, 0);
         this.screen = screen;
-        health = 30;
+        health = 5;
         maxHealth = health;
         speed = 120;
         this.camera = camera;
@@ -146,8 +146,7 @@ public class PlayerCharacter extends ShootingEntity {
         facing = mx.x - (getX() + getOriginX());
 
 
-        if (facing > 0) setScale(1, 1);
-        else setScale(-1, 1);
+
 
 
         float localSpeed = speed * deltaTime / ((horDir != 0 && vertDir != 0) ? (float) Math.sqrt(2) : 1);

@@ -78,6 +78,9 @@ public abstract class ShootingEntity extends Entity {
     public void update(List<Tile> room, float deltaTime, EntityManager manager) {
         if (currentWeapon != null) currentWeapon.update();
         //hitbox.setBounds(getX()+getOriginX(),getY(),hitboxWidth,hitboxHeight);
+
+        if (facing > 0) setScale(1, 1);
+        else setScale(-1, 1);
     }
 
     protected abstract boolean collidesWithObstacle(List<Tile> room, EntityManager manager);
