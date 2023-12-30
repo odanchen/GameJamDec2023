@@ -67,7 +67,7 @@ public abstract class Entity extends Sprite {
         setOrigin(oX,0);
         return b;
     }
-
+//
     protected void entityAnimations() {
 
         if (hitFlash > 0) {
