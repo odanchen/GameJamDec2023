@@ -2,9 +2,7 @@ package com.totallynotacult.jam;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -31,10 +29,10 @@ public class DungeonScreen implements Screen {
     private int col;
     public Camera cam;
     private MyGdxGame game;
-    private float fadeCounterMax = 1;
+    private float fadeCounterMax = 0.5f;
     private float fadeCounter = fadeCounterMax * 2;
-
     Sprite floor;
+    Sprite black;
 
 
     public DungeonScreen(MyGdxGame game) {
@@ -42,10 +40,13 @@ public class DungeonScreen implements Screen {
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 320, 320);
-
+        this.black = new Sprite(new Texture(Gdx.files.internal("hitbox.png")));
+        this.black.setBounds(0,0,256,256);
         entityManager = new EntityManager(batch);
         currentCharacter = new PlayerCharacter(entityManager, camera, this);
         character = currentCharacter;
+
+        batch.enableBlending();
 
         entityManager.setCharacter(character);
         renderer = new ShapeRenderer();
@@ -116,13 +117,22 @@ public class DungeonScreen implements Screen {
 
     }
 
+    boolean check = false;
+
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
         ///////////
-        if (fadeCounter + delta > fadeCounterMax && fadeCounter < fadeCounterMax) regenerateRoom();
+        if (fadeCounter + delta > fadeCounterMax && fadeCounter < fadeCounterMax) {
+            regenerateRoom();
+            fadeCounter = fadeCounterMax + 0.01f;
+            check = true;
+        }else {
+            if (!check) fadeCounter += delta;
+            else check = false;
+        }
 
-        fadeCounter += delta;
+
 
 
         batch.setProjectionMatrix(camera.combined);
@@ -147,11 +157,20 @@ public class DungeonScreen implements Screen {
         renderer.setProjectionMatrix(camera.combined);
 
         if (isFade()) {
-            renderer.begin(ShapeRenderer.ShapeType.Filled);
-            float opacity = fadeCounter > fadeCounterMax ? (fadeCounter - fadeCounterMax)/fadeCounterMax : fadeCounter / fadeCounterMax;
-            renderer.setColor(new Color(0,0,0, opacity));
-            renderer.rect(0, 0, 1000, 1000);
-            renderer.end();
+            float opacity;
+            if (fadeCounter > fadeCounterMax) {
+                opacity =  (fadeCounterMax * 2 - fadeCounter) / fadeCounterMax;
+            } else {
+                opacity = fadeCounter / fadeCounterMax;
+            }
+            batch.begin();
+            black.setAlpha(opacity);
+            black.draw(batch);
+            batch.end();
+//            renderer.begin(ShapeRenderer.ShapeType.Filled);
+//            renderer.setColor(new Color(0,0,0, opacity));
+//            renderer.rect(-20, -20, 1000, 1000);
+//            renderer.end();
         }
         drawHealthBar();
         drawTimeBar();
@@ -178,6 +197,8 @@ public class DungeonScreen implements Screen {
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(Color.WHITE);
         renderer.rect(x, y, 75f, 12);
+
+
         renderer.setColor(Color.CORAL);
         renderer.rect(x, y, (character.getHealth() / (float) character.getMaxHealth() * 75f), 12);
         renderer.end();

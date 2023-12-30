@@ -9,7 +9,6 @@ import com.totallynotacult.jam.map.BitMasker;
 public class MyGdxGame extends Game {
     SpriteBatch batch;
     BitmapFont font;
-    Screen dungeon;
 
     @Override
     public void create() {
@@ -21,8 +20,6 @@ public class MyGdxGame extends Game {
 
         //RoomGen r = new RoomGen(5);
     }
-
-
 
     public void render() {
         super.render();
