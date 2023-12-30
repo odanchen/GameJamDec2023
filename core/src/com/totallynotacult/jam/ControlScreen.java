@@ -19,7 +19,9 @@ public class ControlScreen implements Screen {
 
     @Override
     public void show() {
+
         // This method is called when the screen is set as the current screen.
+
     }
 
     @Override
@@ -33,7 +35,7 @@ public class ControlScreen implements Screen {
 
 
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            game.setScreen(new MenuScreen(game, "Welcome to the The True Time Keeper", "Thank you for reading the controls."));
+            game.setScreen(new MenuScreen(game, "The True Time Keeper", "Thank you for reading the controls."));
         }
     }
 

@@ -11,6 +11,7 @@ import com.totallynotacult.jam.entities.EntityManager;
 import com.totallynotacult.jam.entities.ShootingEntity;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.weapons.machine_guns.MachineGun;
+import com.totallynotacult.jam.weapons.machine_guns.RocketLauncher;
 import com.totallynotacult.jam.weapons.pistols.Pistol;
 import com.totallynotacult.jam.weapons.shotguns.Shotgun;
 
@@ -39,7 +40,7 @@ public abstract class Weapon extends Entity {
         this.owner = owner;
 
         sprites = new Texture(Gdx.files.internal("weapon_sheet.png"));
-        sprite_sheet = TextureRegion.split(sprites, sprites.getWidth() / 4, sprites.getHeight());
+        sprite_sheet = TextureRegion.split(sprites, sprites.getWidth() / 5, sprites.getHeight());
 
         set(new Sprite(sprite_sheet[0][this.type]));
         kickbackX = 0;
@@ -63,7 +64,7 @@ public abstract class Weapon extends Entity {
 
     public static Weapon getRandomWeapon(ShootingEntity owner) {
         Random rand = new Random();
-        int weapon = rand.nextInt(3);
+        int weapon = rand.nextInt(4);
         switch (weapon) {
             case 0:
                 return new Pistol(owner);
@@ -71,18 +72,20 @@ public abstract class Weapon extends Entity {
                 return new Shotgun(owner);
             case 2:
                 return new MachineGun(owner);
+            case 3:
+                return new RocketLauncher(owner);
         }
         return null;
     }
 
     public Sprite bulletType() {
 
-        int amountOfBulletTypes = 3;
+        int amountOfBulletTypes = 4;
         sprite = new Texture(Gdx.files.internal("weapon_bullet_sheet.png"));
         sprite_sheet = TextureRegion.split(sprite, sprite.getWidth() / amountOfBulletTypes, sprite.getHeight());
 
         if (type == -1)
-            return new Sprite(sprite_sheet[0][amountOfBulletTypes]);
+            return new Sprite(sprite_sheet[0][amountOfBulletTypes-1]);
         else
             return new Sprite(sprite_sheet[0][type]);
 

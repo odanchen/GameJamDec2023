@@ -6,18 +6,18 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class BackwardTravelTile extends Tile {
+public class SuperChargerTile extends Tile {
     protected final int SIZE = 16;
     public boolean weaponTile = false;
     private Texture sprites;
     private TextureRegion[][] sprite_sheet;
     private TextureRegion[] flameCycleFrames;
     private Animation<TextureRegion> flameCycleAni;
-    public BackwardTravelTile(Texture texture, int row, int col) {
+    public SuperChargerTile(Texture texture, int row, int col) {
         super(texture, row, col);
 
 
-        sprites = new Texture(Gdx.files.internal("timeTravelTile.png"));
+        sprites = new Texture(Gdx.files.internal("superCharger.png"));
         sprite_sheet = TextureRegion.split(sprites, sprites.getWidth() / 4, sprites.getHeight());
         //Run Cycle
         flameCycleFrames = new TextureRegion[4];
@@ -26,10 +26,10 @@ public class BackwardTravelTile extends Tile {
         flameCycleFrames[2] = sprite_sheet[0][2];
         flameCycleFrames[3] = sprite_sheet[0][3];
         flameCycleAni = new Animation<>(0.08f, flameCycleFrames);
-        //setBounds(col * SIZE, row * SIZE, 16, 16);
+        setBounds(col * SIZE, row * SIZE, 16, 32);
     }
 
-    public void timeTileAnimations() {
+    public void superChargerAnimation() {
 
         //Walk/RunCycle
         TextureRegion currentFrame;

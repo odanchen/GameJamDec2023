@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 
 public enum MusicHolder {
-    THEME("GameMusic.mp3");
+    THEME("GameMusic.ogg");
 
     private Music music;
 

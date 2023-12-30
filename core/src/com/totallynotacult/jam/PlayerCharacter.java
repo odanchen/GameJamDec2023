@@ -13,7 +13,7 @@ import com.totallynotacult.jam.entities.ShootingEntity;
 import com.totallynotacult.jam.holders.SoundHolder;
 import com.totallynotacult.jam.map.BackwardTravelTile;
 import com.totallynotacult.jam.map.ForwardTravelTile;
-import com.totallynotacult.jam.map.SuperChargeTile;
+import com.totallynotacult.jam.map.SuperChargerTile;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.weapons.QuickShooter;
 import com.totallynotacult.jam.weapons.pistols.NoWeapon;
@@ -32,6 +32,7 @@ public class PlayerCharacter extends ShootingEntity {
     private float timeStopLeft = 0;
     private float stateTime = 0f;
     private boolean isMoving = false;
+  //  public boolean isSuperCharged;
 
 
 
@@ -39,14 +40,16 @@ public class PlayerCharacter extends ShootingEntity {
     Texture sprites;
     TextureRegion[][] sprite_sheet;
     TextureRegion[] runCycleFrames;
+    TextureRegion[] runCycleFramesSuper;
     TextureRegion idle;
     Animation<TextureRegion> runCycleAni;
+    Animation<TextureRegion> runCycleAniSuper;
 
 
     public PlayerCharacter(EntityManager entityManager, Camera camera, DungeonScreen screen) {
         super(new Texture(Gdx.files.internal("sprite_player_sheet.png")),0,0,10,5);
         sprites = new Texture(Gdx.files.internal("sprite_player_sheet.png"));
-        sprite_sheet = TextureRegion.split(sprites, sprites.getWidth() / 4, sprites.getHeight());
+        sprite_sheet = TextureRegion.split(sprites, sprites.getWidth() / 4, sprites.getHeight()/2);
         idle = sprite_sheet[0][0];
         //Run Cycle
         runCycleFrames = new TextureRegion[3];
@@ -54,11 +57,16 @@ public class PlayerCharacter extends ShootingEntity {
         runCycleFrames[1] = sprite_sheet[0][2];
         runCycleFrames[2] = sprite_sheet[0][3];
         runCycleAni = new Animation<>(0.08f, runCycleFrames);
+        runCycleFramesSuper = new TextureRegion[3];
+        runCycleFramesSuper[0] = sprite_sheet[1][1];
+        runCycleFramesSuper[1] = sprite_sheet[1][2];
+        runCycleFramesSuper[2] = sprite_sheet[1][3];
+        runCycleAniSuper = new Animation<>(0.08f, runCycleFramesSuper);
 
         setBounds(100, 200, 16, 16);
         setOrigin(getWidth() / 2, 0);
         this.screen = screen;
-        health = 5;
+        health = 10;
         maxHealth = health;
         speed = 120;
         this.camera = camera;
@@ -88,6 +96,10 @@ public class PlayerCharacter extends ShootingEntity {
 
 
         //Interactable Tile Collisions
+        if (room.stream().anyMatch(tile -> tile instanceof SuperChargerTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle())))  {
+            isSuperCharged = true;
+            DungeonScreen.currentCharacter = this;
+        }
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             if (room.stream().anyMatch(tile -> tile instanceof BackwardTravelTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle()))) {
                 DungeonScreen.currentTimeLine--;
@@ -99,8 +111,6 @@ public class PlayerCharacter extends ShootingEntity {
                 DungeonScreen.currentTimeLine++;
                 screen.fadeToBlack();
                 //screen.regenerateRoom();
-            } else if (room.stream().anyMatch(tile -> tile instanceof SuperChargeTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle())))  {
-                isSuperCharged = true;
             }
 
         }
@@ -113,7 +123,17 @@ public class PlayerCharacter extends ShootingEntity {
         //Walk/RunCycle
         TextureRegion currentWalkFrame;
         stateTime += Gdx.graphics.getDeltaTime();
-        currentWalkFrame = runCycleAni.getKeyFrame(stateTime, true);
+        if (isSuperCharged) {
+            currentWalkFrame = runCycleAniSuper.getKeyFrame(stateTime, true);
+            idle = sprite_sheet[1][0];
+        } else {
+            currentWalkFrame = runCycleAni.getKeyFrame(stateTime, true);
+            idle = sprite_sheet[0][0];
+        }
+
+
+
+
         currentSprite = isMoving ? new Sprite(currentWalkFrame) : new Sprite(idle);
 
         entityAnimations();
@@ -133,13 +153,16 @@ public class PlayerCharacter extends ShootingEntity {
 
     @Override
     protected boolean collidesWithObstacle(List<Tile> room, EntityManager manager) {
+
         //return collidesWithWall(room) || manager.getEnemies().stream().anyMatch(enemy -> getBoundingRectangle().overlaps(enemy.getBoundingRectangle()));
         return collidesWithWall(room);
     }
-
+    public float pointDistance (float x1, float y1, float x2, float y2) {
+        return (float) Math.sqrt( (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+    }
     public void performMovement(float deltaTime, List<Tile> room) {
 
-        //f
+        if (pointDistance(getX(),getY(),screen.cam.x,screen.cam.y) > 60) return;
         float horDir = getDir(Gdx.input.isKeyPressed(Input.Keys.D), Gdx.input.isKeyPressed(Input.Keys.A));
         float vertDir = getDir(Gdx.input.isKeyPressed(Input.Keys.W), Gdx.input.isKeyPressed(Input.Keys.S));
 

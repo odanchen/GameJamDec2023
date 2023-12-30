@@ -24,15 +24,17 @@ public class Enemy extends ShootingEntity {
     Texture sprites;
     TextureRegion[][] sprite_sheet;
     TextureRegion[] runCycleFrames;
+    TextureRegion[] runCycleFramesShield;
     TextureRegion idle;
     Animation<TextureRegion> runCycleAni;
+    Animation<TextureRegion> runCycleAniShield;
 
     public Enemy(int xCor, int yCor,boolean isSuperCharged) {
         super(new Texture(Gdx.files.internal("enemy_sheet.png")));
         currentWeapon = new EnemyPistol(this);
         this.isSuperCharged = isSuperCharged;
         sprites = new Texture(Gdx.files.internal("enemy_sheet.png"));
-        sprite_sheet = TextureRegion.split(sprites, sprites.getWidth() / 4, sprites.getHeight());
+        sprite_sheet = TextureRegion.split(sprites, sprites.getWidth() / 4, sprites.getHeight()/2);
         idle = sprite_sheet[0][0];
         //Run Cycle
         runCycleFrames = new TextureRegion[3];
@@ -40,6 +42,12 @@ public class Enemy extends ShootingEntity {
         runCycleFrames[1] = sprite_sheet[0][2];
         runCycleFrames[2] = sprite_sheet[0][3];
         runCycleAni = new Animation<>(0.06f, runCycleFrames);
+
+        runCycleFramesShield = new TextureRegion[3];
+        runCycleFramesShield[0] = sprite_sheet[1][1];
+        runCycleFramesShield[1] = sprite_sheet[1][2];
+        runCycleFramesShield[2] = sprite_sheet[1][3];
+        runCycleAniShield = new Animation<>(0.06f, runCycleFramesShield);
 
         setBounds(xCor, yCor, 16, 16);
         setOrigin(getWidth() / 2, 0);
@@ -78,7 +86,7 @@ public class Enemy extends ShootingEntity {
             int yDir = getDir((float) (speed * deltaTime * Math.sin(angle)));
 
             float dis = pointDistance(getX(),getY(),tX,tY);
-            if (dis < agroRange) {
+            if (dis < agroRange && !isSuperCharged || (dis < agroRange  && isSuperCharged && manager.getCharacter().isSuperCharged)) {
 
                 if (rangedEnemy && dis >= 50) {
                     moveWithCollision((float) (speed * deltaTime * Math.cos(angle)), room, xDir, true, manager);
@@ -103,10 +111,18 @@ public class Enemy extends ShootingEntity {
     }
     public void enemyAnimations() {
         TextureRegion currentWalkFrame;
-        currentWalkFrame = runCycleAni.getKeyFrame(stateTime, true);
+
+        if (isSuperCharged) {
+            currentWalkFrame = runCycleAniShield.getKeyFrame(stateTime, true);
+            idle = sprite_sheet[1][0];
+        }
+        else {
+            currentWalkFrame = runCycleAni.getKeyFrame(stateTime, true);
+            idle = sprite_sheet[0][0];
+        }
+
 
         currentSprite = !isMoving ? new Sprite(idle) : new Sprite(currentWalkFrame);
-
         entityAnimations();
 
     }

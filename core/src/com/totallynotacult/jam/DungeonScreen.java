@@ -3,6 +3,7 @@ package com.totallynotacult.jam;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -11,9 +12,7 @@ import com.totallynotacult.jam.entities.Enemy;
 import com.totallynotacult.jam.entities.EntityManager;
 import com.totallynotacult.jam.holders.MusicHolder;
 import com.totallynotacult.jam.holders.TextureHolder;
-import com.totallynotacult.jam.map.EnemyTile;
-import com.totallynotacult.jam.map.Room;
-import com.totallynotacult.jam.map.RoomGen;
+import com.totallynotacult.jam.map.*;
 
 public class DungeonScreen implements Screen {
     private final OrthographicCamera camera;
@@ -31,26 +30,30 @@ public class DungeonScreen implements Screen {
     private MyGdxGame game;
     private float fadeCounterMax = 0.5f;
     private float fadeCounter = fadeCounterMax * 2;
+    public static int level = 1;
     Sprite floor;
     Sprite black;
-
+    Sprite blur;
+    Texture tileImg = TextureHolder.GREY_TILE.getTexture();
 
     public DungeonScreen(MyGdxGame game) {
+        level = 1;
+        currentTimeLine = 1;
         this.game = game;
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 320, 320);
         this.black = new Sprite(new Texture(Gdx.files.internal("black.png")));
         entityManager = new EntityManager(batch);
-        currentCharacter = new PlayerCharacter(entityManager, camera, this);
-        character = currentCharacter;
+        character = new PlayerCharacter(entityManager, camera, this);
+        currentCharacter = character;
 
         batch.enableBlending();
-
+        fadeCounter = fadeCounterMax;
         entityManager.setCharacter(character);
         renderer = new ShapeRenderer();
 
-        RoomGen r = new RoomGen(5);
+        RoomGen r = new RoomGen(7);
         rooms = r.getLevelMatrix();
         row = r.getStartRoom()[0];
         col = r.getStartRoom()[1];
@@ -58,9 +61,10 @@ public class DungeonScreen implements Screen {
         Gdx.gl.glLineWidth(4);
         fixRoom();
         currentRoom.makeVisited();
-        Texture tileImg = TextureHolder.GREY_TILE.getTexture();
-        floor = new Sprite(tileImg);
 
+
+        blur = new Sprite(new Texture(Gdx.files.internal("blurVig.png")));
+        blur.setPosition(-131,-103);
         cam = new Camera(character, 256, 256, this);
 
         MusicHolder.THEME.getMusic().setVolume(0.1f);
@@ -96,19 +100,23 @@ public class DungeonScreen implements Screen {
 
         //camera.position.set(character.getX(), character.getY(), 0);
         entityManager.removeAllBullets();
-        if (!timeLineSwap) currentRoom = rooms[row += dRow][col += dCol];
+        if (!timeLineSwap) {
+            currentRoom = rooms[row += dRow][col += dCol];
+            character.setIsSuperCharged(false);
+            currentCharacter = character;
+        }
 
         fixRoom();
         for (int row = 0; row < currentRoom.getTiles().length; row++) {
             for (int col = 0; col < currentRoom.getTiles()[row].length; col++) {
                 if (currentRoom.getTiles()[row][col] instanceof EnemyTile && !currentRoom.isVisited()) {
-                    if (currentTimeLine == 1 && currentRoom.hasAFuture)
+                    if (currentTimeLine == 1 && currentRoom.hasAFuture && !currentRoom.isVisited())
                         entityManager.addEnemy(new Enemy(col * 16, row * 16, true));
                     else entityManager.addEnemy(new Enemy(col * 16, row * 16, false));
                 }
             }
         }
-        if (currentTimeLine == 1 && entityManager.noMoreEnemies()) currentRoom.makeVisited();
+
     }
 
     @Override
@@ -117,13 +125,32 @@ public class DungeonScreen implements Screen {
     }
 
     boolean check = false;
+    BitmapFont font = new BitmapFont(); //or use alex answer to use custom font
 
     @Override
     public void render(float delta) {
+        if (currentTimeLine == 1 && entityManager.noMoreEnemies()) System.out.println("clear");//currentRoom.makeVisited();
+        if (currentRoom.getRoomType() == 1) currentTimeLine = 1;
         ScreenUtils.clear(Color.BLACK);
         ///////////
         if (fadeCounter + delta > fadeCounterMax && fadeCounter < fadeCounterMax) {
-            regenerateRoom();
+            if (currentRoom.getRoomType() == 3) {
+                currentTimeLine = 1;
+                level++;
+                RoomGen r = new RoomGen(7);
+                rooms = r.getLevelMatrix();
+                row = r.getStartRoom()[0];
+                col = r.getStartRoom()[1];
+                currentRoom = rooms[row][col];
+                currentTimeLine = 1;
+
+            } else {
+                regenerateRoom();
+                if (currentTimeLine == 1)
+                    tileImg = TextureHolder.GREY_TILE.getTexture();
+                else if (currentTimeLine == 2)  tileImg = new Texture(Gdx.files.internal("tiledFloor3.png"));
+                    else tileImg = new Texture(Gdx.files.internal("tiledFloor2.png"));
+            }
             fadeCounter = fadeCounterMax + 0.01f;
             check = true;
         }else {
@@ -133,13 +160,12 @@ public class DungeonScreen implements Screen {
 
 
 
-
         batch.setProjectionMatrix(camera.combined);
         cam.camFollow();
         camera.position.set(cam.x, cam.y, 0);
         camera.update();
 
-
+        floor = new Sprite(tileImg);
         batch.begin();
         floor.draw(batch);
         renderTiles(batch);
@@ -148,6 +174,7 @@ public class DungeonScreen implements Screen {
 
         entityManager.updateEntities(currentRoom.getAllTiles(), delta);
         entityManager.drawEntities();
+        blur.draw(batch);
 
         batch.end();
 
@@ -165,6 +192,13 @@ public class DungeonScreen implements Screen {
             batch.begin();
             black.setAlpha(opacity);
             black.draw(batch);
+            float x = camera.position.x - camera.viewportWidth / 2 + 10;
+            float y = camera.position.y - camera.viewportHeight / 2 + 10;
+            font.draw(batch, "Level: "+level, x, y+40);
+            String timeStream = "Present";
+            if (currentTimeLine == 2) timeStream = "Future";
+            else if (currentTimeLine == 0) timeStream = "Past";
+            font.draw(batch, "The "+timeStream, x+100, y+40);
             batch.end();
 //            renderer.begin(ShapeRenderer.ShapeType.Filled);
 //            renderer.setColor(new Color(0,0,0, opacity));
@@ -236,6 +270,9 @@ public class DungeonScreen implements Screen {
             if (tile.weaponTile) {
                 batch.draw(weaponTileTexture, tile.getX(), tile.getY(), tile.getWidth(), tile.getHeight());
             }
+            if (tile instanceof BackwardTravelTile) ((BackwardTravelTile) tile).timeTileAnimations();
+            if (tile instanceof ForwardTravelTile) ((ForwardTravelTile) tile).timeTileAnimations();
+            if (tile instanceof SuperChargerTile) ((SuperChargerTile) tile).superChargerAnimation();
         });
     }
 
