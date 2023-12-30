@@ -13,7 +13,7 @@ public class MyGdxGame extends Game {
 
     @Override
     public void create() {
-        prepareNewDungeon();
+
         MusicHolder.THEME.getMusic().setVolume(0.1f);
         MusicHolder.THEME.getMusic().setLooping(true);
         MusicHolder.THEME.getMusic().play();
