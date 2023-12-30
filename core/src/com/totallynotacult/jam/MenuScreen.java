@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.totallynotacult.jam.holders.MusicHolder;
 
 public class MenuScreen implements Screen {
 
@@ -37,14 +38,14 @@ public class MenuScreen implements Screen {
         atlas = new TextureAtlas("skin/craftacular-ui.atlas");
         skin = new Skin(Gdx.files.internal("skin/craftacular-ui.json"), atlas);
         this.playButton = new TextButton("Play", skin);
-        this.exitButton = new TextButton("Exit", skin);
+        this.controlsButton = new TextButton("Controls", skin);
         this.storyLineButton = new TextButton("Story Line", skin);
 
         menuTexture = new Texture("main_menu.png");
 
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
-        viewport = new FitViewport(990,990, camera);
+        viewport = new FitViewport(1024,1024, camera);
         viewport.apply();
 
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
@@ -58,7 +59,7 @@ public class MenuScreen implements Screen {
 
     TextButton storyLineButton;
 
-    TextButton exitButton;
+    TextButton controlsButton;
     @Override
     public void show() {
         //Stage should control input:
@@ -74,6 +75,9 @@ public class MenuScreen implements Screen {
         clickListeners[0] = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                MusicHolder.THEME.getMusic().setVolume(0.1f);
+                MusicHolder.THEME.getMusic().setLooping(true);
+                MusicHolder.THEME.getMusic().play();
                 clearListeners();
                 game.changeToDungeon();
             }
@@ -82,7 +86,8 @@ public class MenuScreen implements Screen {
         clickListeners[1] = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                clearListeners();
+                game.setScreen(new ControlScreen(game));
 
             }
         };
@@ -93,27 +98,27 @@ public class MenuScreen implements Screen {
                 game.setScreen(new StoryScreen(game));
             }
         };
-
         //Add listeners to buttons
         playButton.addListener(clickListeners[0]);
-        exitButton.addListener(clickListeners[1]);
+        controlsButton.addListener(clickListeners[1]);
         storyLineButton.addListener(clickListeners[2]);
 
-        mainTable.moveBy(455,720);
-        mainTable.add(playButton);
+        mainTable.moveBy(725,325);
+        mainTable.add(playButton).height(50).padBottom(15);
         mainTable.row();
-        mainTable.add(storyLineButton);
+        mainTable.add(storyLineButton).height(50);
         mainTable.row();
-        mainTable.add(exitButton);
+        mainTable.add(controlsButton).height(50).padTop(15);
 
-        textTable.moveBy(460, 900);
+        textTable.moveBy(512, 900);
         Label mainLabel = new Label(mainText, skin);
         mainLabel.setFontScale(1.5f);
         textTable.add(mainLabel);
         textTable.row();
 
         Label secondaryLabel = new Label(secondaryText, skin);
-        secondaryLabel.setFontScale(1.5f);
+        secondaryLabel.setFontScale(1.2f);
+
         secondaryLabel.setColor(Color.RED);
         textTable.add(secondaryLabel);
         textTable.row();
@@ -124,7 +129,7 @@ public class MenuScreen implements Screen {
     private void clearListeners() {
         for (ClickListener listener : clickListeners) {
             playButton.removeListener(listener);
-            exitButton.removeListener(listener);
+            controlsButton.removeListener(listener);
             storyLineButton.removeListener(listener);
         }
     }

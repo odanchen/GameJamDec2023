@@ -128,7 +128,10 @@ public class DungeonScreen implements Screen {
         drawTimeBar();
 
         if (entityManager.noMoreEnemies() && currentTimeLine == 1) currentRoom.makeVisited();
-        if (character.isDead()) game.setScreen(new MenuScreen(game, "You died, yet, you may still choose to travel back to the past if so your will holds.", "Try again?"));
+        if (character.isDead()) {
+            game.setScreen(new MenuScreen(game, "Try Again?", "You have died; however, you may \n still choose to travel back to \n the past if your will holds."));
+            MusicHolder.THEME.getMusic().stop();
+        }
     }
 
     private void drawHealthBar() {

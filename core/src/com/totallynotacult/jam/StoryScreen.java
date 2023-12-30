@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.sun.tools.javac.Main;
 
 public class StoryScreen implements Screen {
 
@@ -35,10 +36,10 @@ public class StoryScreen implements Screen {
     {
 
         this.game = game;
-        String firstSection = "You have received an emergency call to the court of the TVA. Variants have gone rampant and are trying to split the TVA timeline. You must use the past present and future to destroy them and expunge them from reality.";
+        String firstSection = "You have received an emergency call to the court of the TVA (Time Variant Authority) Variants have gone rampant and are trying to split the TVA timeline. You must use the past present and future to destroy them and expunge them from reality.";
         String secondSection = "Are you still there?";
         String thirdSection = "Knock Knock... Who's there?... Doctor... Doctor Who?... Exactly!";
-        String fourthSection = "Fine, here are the controls. Use WASD to move and the mouse to aim and shoot. Press space to stop time temporarily (represented by the yellow bar). Travel to the past via pressing E on the blue portal and travel to the future by pressing E on the red portal. The red bar represents your health bar. Good luck soldier.";
+        String fourthSection = "Credits: Oleksandr, Tobi, Parsa";
 
         textSections = new String[] {firstSection, secondSection, thirdSection, fourthSection};
 
@@ -65,6 +66,9 @@ public class StoryScreen implements Screen {
         if (textY > 1000 + textSections[currentSection].length() * 2) {
             currentSection++;
             textY = 0;
+            if (currentSection >= textSections.length) {
+                game.setScreen(new MenuScreen(game, "Welcome to the Time Massacre", "Please turn up your volume."));
+            }
         }
         textY+=delta * 50;
         ScreenUtils.clear(0,0,0, 1);

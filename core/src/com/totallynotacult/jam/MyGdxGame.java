@@ -14,9 +14,7 @@ public class MyGdxGame extends Game {
     @Override
     public void create() {
         prepareNewDungeon();
-        MusicHolder.THEME.getMusic().setVolume(0.1f);
-        MusicHolder.THEME.getMusic().setLooping(true);
-        MusicHolder.THEME.getMusic().play();
+
         batch = new SpriteBatch();
         font = new BitmapFont();
         this.setScreen(new MenuScreen(this, "Welcome to the Time Massacre", "Please turn up your volume."));
