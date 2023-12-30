@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -33,7 +34,7 @@ public class DungeonScreen implements Screen {
     private int col;
     public Camera cam;
     private MyGdxGame game;
-
+    Sprite floor;
 
     public DungeonScreen(MyGdxGame game) {
         this.game = game;
@@ -56,7 +57,8 @@ public class DungeonScreen implements Screen {
         Gdx.gl.glLineWidth(4);
         fixRoom();
         currentRoom.makeVisited();
-
+        Texture tileImg = TextureHolder.GREY_TILE.getTexture();
+        floor = new Sprite(tileImg);
 
         cam = new Camera(character, 256, 256, this);
     }
@@ -119,8 +121,11 @@ public class DungeonScreen implements Screen {
 
 
         batch.begin();
-
+        floor.draw(batch);
         renderTiles(batch);
+
+
+
         entityManager.updateEntities(currentRoom.getAllTiles(), delta);
         entityManager.drawEntities();
 

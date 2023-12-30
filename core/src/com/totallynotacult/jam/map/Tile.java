@@ -17,4 +17,8 @@ public class Tile extends Sprite {
         super(texture);
         setBounds(col * SIZE, row * SIZE, SIZE, SIZE);
     }
+    public Tile(Texture texture, int row, int col, int size) {
+        super(texture);
+        setBounds(col * size, row * size, size, size);
+    }
 }
