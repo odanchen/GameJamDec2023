@@ -1,6 +1,7 @@
 package com.totallynotacult.jam.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -19,6 +20,7 @@ public abstract class Entity extends Sprite {
     protected Sprite hitbox = new Sprite(TextureHolder.HITBOX.getTexture());
     protected float hbw;
     protected float hbh;
+    protected int hitFlash;
     public Entity(Texture texture) {
         super(texture);
         //hitbox.set(this);
@@ -27,21 +29,20 @@ public abstract class Entity extends Sprite {
     public Entity(Texture texture, float xPos, float yPos) {
         super(texture);
         setPosition(xPos, yPos);
-        hitbox.set(this);
+
     }
 
     public Entity(TextureRegion texture, float xPos, float yPos) {
         super(texture);
         setOrigin(getWidth() / 2, getHeight() / 2);
         setPosition(xPos, yPos);
-        hitbox.set(this);
+
     }
 
     public Entity(Texture texture, float xPos, float yPos, float hbw, float hbh) {
         super(texture);
         setPosition(xPos, yPos);
-        hitbox.set(this);
-        hitbox.setBounds(xPos + getWidth() / 2 - hbw / 2, yPos, hbw, hbh);
+
         this.hbw = hbw;
         this.hbh = hbh;
     }
@@ -69,6 +70,11 @@ public abstract class Entity extends Sprite {
 
     protected void entityAnimations() {
 
+        if (hitFlash > 0) {
+            currentSprite.setColor(Color.RED);
+            hitFlash--;
+        }
+        else currentSprite.setColor(Color.WHITE);
         //Walk/RunCycle
         TextureRegion currentWalkFrame;
         stateTime += Gdx.graphics.getDeltaTime();
@@ -78,10 +84,9 @@ public abstract class Entity extends Sprite {
         currentSprite.setOrigin(getOriginX(), getOriginY());
         currentSprite.setRotation(getRotation());
         currentSprite.setScale(getScaleX(), getScaleY());
-        currentSprite.setColor(getColor());
+       // currentSprite.setColor(getColor());
         set(currentSprite);
-        hitbox.set(this);
-      //  hitbox.setBounds(getX() + getWidth() / 2 - hbw / 2, getY(), hbw, hbh);
+
     }
 
     protected int collisionWithWeaponTile(List<Tile> room) {

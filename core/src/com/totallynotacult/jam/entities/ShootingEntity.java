@@ -22,6 +22,8 @@ public abstract class ShootingEntity extends Entity {
     protected float hitboxHeight;
     protected boolean isSuperCharged;
 
+
+
     public boolean getIsSuperCharged() {return isSuperCharged;}
     public void setIsSuperCharged(boolean b) {isSuperCharged = b;}
 
@@ -96,10 +98,12 @@ public abstract class ShootingEntity extends Entity {
         if (this instanceof PlayerCharacter) {
             health -= damage;
             SoundHolder.DAMAGE.getSound().play();
+            hitFlash = 3;
         } else {
             if (!this.getIsSuperCharged() || DungeonScreen.currentCharacter.getIsSuperCharged() && this.getIsSuperCharged()) {
                 health -= damage;
                 SoundHolder.DAMAGE.getSound().play();
+                hitFlash = 3;
             }
         }
 
