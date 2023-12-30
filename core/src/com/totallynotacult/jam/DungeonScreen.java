@@ -45,6 +45,7 @@ public class DungeonScreen implements Screen {
         camera.setToOrtho(false, 320, 320);
         this.black = new Sprite(new Texture(Gdx.files.internal("hitbox.png")));
         this.black.setBounds(0, 0, 256, 256);
+        this.black = new Sprite(new Texture(Gdx.files.internal("black.png")));
         entityManager = new EntityManager(batch);
         character = new PlayerCharacter(entityManager, camera, this);
         currentCharacter = character;
