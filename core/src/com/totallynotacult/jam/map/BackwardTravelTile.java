@@ -9,10 +9,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class BackwardTravelTile extends Tile {
     protected final int SIZE = 16;
     public boolean weaponTile = false;
-    Texture sprites;
-    TextureRegion[][] sprite_sheet;
-    TextureRegion[] flameCycleFrames;
-    Animation<TextureRegion> flameCycleAni;
+    private Texture sprites;
+    private TextureRegion[][] sprite_sheet;
+    private TextureRegion[] flameCycleFrames;
+    private Animation<TextureRegion> flameCycleAni;
     public BackwardTravelTile(Texture texture, int row, int col) {
         super(texture, row, col);
 

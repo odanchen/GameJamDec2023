@@ -15,7 +15,7 @@ public class EnemyPistol extends QuickShooter {
         Random rand = new Random();
         this.damage = 1;
         this.bulletSpeed = 150;
-        this.shootDelay = rand.nextInt(3)+0.5f;
+        this.shootDelay = rand.nextInt(3)+1.5f;
         this.bulletTexture = TextureHolder.PISTOL_BULLET.getTexture();
         type = 0;
         set(new Sprite(sprite_sheet[0][this.type]));

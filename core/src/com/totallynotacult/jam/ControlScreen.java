@@ -60,15 +60,19 @@ public class ControlScreen implements Screen {
         table.row();
         table.add("Left Click - Shoot").left();
         table.row();
-        table.add("Space Bar - Stop Time").left();
+        table.add("Space Bar - Stop Time for a short time").left();
         table.row();
         table.add("E - Interact with Time Travel Tiles").left();
         table.row();
         table.add("The red bar represents health").left();
         table.row();
-        table.add("The yellow bar represents time stop").left();
+        table.add("The yellow bar represents time stop abillity").left();
         table.row();
-        table.add("The yellow bar represents time stop").left();
+        table.row();
+        table.row();
+        table.row();
+        table.add("The Goal of the game is to survive as long as you can");
+        table.row();
         table.row();
         table.add("Press space to return to main menu").height(100);
 
@@ -87,7 +91,7 @@ public class ControlScreen implements Screen {
         stage.act(delta);
         stage.draw();
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            game.setScreen(new MenuScreen(game, "Welcome to the The True Time Keeper", "Thank you for reading the controls."));
+            game.setScreen(new MenuScreen(game, "The True Time Keeper", "Thank you for reading the controls."));
         }
     }
 

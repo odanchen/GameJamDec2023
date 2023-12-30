@@ -16,7 +16,7 @@ public class MyGdxGame extends Game {
         BitMasker.fillMaps();
         batch = new SpriteBatch();
         font = new BitmapFont();
-        this.setScreen(new MenuScreen(this, "Welcome to the The True Time Keeper", "Please turn up your volume."));
+        this.setScreen(new MenuScreen(this, "The True Time Keeper", "*Warning This Games is only for Elite Gamers*"));
 
         //RoomGen r = new RoomGen(5);
     }

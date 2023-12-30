@@ -21,6 +21,7 @@ public class Room {
     private boolean visited;
     private int indexVariation;
     public boolean hasAFuture = false;
+    private int timeline;
 
     public Room(int type, int[] exitDirections, int timeLine, int indexVariation) {
         /*
@@ -34,6 +35,7 @@ public class Room {
         this.exitDirections = exitDirections;
         this.indexVariation = indexVariation;
         Texture roomTexture;
+        this.timeline = timeLine;
         TextureRegion roomVariation;
         switch (type) {
 
@@ -117,13 +119,16 @@ public class Room {
         for (int row = 0; row < 16; row++)
             for (int col = 0; col < 16; col++) {
                 if (getPixelID(col, row, texture).equals(Color.BLACK)) {
-                    TextureRegion[][] region = TextureRegion.split(TextureHolder.TILESET.getTexture(), 16, 16);
+                    TextureRegion[][] region;
+                    if (timeline == 1)
+                       region = TextureRegion.split(TextureHolder.TILESET.getTexture(), 16, 16);
+                    else region = TextureRegion.split(new Texture(Gdx.files.internal("tilesetTemplate2.png")), 16, 16);
                     TextureRegion currentTexture = BitMasker.getTexture(region, texture, row, col, Color.BLACK);
                     mat[row][col] = new Wall(currentTexture, row, col);
                 } else if (getPixelID(col, row, texture).equals(Color.RED)) {
                     mat[row][col] = new EnemyTile(empty, row, col);
                 } else if ((getPixelID(col, row, texture).equals(Color.YELLOW))) {
-                    mat[row][col] = new ForwardTravelTile(timeTile, row, col);
+                    mat[row][col] = new ForwardTravelTile(new Texture(Gdx.files.internal("timeTravelTile2.png")), row, col);
                     hasAFuture = true;
                 } else if ((getPixelID(col, row, texture).equals(Color.BLUE))) {
                     mat[row][col] = new BackwardTravelTile(timeTile, row, col);
