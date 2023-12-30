@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.totallynotacult.jam.holders.MusicHolder;
+import com.totallynotacult.jam.map.BitMasker;
 
 public class MyGdxGame extends Game {
     SpriteBatch batch;
@@ -14,22 +14,15 @@ public class MyGdxGame extends Game {
     @Override
     public void create() {
 
-        prepareNewDungeon();
+        BitMasker.fillMaps();
         batch = new SpriteBatch();
         font = new BitmapFont();
-        this.setScreen(new MenuScreen(this, "Welcome to the Time Massacre", "Please turn up your volume."));
+        this.setScreen(new MenuScreen(this, "Welcome to the The True Time Keeper", "Please turn up your volume."));
 
         //RoomGen r = new RoomGen(5);
     }
 
 
-    public void changeToDungeon() {
-        this.setScreen(this.dungeon);
-    }
-
-    public void prepareNewDungeon() {
-        this.dungeon = new DungeonScreen(this);
-    }
 
     public void render() {
         super.render();
