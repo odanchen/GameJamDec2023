@@ -4,9 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import java.util.HashMap;
 import java.util.Map;
-
-import static java.util.Map.entry;
 
 public class BitMasker {
     private BitMasker() {
@@ -14,57 +13,61 @@ public class BitMasker {
 
     private static int[][] idxs = {{-1, 1}, {0, 1}, {1, 1}, {-1, 0}, {1, 0}, {-1, -1}, {0, -1}, {1, -1}};
 
-    private static Map<Integer, int[]> neightbors = Map.ofEntries(entry(0, new int[]{1, 3}),
-            entry(2, new int[]{1, 4}),
-            entry(5, new int[]{3, 6}),
-            entry(7, new int[]{4, 6}));
-    private static Map<Integer, Integer> indexMap = Map.ofEntries(entry(2, 0),
-            entry(8, 1),
-            entry(10, 2),
-            entry(11, 3),
-            entry(16, 4),
-            entry(18, 5),
-            entry(22, 6),
-            entry(24, 7),
-            entry(26, 8),
-            entry(27, 9),
-            entry(30, 10),
-            entry(31, 11),
-            entry(64, 12),
-            entry(66, 13),
-            entry(72, 14),
-            entry(74, 15),
-            entry(75, 16),
-            entry(80, 17),
-            entry(82, 18),
-            entry(86, 19),
-            entry(88, 20),
-            entry(90, 21),
-            entry(91, 22),
-            entry(94, 23),
-            entry(95, 24),
-            entry(104, 25),
-            entry(106, 26),
-            entry(107, 27),
-            entry(120, 28),
-            entry(122, 29),
-            entry(123, 30),
-            entry(126, 31),
-            entry(127, 32),
-            entry(208, 33),
-            entry(210, 34),
-            entry(214, 35),
-            entry(216, 36),
-            entry(218, 37),
-            entry(219, 38),
-            entry(222, 39),
-            entry(223, 40),
-            entry(248, 41),
-            entry(250, 42),
-            entry(251, 43),
-            entry(254, 44),
-            entry(255, 45),
-            entry(0, 46));
+    public static void fillMaps() {
+        neightbors.put(0, new int[]{1, 3});
+        neightbors.put(2, new int[]{1, 4});
+        neightbors.put(5, new int[]{3, 6});
+        neightbors.put(7, new int[]{4, 6});
+        indexMap.put(8, 1);
+        indexMap.put(10, 2);
+        indexMap.put(11, 3);
+        indexMap.put(16, 4);
+        indexMap.put(18, 5);
+        indexMap.put(22, 6);
+        indexMap.put(24, 7);
+        indexMap.put(26, 8);
+        indexMap.put(27, 9);
+        indexMap.put(30, 10);
+        indexMap.put(31, 11);
+        indexMap.put(64, 12);
+        indexMap.put(66, 13);
+        indexMap.put(72, 14);
+        indexMap.put(74, 15);
+        indexMap.put(75, 16);
+        indexMap.put(80, 17);
+        indexMap.put(82, 18);
+        indexMap.put(86, 19);
+        indexMap.put(88, 20);
+        indexMap.put(90, 21);
+        indexMap.put(91, 22);
+        indexMap.put(94, 23);
+        indexMap.put(95, 24);
+        indexMap.put(104, 25);
+        indexMap.put(106, 26);
+        indexMap.put(107, 27);
+        indexMap.put(120, 28);
+        indexMap.put(122, 29);
+        indexMap.put(123, 30);
+        indexMap.put(126, 31);
+        indexMap.put(127, 32);
+        indexMap.put(208, 33);
+        indexMap.put(210, 34);
+        indexMap.put(214, 35);
+        indexMap.put(216, 36);
+        indexMap.put(218, 37);
+        indexMap.put(219, 38);
+        indexMap.put(222, 39);
+        indexMap.put(223, 40);
+        indexMap.put(248, 41);
+        indexMap.put(250, 42);
+        indexMap.put(251, 43);
+        indexMap.put(254, 44);
+        indexMap.put(255, 45);
+        indexMap.put(0, 46);
+    }
+
+    private static Map<Integer, int[]> neightbors = new HashMap<>();
+    private static Map<Integer, Integer> indexMap = new HashMap<>();
 
     private static Color getPixelID(int x, int y, TextureRegion texture) {
         if (x < 0 || x > 15 || y < 0 || y > 15) return Color.BLACK;
