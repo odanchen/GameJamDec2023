@@ -18,6 +18,7 @@ public class BitMasker {
         neightbors.put(2, new int[]{1, 4});
         neightbors.put(5, new int[]{3, 6});
         neightbors.put(7, new int[]{4, 6});
+        indexMap.put(2, 0);
         indexMap.put(8, 1);
         indexMap.put(10, 2);
         indexMap.put(11, 3);
