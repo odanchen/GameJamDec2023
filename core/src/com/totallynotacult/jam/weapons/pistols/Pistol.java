@@ -13,7 +13,7 @@ public class Pistol extends QuickShooter {
         super(owner);
 
         Random rand = new Random();
-        this.damage = rand.nextInt(3) + 1;
+        this.damage = 4;
         this.bulletSpeed = rand.nextInt(200) + 200;
         this.shootDelay = rand.nextInt(1) + 0.5f;
         this.bulletTexture = TextureHolder.PISTOL_BULLET.getTexture();
