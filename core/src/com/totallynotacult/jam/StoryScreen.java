@@ -29,7 +29,7 @@ public class StoryScreen implements Screen {
     MyGdxGame game;
     BitmapFont font;
 
-    int currentSection = 0;
+    int currentSection = 4;
     float textY = 0;
     String[] textSections;
 
@@ -41,7 +41,7 @@ public class StoryScreen implements Screen {
         String secondSection = "Press any button to skip... :( (don't you dare)";
         String thirdSection = "Are you still there?";
         String fourthSection = "Knock Knock... Who's there?... Doctor... Doctor Who?... Exactly!";
-        String fifthSection = "Credits: Oleksandr, Tobi, Parsa";
+        String fifthSection = "Credits: oleksandr, Tobi, Parsa";
 
         textSections = new String[] {firstSection, secondSection, thirdSection, fourthSection, fifthSection};
 
@@ -72,14 +72,15 @@ public class StoryScreen implements Screen {
         }
         if (currentSection >= textSections.length || Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
             game.setScreen(new MenuScreen(game, "Welcome to the The True Time Keeper", "Please turn up your volume."));
+        } else {
+            textY += delta * 50;
+            ScreenUtils.clear(0, 0, 0, 1);
+            //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            batch.begin();
+            int offset = Constants.window_size / 3;
+            font.draw(batch, textSections[currentSection], offset / 2, textY, Constants.window_size - offset, 3, true);
+            batch.end();
         }
-        textY+=delta * 50;
-        ScreenUtils.clear(0,0,0, 1);
-        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
-        int offset = Constants.window_size / 3;
-        font.draw(batch, textSections[currentSection], offset / 2, textY, Constants.window_size - offset, 3, true);
-        batch.end();
     }
 
     @Override
