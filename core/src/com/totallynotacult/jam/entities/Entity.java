@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.totallynotacult.jam.PlayerCharacter;
 import com.totallynotacult.jam.holders.TextureHolder;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.map.Wall;
@@ -57,8 +58,10 @@ public abstract class Entity extends Sprite {
         float sX = getScaleX();
         float sY = getScaleY();
         float oX = getOriginX();
-        setSize(11,1);
-        setOrigin(5,getOriginY());
+        if (this instanceof ShootingEntity) setSize(13,1);
+        if (this instanceof Bullet) setSize(3,1);
+        setOrigin(getWidth()/2,getOriginY());
+
         setScale(1,1);
         Rectangle rect = getBoundingRectangle(); // ----< hitbox not working :(
         boolean b = room.stream().anyMatch(tile -> tile instanceof Wall && tile.getBoundingRectangle().overlaps(rect));
