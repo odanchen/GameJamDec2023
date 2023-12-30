@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.totallynotacult.jam.holders.TextureHolder;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.map.Wall;
 
@@ -15,7 +16,7 @@ public abstract class Entity extends Sprite {
 
     protected Sprite currentSprite;
     protected float stateTime = 0f;
-    //protected Sprite hitbox = new Sprite(TextureHolder.HITBOX.getTexture());
+    protected Sprite hitbox = new Sprite(TextureHolder.HITBOX.getTexture());
     protected float hbw;
     protected float hbh;
     public Entity(Texture texture) {
@@ -26,21 +27,21 @@ public abstract class Entity extends Sprite {
     public Entity(Texture texture, float xPos, float yPos) {
         super(texture);
         setPosition(xPos, yPos);
-        //hitbox.set(this);
+        hitbox.set(this);
     }
 
     public Entity(TextureRegion texture, float xPos, float yPos) {
         super(texture);
         setOrigin(getWidth() / 2, getHeight() / 2);
         setPosition(xPos, yPos);
-        //hitbox.set(this);
+        hitbox.set(this);
     }
 
     public Entity(Texture texture, float xPos, float yPos, float hbw, float hbh) {
         super(texture);
         setPosition(xPos, yPos);
-        //hitbox.set(this);
-        //hitbox.setBounds(xPos + getWidth() / 2 - hbw / 2, yPos, hbw, hbh);
+        hitbox.set(this);
+        hitbox.setBounds(xPos + getWidth() / 2 - hbw / 2, yPos, hbw, hbh);
         this.hbw = hbw;
         this.hbh = hbh;
     }
@@ -50,8 +51,20 @@ public abstract class Entity extends Sprite {
 
     protected boolean collidesWithWall(List<Tile> room) {
 
+        float w = getWidth();
+        float h = getHeight();
+        float sX = getScaleX();
+        float sY = getScaleY();
+        float oX = getOriginX();
+        setSize(5,1);
+        setOrigin(2,getOriginY());
+        setScale(1,1);
         Rectangle rect = getBoundingRectangle(); // ----< hitbox not working :(
-        return room.stream().anyMatch(tile -> tile instanceof Wall && tile.getBoundingRectangle().overlaps(rect));
+        boolean b = room.stream().anyMatch(tile -> tile instanceof Wall && tile.getBoundingRectangle().overlaps(rect));
+        setSize(w,h);
+        setScale(sX,sY);
+        setOrigin(oX,0);
+        return b;
     }
 
     protected void entityAnimations() {
@@ -67,7 +80,8 @@ public abstract class Entity extends Sprite {
         currentSprite.setScale(getScaleX(), getScaleY());
         currentSprite.setColor(getColor());
         set(currentSprite);
-        //hitbox.setBounds(getX() + getWidth() / 2 - hbw / 2, getY(), hbw, hbh);
+        hitbox.set(this);
+      //  hitbox.setBounds(getX() + getWidth() / 2 - hbw / 2, getY(), hbw, hbh);
     }
 
     protected int collisionWithWeaponTile(List<Tile> room) {

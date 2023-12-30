@@ -33,6 +33,7 @@ public class DungeonScreen implements Screen {
     private float fadeCounter = fadeCounterMax * 2;
     Sprite floor;
     Sprite black;
+    Sprite blur;
 
 
     public DungeonScreen(MyGdxGame game) {
@@ -61,7 +62,8 @@ public class DungeonScreen implements Screen {
         currentRoom.makeVisited();
         Texture tileImg = TextureHolder.GREY_TILE.getTexture();
         floor = new Sprite(tileImg);
-
+        blur = new Sprite(new Texture(Gdx.files.internal("blurVig.png")));
+        blur.setPosition(-127,-103);
         cam = new Camera(character, 256, 256, this);
 
         MusicHolder.THEME.getMusic().setVolume(0.1f);
@@ -134,7 +136,6 @@ public class DungeonScreen implements Screen {
 
 
 
-
         batch.setProjectionMatrix(camera.combined);
         cam.camFollow();
         camera.position.set(cam.x, cam.y, 0);
@@ -149,7 +150,7 @@ public class DungeonScreen implements Screen {
 
         entityManager.updateEntities(currentRoom.getAllTiles(), delta);
         entityManager.drawEntities();
-
+        blur.draw(batch);
         batch.end();
 
 

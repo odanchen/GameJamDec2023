@@ -16,7 +16,7 @@ public class Bullet extends Entity {
         //translateY(getOriginY());
 
         set(texture);
-        setSize(8, 8);
+        setSize(16, 16);
         setOrigin(getWidth() / 2, getHeight() / 2);
 
         setPosition(xCor, yCor);

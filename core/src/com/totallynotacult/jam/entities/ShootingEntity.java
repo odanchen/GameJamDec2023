@@ -81,6 +81,7 @@ public abstract class ShootingEntity extends Entity {
 
         if (facing > 0) setScale(1, 1);
         else setScale(-1, 1);
+        hitbox.set(this);
     }
 
     protected abstract boolean collidesWithObstacle(List<Tile> room, EntityManager manager);
@@ -111,12 +112,19 @@ public abstract class ShootingEntity extends Entity {
         if (dir == 0) {
             return;
         }
+
+
         for (int i = 0; i < Math.abs(localSpeed); i++) {
-            if (isHorizontal) translateX(dir);
-            else translateY(dir);
+            if (isHorizontal) translateX(dir); else translateY(dir);
+
             if (collidesWithObstacle(room, manager)) {
-                if (isHorizontal) translateX(-dir);
-                else translateY(-dir);
+                if (isHorizontal) {
+                    translateX(-dir);
+                }
+                else {
+                    translateY(-dir);
+                }
+                set(hitbox);
                 return;
             }
 

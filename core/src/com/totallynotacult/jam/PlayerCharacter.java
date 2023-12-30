@@ -133,6 +133,7 @@ public class PlayerCharacter extends ShootingEntity {
 
     @Override
     protected boolean collidesWithObstacle(List<Tile> room, EntityManager manager) {
+
         //return collidesWithWall(room) || manager.getEnemies().stream().anyMatch(enemy -> getBoundingRectangle().overlaps(enemy.getBoundingRectangle()));
         return collidesWithWall(room);
     }
