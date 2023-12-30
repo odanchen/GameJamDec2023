@@ -14,7 +14,6 @@ public class MyGdxGame extends Game {
     @Override
     public void create() {
 
-        prepareNewDungeon();
         batch = new SpriteBatch();
         font = new BitmapFont();
         this.setScreen(new MenuScreen(this, "Welcome to the Time Massacre", "Please turn up your volume."));
@@ -23,13 +22,6 @@ public class MyGdxGame extends Game {
     }
 
 
-    public void changeToDungeon() {
-        this.setScreen(this.dungeon);
-    }
-
-    public void prepareNewDungeon() {
-        this.dungeon = new DungeonScreen(this);
-    }
 
     public void render() {
         super.render();

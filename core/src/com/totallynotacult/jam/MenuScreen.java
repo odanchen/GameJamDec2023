@@ -75,12 +75,8 @@ public class MenuScreen implements Screen {
         clickListeners[0] = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                MusicHolder.THEME.getMusic().setVolume(0.1f);
-                MusicHolder.THEME.getMusic().setLooping(true);
-                MusicHolder.THEME.getMusic().play();
                 clearListeners();
-                game.prepareNewDungeon();
-                game.changeToDungeon();
+                game.setScreen(new DungeonScreen(game));
             }
 
         };

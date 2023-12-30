@@ -1,6 +1,7 @@
 package com.totallynotacult.jam;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -37,11 +38,12 @@ public class StoryScreen implements Screen {
 
         this.game = game;
         String firstSection = "You have received an emergency call to the court of the TVA (Time Variant Authority) Variants have gone rampant and are trying to split the TVA timeline. You must use the past present and future to destroy them and expunge them from reality.";
-        String secondSection = "Are you still there?";
-        String thirdSection = "Knock Knock... Who's there?... Doctor... Doctor Who?... Exactly!";
-        String fourthSection = "Credits: Oleksandr, Tobi, Parsa";
+        String secondSection = "Press any button to skip... :( (don't you dare)";
+        String thirdSection = "Are you still there?";
+        String fourthSection = "Knock Knock... Who's there?... Doctor... Doctor Who?... Exactly!";
+        String fifthSection = "Credits: Oleksandr, Tobi, Parsa";
 
-        textSections = new String[] {firstSection, secondSection, thirdSection, fourthSection};
+        textSections = new String[] {firstSection, secondSection, thirdSection, fourthSection, fifthSection};
 
         atlas = new TextureAtlas("skin/craftacular-ui.atlas");
         skin = new Skin(Gdx.files.internal("skin/craftacular-ui.json"), atlas);
@@ -66,9 +68,10 @@ public class StoryScreen implements Screen {
         if (textY > 1000 + textSections[currentSection].length() * 2) {
             currentSection++;
             textY = 0;
-            if (currentSection >= textSections.length) {
-                game.setScreen(new MenuScreen(game, "Welcome to the Time Massacre", "Please turn up your volume."));
-            }
+
+        }
+        if (currentSection >= textSections.length || Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
+            game.setScreen(new MenuScreen(game, "Welcome to the Time Massacre", "Please turn up your volume."));
         }
         textY+=delta * 50;
         ScreenUtils.clear(0,0,0, 1);

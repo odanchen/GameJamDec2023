@@ -59,6 +59,10 @@ public class DungeonScreen implements Screen {
 
 
         cam = new Camera(character, 256, 256, this);
+
+        MusicHolder.THEME.getMusic().setVolume(0.1f);
+        MusicHolder.THEME.getMusic().setLooping(true);
+        MusicHolder.THEME.getMusic().play();
     }
 
     public boolean canSwitchRoom() {
