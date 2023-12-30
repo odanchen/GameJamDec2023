@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.totallynotacult.jam.DungeonScreen;
 import com.totallynotacult.jam.holders.TextureHolder;
@@ -111,6 +112,7 @@ public class Room {
         Texture tileImg = TextureHolder.GREY_TILE.getTexture();
         Texture wallImg = TextureHolder.WALL.getTexture();
         Texture timeTile = TextureHolder.TIME_TILE.getTexture();
+        Texture empty = TextureHolder.EMPTY.getTexture();
 
         for (int row = 0; row < 16; row++)
             for (int col = 0; col < 16; col++) {
@@ -119,7 +121,7 @@ public class Room {
                     TextureRegion currentTexture = BitMasker.getTexture(region, texture, row, col, Color.BLACK);
                     mat[row][col] = new Wall(currentTexture, row, col);
                 } else if (getPixelID(col, row, texture).equals(Color.RED)) {
-                    mat[row][col] = new EnemyTile(tileImg, row, col);
+                    mat[row][col] = new EnemyTile(empty, row, col);
                 } else if ((getPixelID(col, row, texture).equals(Color.YELLOW))) {
                     mat[row][col] = new ForwardTravelTile(timeTile, row, col);
                     hasAFuture = true;
@@ -128,9 +130,9 @@ public class Room {
                 } else if ((getPixelID(col, row, texture).equals(Color.GREEN))) {
                     mat[row][col] = new SuperChargeTile(timeTile, row, col);
                 } else if (getPixelID(col, row, texture).equals(Color.BROWN)){
-                    mat[row][col] = new Tile(tileImg, row, col);
+                    mat[row][col] = new Tile(empty,row,col);
                     mat[row][col].weaponTile = true;
-                } else mat[row][col] = new Tile(tileImg, row, col);
+                } else mat[row][col] = new Tile(empty,row,col);;
             }
         return mat;
     }

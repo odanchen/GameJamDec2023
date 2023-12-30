@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.totallynotacult.jam.holders.MusicHolder;
+import com.totallynotacult.jam.map.BitMasker;
 
 public class MyGdxGame extends Game {
     SpriteBatch batch;
@@ -14,6 +14,7 @@ public class MyGdxGame extends Game {
     @Override
     public void create() {
 
+        BitMasker.fillMaps();
         batch = new SpriteBatch();
         font = new BitmapFont();
         this.setScreen(new MenuScreen(this, "Welcome to the The True Time Keeper", "Please turn up your volume."));
