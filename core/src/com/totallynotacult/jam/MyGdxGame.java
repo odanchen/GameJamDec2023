@@ -16,7 +16,7 @@ public class MyGdxGame extends Game {
 
         batch = new SpriteBatch();
         font = new BitmapFont();
-        this.setScreen(new MenuScreen(this, "Welcome to the Time Massacre", "Please turn up your volume."));
+        this.setScreen(new MenuScreen(this, "Welcome to the The True Time Keeper", "Please turn up your volume."));
 
         //RoomGen r = new RoomGen(5);
     }

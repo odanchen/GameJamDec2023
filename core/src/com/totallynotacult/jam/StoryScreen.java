@@ -71,7 +71,7 @@ public class StoryScreen implements Screen {
 
         }
         if (currentSection >= textSections.length || Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
-            game.setScreen(new MenuScreen(game, "Welcome to the Time Massacre", "Please turn up your volume."));
+            game.setScreen(new MenuScreen(game, "Welcome to the The True Time Keeper", "Please turn up your volume."));
         }
         textY+=delta * 50;
         ScreenUtils.clear(0,0,0, 1);
