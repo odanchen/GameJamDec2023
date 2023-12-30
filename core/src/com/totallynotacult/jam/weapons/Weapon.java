@@ -95,7 +95,7 @@ public abstract class Weapon extends Entity {
 
         if (readyToShoot()) {
             kickbackMag = 5;
-            var bullet = new Bullet(xx, yy, angle, bulletType(), bulletSpeed, damage);
+            Bullet bullet = new Bullet(xx, yy, angle, bulletType(), bulletSpeed, damage);
             if (isFriendly)
                 manager.addFriendlyBullet(bullet);
             else manager.addEnemyBullet(bullet);
@@ -129,7 +129,7 @@ public abstract class Weapon extends Entity {
         float xx = getX() + getOriginX() + (float) (Math.cos(angle) * 6) + 1;
         float yy = getY() + getOriginY() + (float) (Math.sin(angle) * 8) - 4;
 
-        var bullet = new Bullet(xx, yy, angle, bulletType(), bulletSpeed, damage);
+        Bullet bullet = new Bullet(xx, yy, angle, bulletType(), bulletSpeed, damage);
         if (isFriendly)
             manager.addFriendlyBullet(bullet);
         else manager.addEnemyBullet(bullet);

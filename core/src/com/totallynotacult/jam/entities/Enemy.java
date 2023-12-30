@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.totallynotacult.jam.DungeonScreen;
 import com.totallynotacult.jam.map.Tile;
 import com.totallynotacult.jam.weapons.Weapon;
 import com.totallynotacult.jam.weapons.pistols.EnemyPistol;
@@ -17,6 +18,7 @@ public class Enemy extends ShootingEntity {
     private float speed;
     private boolean rangedEnemy;
     private float agroRange;
+    private boolean isMoving;
 
     //Animations
     Texture sprites;
@@ -47,6 +49,7 @@ public class Enemy extends ShootingEntity {
         health = maxHealth;
         rangedEnemy = true;
         agroRange = 130;
+        isMoving = false;
     }
 
     int getDir(float localSpeed) {
@@ -80,11 +83,15 @@ public class Enemy extends ShootingEntity {
                 if (rangedEnemy && dis >= 50) {
                     moveWithCollision((float) (speed * deltaTime * Math.cos(angle)), room, xDir, true, manager);
                     moveWithCollision((float) (speed * deltaTime * Math.sin(angle)), room, yDir, false, manager);
-                }
+                    isMoving = true;
+                } else isMoving = false;
                 targetX = manager.getCharacter().getX();
                 targetY = manager.getCharacter().getY();
                 performShooting(manager, false);
             }
+
+            //Facing
+            facing = manager.getCharacter().getX() - (getX() + getOriginX());
         }
 
         checkBulletCollision(manager.getFriendlyBullets());
@@ -97,8 +104,10 @@ public class Enemy extends ShootingEntity {
     public void enemyAnimations() {
         TextureRegion currentWalkFrame;
         currentWalkFrame = runCycleAni.getKeyFrame(stateTime, true);
-        currentSprite = new Sprite(idle);
+
+        currentSprite = !isMoving ? new Sprite(idle) : new Sprite(currentWalkFrame);
 
         entityAnimations();
+
     }
 }

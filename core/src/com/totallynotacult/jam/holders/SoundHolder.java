@@ -18,7 +18,7 @@ public enum SoundHolder {
     }
 
     public void dispose() {
-        for (var value : values()) value.sound.dispose();
+        for (SoundHolder value : values()) value.sound.dispose();
     }
 
     private SoundHolder(String s) {

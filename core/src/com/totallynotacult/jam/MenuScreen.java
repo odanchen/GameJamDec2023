@@ -64,7 +64,7 @@ public class MenuScreen implements Screen {
     public void show() {
         //Stage should control input:
         Gdx.input.setInputProcessor(stage);
-
+//dd
         //Create Table
         Table mainTable = new Table(skin);
         Table textTable = new Table(skin);
@@ -79,6 +79,7 @@ public class MenuScreen implements Screen {
                 MusicHolder.THEME.getMusic().setLooping(true);
                 MusicHolder.THEME.getMusic().play();
                 clearListeners();
+                game.prepareNewDungeon();
                 game.changeToDungeon();
             }
 

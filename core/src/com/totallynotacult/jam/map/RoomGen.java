@@ -3,6 +3,7 @@ package com.totallynotacult.jam.map;
 import com.totallynotacult.jam.DungeonScreen;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RoomGen {
 
@@ -21,13 +22,9 @@ public class RoomGen {
         //Generate possible adjacent rooms
         for (int i = 0; i < roomCount; i++) {
 
-            var list = adjRooms(currentRoom);
+            List<int[]> list = adjRooms(currentRoom);
             if (list.isEmpty()) break;
             int nextRoomRandom = (int) (Math.random() * list.size() - 1);
-
-            System.out.print(list.get(nextRoomRandom)[1] + " ");
-            System.out.print(list.get(nextRoomRandom)[0] + " :");
-            System.out.println(list.get(nextRoomRandom)[2]);
 
             if (i == 0) { //Starting room
                 sceneGrid[currentRoom[0]][currentRoom[1]] = new Room(1, new int[]{list.get(nextRoomRandom)[2]},DungeonScreen.currentTimeLine,0);
@@ -35,16 +32,11 @@ public class RoomGen {
             } else if (i == roomCount - 1) //Ending room
                 sceneGrid[currentRoom[0]][currentRoom[1]] = new Room(3, new int[]{previousRoomExit},DungeonScreen.currentTimeLine,0);
             else
-                sceneGrid[currentRoom[0]][currentRoom[1]] = new Room(2, new int[]{list.get(nextRoomRandom)[2], previousRoomExit},DungeonScreen.currentTimeLine,6); //(int) (Math.random() * 9 + 1)Everything else
+                sceneGrid[currentRoom[0]][currentRoom[1]] = new Room(2, new int[]{list.get(nextRoomRandom)[2], previousRoomExit},DungeonScreen.currentTimeLine,(int) (Math.random() * 9 + 1)); //Everything else
 
             currentRoom = new int[]{list.get(nextRoomRandom)[0], list.get(nextRoomRandom)[1]};
             previousRoomExit = (list.get(nextRoomRandom)[2] + 2) % 4;
 
-        }
-        for (int i = 0; i < 5; i++) {
-            for (int k = 0; k < 5; k++)
-                System.out.print(sceneGrid[i][k].getRoomType());
-            System.out.println();
         }
 
     }
@@ -62,8 +54,8 @@ public class RoomGen {
         return (sceneGrid[x][y].getRoomType() == 0);
     }
 
-    private ArrayList<int[]> adjRooms(int[] cr) {
-        var list = new ArrayList<int[]>();
+    private List<int[]> adjRooms(int[] cr) {
+        List<int[]> list = new ArrayList<int[]>();
         //Right
         if (isRoomSpaceValid(cr[0], cr[1] + 1))
             list.add(new int[]{cr[0], cr[1] + 1, 0});

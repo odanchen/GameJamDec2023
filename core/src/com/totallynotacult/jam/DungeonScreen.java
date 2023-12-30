@@ -15,6 +15,9 @@ import com.totallynotacult.jam.holders.TextureHolder;
 import com.totallynotacult.jam.map.EnemyTile;
 import com.totallynotacult.jam.map.Room;
 import com.totallynotacult.jam.map.RoomGen;
+import com.totallynotacult.jam.map.Tile;
+
+import java.util.List;
 
 public class DungeonScreen implements Screen {
     private final OrthographicCamera camera;
@@ -45,7 +48,7 @@ public class DungeonScreen implements Screen {
         entityManager.setCharacter(character);
         renderer = new ShapeRenderer();
 
-        RoomGen r = new RoomGen(9);
+        RoomGen r = new RoomGen(5);
         rooms = r.getLevelMatrix();
         row = r.getStartRoom()[0];
         col = r.getStartRoom()[1];
@@ -64,9 +67,9 @@ public class DungeonScreen implements Screen {
 
     public void regenerateRoom() {
 
-        currentRoom = new Room(currentRoom.getRoomType(),currentRoom.getExitDirections(),currentTimeLine,currentRoom.getIndexVariation());
+        currentRoom = new Room(currentRoom.getRoomType(), currentRoom.getExitDirections(), currentTimeLine, currentRoom.getIndexVariation());
         entityManager.removeEnemies();
-        changeRoom(0,0,true);
+        changeRoom(0, 0, true);
     }
 
     void fixRoom() {
@@ -90,8 +93,9 @@ public class DungeonScreen implements Screen {
         for (int row = 0; row < currentRoom.getTiles().length; row++) {
             for (int col = 0; col < currentRoom.getTiles()[row].length; col++) {
                 if (currentRoom.getTiles()[row][col] instanceof EnemyTile && !currentRoom.isVisited()) {
-                    if (currentTimeLine == 1) entityManager.addEnemy(new Enemy(col * 16, row * 16,true));
-                        else entityManager.addEnemy(new Enemy(col * 16, row * 16,false));
+                    if (currentTimeLine == 1 && currentRoom.hasAFuture)
+                        entityManager.addEnemy(new Enemy(col * 16, row * 16, true));
+                    else entityManager.addEnemy(new Enemy(col * 16, row * 16, false));
                 }
             }
         }

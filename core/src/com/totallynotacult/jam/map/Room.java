@@ -19,6 +19,7 @@ public class Room {
     private int[] exitDirections;
     private boolean visited;
     private int indexVariation;
+    public boolean hasAFuture = false;
 
     public Room(int type, int[] exitDirections, int timeLine, int indexVariation) {
         /*
@@ -49,7 +50,7 @@ public class Room {
             }
             case 2: {
                 roomTexture = new Texture(Gdx.files.internal("room_edge_noFrame.png"));
-                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth() / 70, roomTexture.getHeight()/3);
+                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth() / 60, roomTexture.getHeight()/3);
                 int index = 0;
                 if (exitDirections[0] == 0 || exitDirections[1] == 0) {
                     if (exitDirections[0] == 1 || exitDirections[1] == 1) index = 60;
@@ -61,11 +62,11 @@ public class Room {
                     if (exitDirections[0] == 3 || exitDirections[1] == 3) index = 20;
                 }
                 if (exitDirections[0] == 2 || exitDirections[1] == 2) {
-                    if (exitDirections[0] == 3 || exitDirections[1] == 3) index = 70;
+                    if (exitDirections[0] == 3 || exitDirections[1] == 3) index = 40;
                 }
 
-                //roomVariation = ss[DungeonScreen.currentTimeLine][index - indexVariation]; break;
-                roomVariation = ss[DungeonScreen.currentTimeLine][index - 6]; break;
+                roomVariation = ss[DungeonScreen.currentTimeLine][index - indexVariation]; break;
+                //roomVariation = ss[DungeonScreen.currentTimeLine][index - 6]; break;
 
             }
             default: {
@@ -107,29 +108,29 @@ public class Room {
     public Tile[][] generateRoomMatrix(TextureRegion texture) {
         Tile[][] mat = new Tile[16][16];
         Random random = new Random();
-        var tileImg = TextureHolder.GREY_TILE.getTexture();
-        var wallImg = TextureHolder.WALL.getTexture();
-        var timeTile = TextureHolder.TIME_TILE.getTexture();
+        Texture tileImg = TextureHolder.GREY_TILE.getTexture();
+        Texture wallImg = TextureHolder.WALL.getTexture();
+        Texture timeTile = TextureHolder.TIME_TILE.getTexture();
 
         for (int row = 0; row < 16; row++)
             for (int col = 0; col < 16; col++) {
                 if (getPixelID(col, row, texture).equals(Color.BLACK)) {
                     TextureRegion[][] region = TextureRegion.split(TextureHolder.TILESET.getTexture(), 16, 16);
-                    var currentTexture = BitMasker.getTexture(region, texture, row, col, Color.BLACK);
+                    TextureRegion currentTexture = BitMasker.getTexture(region, texture, row, col, Color.BLACK);
                     mat[row][col] = new Wall(currentTexture, row, col);
                 } else if (getPixelID(col, row, texture).equals(Color.RED)) {
                     mat[row][col] = new EnemyTile(tileImg, row, col);
                 } else if ((getPixelID(col, row, texture).equals(Color.YELLOW))) {
                     mat[row][col] = new ForwardTravelTile(timeTile, row, col);
+                    hasAFuture = true;
                 } else if ((getPixelID(col, row, texture).equals(Color.BLUE))) {
                     mat[row][col] = new BackwardTravelTile(timeTile, row, col);
                 } else if ((getPixelID(col, row, texture).equals(Color.GREEN))) {
                     mat[row][col] = new SuperChargeTile(timeTile, row, col);
-                } else {
+                } else if (getPixelID(col, row, texture).equals(Color.BROWN)){
                     mat[row][col] = new Tile(tileImg, row, col);
-                    if (random.nextInt(100) == 20)
-                        mat[row][col].weaponTile = true;
-                }
+                    mat[row][col].weaponTile = true;
+                } else mat[row][col] = new Tile(tileImg, row, col);
             }
         return mat;
     }

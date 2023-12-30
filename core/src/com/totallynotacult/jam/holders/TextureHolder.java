@@ -7,7 +7,7 @@ public enum TextureHolder {
     PISTOL_BULLET("bullets/pistol_bullet.png"),
     SHOTGUN_BULLET("bullets/shotgun_bullet.png"),
     MACHINEGUN_BULLET("bullets/machinegun_bullet.png"),
-    ENEMY("enemy.png"),
+    ENEMY("weaponPickup.png"),
     GREY_TILE("floor_tile.png"),
     MCPT_LOGO("mcpt_logo.png"),
     WALL("wall_tile.png"),
@@ -24,7 +24,7 @@ public enum TextureHolder {
     }
 
     public void dispose() {
-        for (var value : values()) value.texture.dispose();
+        for (TextureHolder value : values()) value.texture.dispose();
     }
 
     private TextureHolder(String s) {

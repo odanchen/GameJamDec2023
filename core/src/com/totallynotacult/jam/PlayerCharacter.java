@@ -58,7 +58,7 @@ public class PlayerCharacter extends ShootingEntity {
         setBounds(100, 200, 16, 16);
         setOrigin(getWidth() / 2, 0);
         this.screen = screen;
-        health = 30;
+        health = 5;
         maxHealth = health;
         speed = 120;
         this.camera = camera;
@@ -92,6 +92,7 @@ public class PlayerCharacter extends ShootingEntity {
             if (room.stream().anyMatch(tile -> tile instanceof BackwardTravelTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle()))) {
                 DungeonScreen.currentTimeLine--;
                 screen.regenerateRoom();
+                //setPosition(tile.getPos);
             } else if (room.stream().anyMatch(tile -> tile instanceof ForwardTravelTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle())))  {
                 DungeonScreen.currentTimeLine++;
                 screen.regenerateRoom();
@@ -134,6 +135,8 @@ public class PlayerCharacter extends ShootingEntity {
     }
 
     public void performMovement(float deltaTime, List<Tile> room) {
+
+        //f
         float horDir = getDir(Gdx.input.isKeyPressed(Input.Keys.D), Gdx.input.isKeyPressed(Input.Keys.A));
         float vertDir = getDir(Gdx.input.isKeyPressed(Input.Keys.W), Gdx.input.isKeyPressed(Input.Keys.S));
 
@@ -143,11 +146,10 @@ public class PlayerCharacter extends ShootingEntity {
         facing = mx.x - (getX() + getOriginX());
 
 
-        if (facing > 0) setScale(1, 1);
-        else setScale(-1, 1);
 
 
-        var localSpeed = speed * deltaTime / ((horDir != 0 && vertDir != 0) ? (float) Math.sqrt(2) : 1);
+
+        float localSpeed = speed * deltaTime / ((horDir != 0 && vertDir != 0) ? (float) Math.sqrt(2) : 1);
 
         moveWithCollision(localSpeed, room, horDir, true, entityManager);
         moveWithCollision(localSpeed, room, vertDir, false, entityManager);

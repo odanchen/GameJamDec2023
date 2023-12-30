@@ -13,8 +13,8 @@ public class MyGdxGame extends Game {
 
     @Override
     public void create() {
-        prepareNewDungeon();
 
+        prepareNewDungeon();
         batch = new SpriteBatch();
         font = new BitmapFont();
         this.setScreen(new MenuScreen(this, "Welcome to the Time Massacre", "Please turn up your volume."));
