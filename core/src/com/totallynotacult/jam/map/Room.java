@@ -50,7 +50,7 @@ public class Room {
             }
             case 2: {
                 roomTexture = new Texture(Gdx.files.internal("room_edge_noFrame.png"));
-                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth() / 70, roomTexture.getHeight()/3);
+                TextureRegion[][] ss = TextureRegion.split(roomTexture, roomTexture.getWidth() / 60, roomTexture.getHeight()/3);
                 int index = 0;
                 if (exitDirections[0] == 0 || exitDirections[1] == 0) {
                     if (exitDirections[0] == 1 || exitDirections[1] == 1) index = 60;
@@ -62,7 +62,7 @@ public class Room {
                     if (exitDirections[0] == 3 || exitDirections[1] == 3) index = 20;
                 }
                 if (exitDirections[0] == 2 || exitDirections[1] == 2) {
-                    if (exitDirections[0] == 3 || exitDirections[1] == 3) index = 70;
+                    if (exitDirections[0] == 3 || exitDirections[1] == 3) index = 40;
                 }
 
                 roomVariation = ss[DungeonScreen.currentTimeLine][index - indexVariation]; break;

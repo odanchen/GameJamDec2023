@@ -92,6 +92,7 @@ public class PlayerCharacter extends ShootingEntity {
             if (room.stream().anyMatch(tile -> tile instanceof BackwardTravelTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle()))) {
                 DungeonScreen.currentTimeLine--;
                 screen.regenerateRoom();
+                //setPosition(tile.getPos);
             } else if (room.stream().anyMatch(tile -> tile instanceof ForwardTravelTile && tile.getBoundingRectangle().overlaps(getBoundingRectangle())))  {
                 DungeonScreen.currentTimeLine++;
                 screen.regenerateRoom();

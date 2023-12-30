@@ -16,6 +16,7 @@ public class EntityManager {
     private final List<Shadow> shadows = new ArrayList<>();
     private final List<Weapon> weapons = new ArrayList<>();
     private final SpriteBatch batch;
+ //   private final List<TimeWarpers> timeWarper = new ArrayList<>();
     private PlayerCharacter character;
 
     public EntityManager(SpriteBatch batch) {
