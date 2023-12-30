@@ -26,10 +26,6 @@ public class RoomGen {
             if (list.isEmpty()) break;
             int nextRoomRandom = (int) (Math.random() * list.size() - 1);
 
-            System.out.print(list.get(nextRoomRandom)[1] + " ");
-            System.out.print(list.get(nextRoomRandom)[0] + " :");
-            System.out.println(list.get(nextRoomRandom)[2]);
-
             if (i == 0) { //Starting room
                 sceneGrid[currentRoom[0]][currentRoom[1]] = new Room(1, new int[]{list.get(nextRoomRandom)[2]},DungeonScreen.currentTimeLine,0);
                 startRoom = currentRoom;
@@ -41,11 +37,6 @@ public class RoomGen {
             currentRoom = new int[]{list.get(nextRoomRandom)[0], list.get(nextRoomRandom)[1]};
             previousRoomExit = (list.get(nextRoomRandom)[2] + 2) % 4;
 
-        }
-        for (int i = 0; i < 5; i++) {
-            for (int k = 0; k < 5; k++)
-                System.out.print(sceneGrid[i][k].getRoomType());
-            System.out.println();
         }
 
     }
