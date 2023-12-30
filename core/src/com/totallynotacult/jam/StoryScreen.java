@@ -29,7 +29,7 @@ public class StoryScreen implements Screen {
     MyGdxGame game;
     BitmapFont font;
 
-    int currentSection = 4;
+    int currentSection = 0;
     float textY = 0;
     String[] textSections;
 
